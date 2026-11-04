@@ -66,6 +66,28 @@ class Relay(BaseHTTPRequestHandler):
         pass  # keep the window quiet
 
 
+SELF_URL = "https://raw.githubusercontent.com/abc123286/nba-live-board/main/relay.py"
+
+
+def self_update():
+    """Fetch the latest helper from GitHub; if it changed, save it and restart."""
+    import os, sys
+    try:
+        with urlopen(Request(SELF_URL, headers={"User-Agent": "nba-live-board"}), timeout=8) as r:
+            new = r.read()
+        here = os.path.abspath(__file__)
+        with open(here, "rb") as f:
+            old = f.read()
+        if new.strip() and new != old and b"def self_update" in new:
+            with open(here, "wb") as f:
+                f.write(new)
+            print("Helper updated to the latest version. Restarting...")
+            os.execv(sys.executable, [sys.executable, here])
+    except Exception:
+        pass  # offline or GitHub unreachable: keep running the current version
+
+
 if __name__ == "__main__":
+    self_update()
     print("NBA relay running on http://127.0.0.1:8787  (Ctrl+C to stop)")
     ThreadingHTTPServer(("127.0.0.1", 8787), Relay).serve_forever()
