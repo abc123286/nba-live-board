@@ -81,6 +81,14 @@ input.ov{width:72px;text-align:right;padding:4px 6px}
 .pl i{color:var(--muted);font-style:normal;font-size:11px}
 .pl b{font-weight:500;color:var(--muted);font-size:11px} .pl b.hot{color:var(--bad);font-weight:700}
 .pl.out{color:var(--muted)}
+.claudep{border-left:4px solid var(--accent)}
+.csum{margin:0;max-width:90ch}
+.cpicks{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:8px}
+.cpick{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:13px}
+.cpick b:first-child{font-family:var(--display);font-size:17px}
+.stale{color:var(--warn);font-weight:600}
+.cread{padding:10px 16px;border-top:1px solid var(--line);font-size:13px;display:grid;gap:4px;background:color-mix(in srgb,var(--accent) 6%,transparent)}
+.cread b{color:var(--accent)}
 footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
 @media (max-width:860px){.grid2,.body{grid-template-columns:1fr}.chart{border-left:0;border-top:1px solid var(--line)}.roster{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr 1fr}}
 @media (prefers-reduced-motion:reduce){.pulse{animation:none}}
@@ -115,6 +123,11 @@ footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
     <div id="diag" class="muted small num" style="word-break:break-word"></div>
   </div>
 
+  <section class="panel claudep" aria-labelledby="ch">
+    <h2 id="ch">Claude's latest check</h2>
+    <div id="claude"></div>
+  </section>
+
   <div class="grid2">
     <section class="panel" aria-labelledby="ph">
       <h2 id="ph">Live suggestions · 2.00+ only</h2>
@@ -134,8 +147,8 @@ footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
     <div><b>Honest limits.</b> Market odds are Polymarket's, not your bookie's; type your bookie's price in "Your odds" to use it instead. The model is simple and the market usually reacts within seconds, so most live signals are small and short-lived. Nothing here is a guarantee.</div>
   </footer>
 </div>
-<script src="model.js?v=7"></script>
-<script src="demo.js?v=7"></script>
-<script src="app.js?v=7"></script>
+<script src="model.js?v=8"></script>
+<script src="demo.js?v=8"></script>
+<script src="app.js?v=8"></script>
 </body>
 </html>

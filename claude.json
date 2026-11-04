@@ -1,0 +1,21 @@
+{
+  "updated": "2026-11-04T15:15:00Z",
+  "slate": "Thu 5 Nov 2026 (Malaysia time)",
+  "summary": "First read of the slate. Best pre-game spots: Philadelphia at Detroit (Detroit without Jalen Duren), Cleveland in the rematch at OKC, and Minnesota only at a generous price with Anthony Edwards out. Watch Atlanta's Jalen Johnson (questionable): if he sits and Sarr plays, Washington at 2.20+ becomes a bet. Next check updates these with fresh injury news.",
+  "games": [
+    {"away": "ATL", "home": "WAS", "homeProb": 0.45, "confidence": "medium", "note": "Line moved hard to Atlanta while the public backs Washington. Jalen Johnson (ATL) and Alex Sarr (WAS) both questionable; Johnson out + Sarr in would flip this to about a coin flip.", "pick": null},
+    {"away": "PHI", "home": "DET", "homeProb": 0.53, "confidence": "medium", "note": "Top-two East matchup. Detroit without starting centre Jalen Duren and Isaiah Joe; Embiid on a minutes limit last game. Philadelphia priced about fair, small value at 2.15+.", "pick": {"team": "PHI", "minOdds": 2.15, "reason": "Detroit missing Duren; PHI 7-1 and close to a coin flip."}},
+    {"away": "CHA", "home": "BKN", "homeProb": 0.39, "confidence": "medium", "note": "Kon Knueppel expected to make his season debut for Charlotte; Coby White probable but likely limited. Brooklyn 1-6.", "pick": null},
+    {"away": "MIL", "home": "BOS", "homeProb": 0.83, "confidence": "medium", "note": "Boston big favourite. Tatum questionable (rest), Giannis questionable/probable. If Tatum sits and Giannis plays, Milwaukee climbs to about 22%.", "pick": null},
+    {"away": "CHI", "home": "NYK", "homeProb": 0.84, "confidence": "low", "note": "Knicks heavy favourites; Josh Hart questionable. Chicago 1-6.", "pick": null},
+    {"away": "UTA", "home": "NOP", "homeProb": 0.67, "confidence": "low", "note": "Utah 1-6 and blown out last game. New Orleans off a 135-134 win in Memphis.", "pick": null},
+    {"away": "IND", "home": "MEM", "homeProb": 0.69, "confidence": "medium", "note": "Indiana without Haliburton; Oubre, Toppin and Zubac questionable. Five-game losing streak. Fair price on Indiana about 3.25.", "pick": null},
+    {"away": "CLE", "home": "OKC", "homeProb": 0.57, "confidence": "medium", "note": "Rematch two days after OKC won 117-112 in Cleveland. OKC without Holmgren; Cleveland healthy.", "pick": {"team": "CLE", "minOdds": 2.4, "reason": "Healthy Cleveland vs OKC missing Holmgren; fair price about 2.33."}},
+    {"away": "MIN", "home": "HOU", "homeProb": 0.73, "confidence": "low", "note": "Anthony Edwards OUT for Minnesota. Houston 7-1 and 7-1 against the spread. Only worth it at a generous number.", "pick": {"team": "MIN", "minOdds": 3.7, "reason": "Thin edge only at 3.70+; pass below that."}},
+    {"away": "TOR", "home": "DEN", "homeProb": 0.65, "confidence": "low", "note": "Toronto without Kawhi Leonard; Poeltl questionable. Denver lost at home to Portland last game.", "pick": null},
+    {"away": "POR", "home": "PHX", "homeProb": 0.40, "confidence": "low", "note": "Portland 5-1 but Ja Morant out. Phoenix 1-4. Low confidence.", "pick": null},
+    {"away": "DAL", "home": "SAS", "homeProb": 0.83, "confidence": "medium", "note": "Spurs favoured by 11.5 behind Wembanyama. Dallas moneyline needs about 5.90+.", "pick": null},
+    {"away": "LAL", "home": "SAC", "homeProb": 0.29, "confidence": "low", "note": "Lakers 6-2; Kings 1-6 but won in Dallas two days ago.", "pick": null},
+    {"away": "MIA", "home": "LAC", "homeProb": 0.53, "confidence": "low", "note": "Two struggling teams, close to a coin flip. Fontecchio (MIA) questionable.", "pick": null}
+  ]
+}

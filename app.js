@@ -241,6 +241,22 @@
     return null;
   }
 
+  // ---------- Claude's read (claude.json in this repo, refreshed by Claude's scheduled checks) ----------
+  let claude = null, claudeAt = 0, claudeErr = "";
+  async function pollClaude() {
+    if (Date.now() - claudeAt < 60e3) return;
+    claudeAt = Date.now();
+    try {
+      const r = await fetch("claude.json?t=" + Date.now(), { cache: "no-store" });
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      claude = await r.json(); claudeErr = "";
+    } catch (e) { claudeErr = e.message || String(e); }
+  }
+  function claudeFor(v) {
+    if (!claude || !claude.games || !v.home || !v.away) return null;
+    return claude.games.find((g) => g.home === v.home.tri && g.away === v.away.tri) || null;
+  }
+
   // ---------- model ----------
   function compute(v) {
     const lead = v.home.score - v.away.score;
@@ -251,10 +267,12 @@
     // A side only shows value when one source prices it better than that consensus, so the board never grades a price against itself.
     const bookP = v.book && v.book.home && v.book.away ? (1 / v.book.home) / (1 / v.book.home + 1 / v.book.away) : null;
     const mktP = v.market ? v.market.homeProb : null;
-    if (v.status === 1 && (bookP != null || mktP != null)) {
-      const both = bookP != null && mktP != null;
-      const cons = both ? (bookP + mktP) / 2 : (bookP != null ? bookP : mktP);
-      base = { spread: M.spreadFromProb(cons), source: both ? "average of bookmaker and market" : bookP != null ? v.book.name + " line" : "market only" , both };
+    const cl = claudeFor(v); v.claude = cl;
+    const clP = cl && typeof cl.homeProb === "number" && cl.homeProb > 0.01 && cl.homeProb < 0.99 ? cl.homeProb : null;
+    if (v.status === 1 && (bookP != null || mktP != null || clP != null)) {
+      const parts = [[bookP, "bookmaker"], [mktP, "market"], [clP, "Claude"]].filter((x) => x[0] != null);
+      const cons = parts.reduce((t, x) => t + x[0], 0) / parts.length;
+      base = { spread: M.spreadFromProb(cons), source: "average of " + parts.map((x) => x[1]).join(", "), both: parts.length >= 2 };
       S.baselines[v.id] = base;
     } else if (!base && v.status === 2 && v.market) {
       const s = M.impliedPreSpread(v.market.homeProb, lead, secLeft);
@@ -282,8 +300,10 @@
       // before tip: your odds > bookmaker > market. During the game the bookmaker line is the pre-game one, so use the live market.
       // before tip: best of bookmaker and market, but only when both exist (one source alone can't disagree with itself)
       const pre = v.status === 1;
-      const twoSources = bookOdds && marketOdds;
-      const odds = over || (pre ? (twoSources ? Math.max(bookOdds, marketOdds) : null) : marketOdds);
+      // a price can only be graded against a fair chance that isn't built from that same price alone
+      const priced = [bookOdds, marketOdds].filter(Boolean);
+      const independent = priced.length >= 2 || (priced.length === 1 && clP != null);
+      const odds = over || (pre ? (independent ? Math.max(...priced) : null) : marketOdds);
       const src = over ? "yours" : !odds ? "" : odds === bookOdds ? (v.book.name || "bookmaker") : "market";
       const late = v.status === 2 && secLeft < 240; // last 4 minutes: prices jump too fast to act on
       const r = v.status === 3 ? null : M.evaluate(p, odds, S.minEdge, S.cap);
@@ -351,7 +371,20 @@
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
     const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v7" : "page v7";
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v8" : "page v8";
+
+    // Claude's latest check
+    const cp = $("#claude");
+    if (demo) cp.innerHTML = '<p class="muted">Claude\'s checks show here with live data.</p>';
+    else if (!claude) cp.innerHTML = `<p class="muted">${claudeErr ? "No check published yet." : "Loading…"}</p>`;
+    else {
+      const upd = claude.updated ? new Date(claude.updated) : null;
+      const ageH = upd ? (Date.now() - upd) / 36e5 : 99;
+      const cpicks = (claude.games || []).filter((g) => g.pick && g.pick.team);
+      cp.innerHTML = `<div class="small ${ageH > 3 ? "stale" : "muted"}">Last check: ${upd ? upd.toLocaleString("en-MY", { timeZone: "Asia/Kuala_Lumpur", weekday: "short", hour: "numeric", minute: "2-digit" }) : "–"}${ageH > 3 ? " · over 3 hours old" : ""}</div>
+        ${claude.summary ? `<p class="csum">${esc(claude.summary)}</p>` : ""}
+        ${cpicks.length ? `<div class="cpicks">${cpicks.map((g) => `<div class="cpick"><b>${esc(g.pick.team)}</b> to win · ${esc(g.away)} @ ${esc(g.home)} · bet only at <b class="num">${f2(g.pick.minOdds)}</b>+<div class="muted small">${esc(g.pick.reason || "")}</div></div>`).join("")}</div>` : '<p class="muted small">No pick from Claude right now.</p>'}`;
+    }
 
     // suggestions
     const picks = [];
@@ -377,6 +410,7 @@
         <div class="sides">${(v.sides || []).map((s) => sideRow(v, s)).join("")}</div>
         <div class="chart">${spark(v)}<div class="muted small">Solid: model ${esc(v.home.tri)} win chance · Dashed: market · Baseline: ${esc(v.baseSource || "")}</div></div>
       </div>
+      ${v.claude ? `<div class="cread"><div><b>Claude's read</b>${typeof v.claude.homeProb === "number" ? ` · ${esc(v.home.tri)} <span class="num">${pct(v.claude.homeProb)}</span> / ${esc(v.away.tri)} <span class="num">${pct(1 - v.claude.homeProb)}</span>` : ""}${v.claude.confidence ? ` · confidence ${esc(v.claude.confidence)}` : ""}${v.claude.pick && v.claude.pick.team ? ` · <span class="chip value">PICK ${esc(v.claude.pick.team)} at ${f2(v.claude.pick.minOdds)}+</span>` : ""}</div><div>${esc(v.claude.note || "")}</div></div>` : ""}
       <div class="roster">
         <div><h4>${esc(v.away.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.away)}</div>
         <div><h4>${esc(v.home.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.home)}</div>
@@ -423,6 +457,7 @@
     if (renderOnly) { for (const v of games.values()) compute(v); render(); return; }
     if (busy) return; busy = true;
     try {
+      if (!demo) await pollClaude();
       if (demo) { Demo.step(games); status.nba = "ok"; status.market = "ok"; route.nba = route.market = "demo"; } else {
         try { await pollESPN(); }
         catch (e) {
