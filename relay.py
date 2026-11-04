@@ -6,6 +6,7 @@ Run:  python relay.py   (Python 3, no installs). Keep the window open.
 It forwards two read-only feeds to your browser:
   http://127.0.0.1:8787/nba/...  -> https://cdn.nba.com/...
   http://127.0.0.1:8787/pm/...   -> https://gamma-api.polymarket.com/...
+  http://127.0.0.1:8787/espn/... -> https://site.api.espn.com/...
 """
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from urllib.request import Request, urlopen
@@ -14,12 +15,13 @@ from urllib.error import HTTPError, URLError
 UPSTREAMS = {
     "/nba/": "https://cdn.nba.com/",
     "/pm/": "https://gamma-api.polymarket.com/",
+    "/espn/": "https://site.api.espn.com/",
 }
 HEADERS = {
-    "User-Agent": "Mozilla/5.0 (nba-live-board relay)",
-    "Accept": "application/json",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 Safari/537.36",
+    "Accept": "application/json, text/plain, */*",
+    "Accept-Language": "en-US,en;q=0.9",
     "Referer": "https://www.nba.com/",
-    "Origin": "https://www.nba.com",
 }
 
 

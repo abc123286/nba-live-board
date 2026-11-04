@@ -21,6 +21,7 @@
   --accent:#f08a43; --live:#ff6b66;
   --good:#4cc98a; --good-bg:#14301f; --warn:#e3b04d; --warn-bg:#33280f; --bad:#ec7b7b; --bad-bg:#371a1c; color-scheme:dark;}}
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
 .wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:16px}
 h1,h2,h4{font-family:var(--display);margin:0;letter-spacing:.01em}
@@ -61,7 +62,7 @@ a{color:var(--accent)}
 @keyframes p{50%{opacity:.25}}
 .body{display:grid;grid-template-columns:1.6fr 1fr;gap:0}
 .sides{display:grid}
-.side{display:grid;grid-template-columns:1.6fr repeat(5,auto);gap:6px 14px;align-items:center;padding:10px 16px;font-size:13px}
+.side{display:grid;grid-template-columns:1.5fr repeat(6,auto);gap:6px 14px;align-items:center;padding:10px 16px;font-size:13px}
 .side + .side{border-top:1px solid var(--line)}
 .tname strong{font-family:var(--display);font-size:20px} .tname span{color:var(--muted)}
 .kv{color:var(--muted);display:flex;gap:6px;align-items:center;white-space:nowrap} .kv b{color:var(--ink)}
@@ -128,7 +129,7 @@ footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
   <section id="games" aria-label="Games"></section>
 
   <footer>
-    <div><b>How it works.</b> Every 4 seconds the board reads the NBA's live game feed (score, clock, who's on court, fouls, who's out) and Polymarket's live prices. The model starts from the pre-game market price, then updates the win chance for the score, the time left and starters fouling out. When a side priced at 2.00 or more has a model chance high enough that chance × odds − 1 beats your minimum edge, it shows as VALUE.</div>
+    <div><b>How it works.</b> Every 4 seconds the board reads ESPN's live NBA feed (score, clock, starters, fouls, injuries, bookmaker odds) and Polymarket's live prices. The model starts from the pre-game market price, then updates the win chance for the score, the time left and starters fouling out. When a side priced at 2.00 or more has a model chance high enough that chance × odds − 1 beats your minimum edge, it shows as VALUE.</div>
     <div><b>Honest limits.</b> Market odds are Polymarket's, not your bookie's; type your bookie's price in "Your odds" to use it instead. The model is simple and the market usually reacts within seconds, so most live signals are small and short-lived. Nothing here is a guarantee.</div>
   </footer>
 </div>

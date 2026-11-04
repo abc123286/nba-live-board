@@ -1,5 +1,5 @@
 /* NBA Live Value Board
-   Live game data: NBA live data feed (cdn.nba.com), refreshed every few seconds.
+   Live game data: ESPN's public NBA feed (backup: cdn.nba.com), refreshed every few seconds.
    Live odds: Polymarket prices (free, public). Price 0.46 = 46% chance = decimal odds 2.17.
    Only sides at decimal odds 2.00+ are ever suggested. */
 (function () {
@@ -9,8 +9,19 @@
   const URLS = {
     scoreboard: { direct: "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json", relay: RELAY + "/nba/static/json/liveData/scoreboard/todaysScoreboard_00.json" },
     box: (id) => ({ direct: `https://cdn.nba.com/static/json/liveData/boxscore/boxscore_${id}.json`, relay: `${RELAY}/nba/static/json/liveData/boxscore/boxscore_${id}.json` }),
-    market: (slug) => ({ direct: `https://gamma-api.polymarket.com/events?slug=${slug}`, relay: `${RELAY}/pm/events?slug=${slug}` })
+    market: (slug) => ({ direct: `https://gamma-api.polymarket.com/events?slug=${slug}`, relay: `${RELAY}/pm/events?slug=${slug}` }),
+    espnSb: () => { const q = "apis/site/v2/sports/basketball/nba/scoreboard?dates=" + espnDates(); return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; },
+    espnSum: (id) => { const q = "apis/site/v2/sports/basketball/nba/summary?event=" + id; return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; }
   };
+  // ESPN uses short codes for a few teams; Polymarket and the NBA use these
+  const ESPN_TRI = { GS: "GSW", NY: "NYK", SA: "SAS", NO: "NOP", UTAH: "UTA", WSH: "WAS" };
+  // Today's and tomorrow's US (Eastern) dates, so the board shows the next slate before the day rolls over
+  function etDateOf(d) { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
+  function espnDates() {
+    const a = etDateOf(new Date()).replace(/-/g, ""), b = etDateOf(new Date(Date.now() + 864e5)).replace(/-/g, "");
+    return a + "-" + b;
+  }
+  let feed = null; // "ESPN" | "NBA"
 
   // ---------- persistent settings ----------
   const LS = "nba-live-board-v1";
@@ -48,7 +59,74 @@
     throw lastErr;
   }
 
-  // ---------- NBA ----------
+  // ---------- ESPN (primary game feed: scores, clock, starters, fouls, injuries, bookmaker odds) ----------
+  const summaryAt = new Map();
+  async function pollESPN() {
+    const sb = await getJSON(URLS.espnSb(), "nba");
+    const events = sb.events || [];
+    const seen = new Set();
+    // keep only games from the earliest slate that hasn't fully finished, plus anything live
+    await Promise.all(events.map(async (e) => {
+      const c = e.competitions && e.competitions[0]; if (!c) return;
+      const st = c.status || e.status || {}; const state = st.type && st.type.state;
+      const id = "espn" + e.id; seen.add(id);
+      const v = games.get(id) || { id, onCourt: { home: [], away: [] }, out: { home: [], away: [] }, market: null };
+      v.status = state === "in" ? 2 : state === "post" ? 3 : 1;
+      v.period = st.period || 0; v.clock = typeof st.clock === "number" ? st.clock : 0;
+      v.tipUTC = e.date; v.etDate = etDateOf(new Date(e.date));
+      for (const comp of c.competitors || []) {
+        const side = comp.homeAway === "home" ? "home" : "away"; const t = comp.team || {};
+        v[side] = { tri: ESPN_TRI[t.abbreviation] || t.abbreviation, name: t.shortDisplayName || t.name, city: t.location || "",
+          score: parseInt(comp.score || "0", 10) || 0, rec: (comp.records && comp.records[0] && comp.records[0].summary) || "" };
+      }
+      const o = c.odds && c.odds[0];
+      if (o && o.homeTeamOdds && o.awayTeamOdds) {
+        const dec = (ml) => (ml == null || ml === "" ? null : (ml = Number(ml), ml > 0 ? 1 + ml / 100 : ml < 0 ? 1 + 100 / -ml : null));
+        v.book = { home: dec(o.homeTeamOdds.moneyLine), away: dec(o.awayTeamOdds.moneyLine), name: (o.provider && o.provider.name) || "Bookmaker" };
+      }
+      // full box score + injuries: every refresh when live, every 2 minutes before tip
+      const due = v.status === 2 || (v.status === 1 && Date.now() - (summaryAt.get(id) || 0) > 120e3);
+      if (due) {
+        summaryAt.set(id, Date.now());
+        try { applySummary(v, await getJSON(URLS.espnSum(e.id), "nba")); } catch (err) { /* summary not posted yet */ }
+      }
+      games.set(id, v);
+    }));
+    for (const id of [...games.keys()]) if (!seen.has(id)) games.delete(id);
+    feed = "ESPN"; status.nba = "ok";
+  }
+  function applySummary(v, s) {
+    v.lineupLabel = "starters";
+    const teams = (s.boxscore && s.boxscore.players) || [];
+    v.fouledOut = { home: [], away: [] }; v.foulTrouble = { home: [], away: [] };
+    for (const tb of teams) {
+      const tri = ESPN_TRI[tb.team && tb.team.abbreviation] || (tb.team && tb.team.abbreviation);
+      const side = tri === v.home.tri ? "home" : tri === v.away.tri ? "away" : null; if (!side) continue;
+      const block = tb.statistics && tb.statistics[0]; if (!block) continue;
+      const keys = (block.keys || block.names || block.labels || []).map((k) => String(k).toLowerCase());
+      const idx = (...n) => keys.findIndex((k) => n.includes(k));
+      const iPF = idx("fouls", "pf"), iPTS = idx("points", "pts"), iMIN = idx("minutes", "min");
+      const players = (block.athletes || []).map((a) => {
+        const st = a.stats || [];
+        return { name: (a.athlete && (a.athlete.shortName || a.athlete.displayName)) || "", pos: (a.athlete && a.athlete.position && a.athlete.position.abbreviation) || "",
+          starter: !!a.starter, on: !!a.starter, active: !a.didNotPlay, reason: a.reason || "",
+          pf: iPF >= 0 ? parseInt(st[iPF], 10) || 0 : 0, pts: iPTS >= 0 ? parseInt(st[iPTS], 10) || 0 : 0, min: iMIN >= 0 ? parseInt(st[iMIN], 10) || 0 : 0 };
+      });
+      if (players.length) {
+        v.onCourt[side] = players.filter((p) => p.starter);
+        v.foulTrouble[side] = players.filter((p) => p.active && p.starter && p.pf >= Math.min(6, (v.period || 1) + 2));
+        v.fouledOut[side] = players.filter((p) => p.starter && p.pf >= 6);
+      }
+    }
+    const inj = s.injuries || [];
+    for (const side of ["home", "away"]) {
+      const tInj = inj.find((t) => { const ab = t.team && t.team.abbreviation; return (ESPN_TRI[ab] || ab) === v[side].tri; });
+      if (tInj) v.out[side] = (tInj.injuries || []).filter((i) => /out|doubtful|day-to-day|questionable/i.test(i.status || ""))
+        .map((i) => ({ name: (i.athlete && (i.athlete.shortName || i.athlete.displayName)) || "", reason: [i.status, i.type && (i.type.description || i.type.name), i.details && i.details.type].filter(Boolean).join(" · ") }));
+    }
+  }
+
+  // ---------- NBA (backup game feed) ----------
   async function pollNBA() {
     const sb = await getJSON(URLS.scoreboard, "nba");
     status.nba = "ok";
@@ -145,6 +223,10 @@
       const s = M.impliedPreSpread(v.market.homeProb, lead, secLeft);
       if (s != null) { base = { spread: s, source: "estimated from live market" }; S.baselines[v.id] = base; }
     }
+    if (!base && v.status === 1 && v.book && v.book.home && v.book.away) {
+      const ph = 1 / v.book.home, pa = 1 / v.book.away;
+      base = { spread: M.spreadFromProb(ph / (ph + pa)), source: v.book.name + " pre-game line" };
+    }
     if (!base) base = { spread: 0, source: "no market yet, coin flip" };
     let spread = base.spread;
     // in-game roster shock: a starter fouled out costs about 2 points over a full game
@@ -163,10 +245,13 @@
       const mprice = v.market ? (side === "home" ? v.market.homePrice : v.market.awayPrice) : null;
       const marketOdds = mprice ? 1 / mprice : null;
       const over = S.overrides[v.id + ":" + side];
-      const odds = over || marketOdds;
+      const bookOdds = v.book ? v.book[side] : null;
+      // before tip: your odds > bookmaker > market. During the game the bookmaker line is the pre-game one, so use the live market.
+      const odds = over || (v.status === 1 ? (bookOdds || marketOdds) : marketOdds);
+      const src = over ? "yours" : odds === bookOdds && bookOdds ? (v.book.name || "bookmaker") : odds ? "market" : "";
       const late = v.status === 2 && secLeft < 240; // last 4 minutes: prices jump too fast to act on
       const r = v.status === 3 ? null : M.evaluate(p, odds, S.minEdge, S.cap);
-      return { side, team: v[side], p, marketOdds, odds, override: !!over, r, late };
+      return { side, team: v[side], p, marketOdds, bookOdds, odds, src, override: !!over, r, late };
     });
   }
 
@@ -212,7 +297,8 @@
     return `<div class="side">
       <div class="tname"><strong>${esc(s.team.tri)}</strong> <span>${esc(s.team.name)} ${esc(s.team.rec)}</span></div>
       <div class="kv">Model <b class="num">${pct(s.p)}</b></div>
-      <div class="kv">Market odds <b class="num">${f2(s.marketOdds)}</b></div>
+      <div class="kv">Book <b class="num">${f2(s.bookOdds)}</b></div>
+      <div class="kv">Market <b class="num">${f2(s.marketOdds)}</b></div>
       <div class="kv"><label for="ov-${v.id}-${s.side}">Your odds</label><input id="ov-${v.id}-${s.side}" class="ov num" data-k="${v.id}:${s.side}" type="number" step="0.01" min="1.01" inputmode="decimal" placeholder="opt." value="${S.overrides[v.id + ":" + s.side] || ""}"></div>
       <div class="kv">${s.r ? `Edge <b class="num">${(s.r.ev >= 0 ? "+" : "") + pct(s.r.ev, 1)}</b>` : ""}</div>
       <div class="kv">${chip}</div>
@@ -224,7 +310,7 @@
     // connection bar
     const dot = (st) => st === "ok" ? "ok" : st === "connecting" ? "wait" : "bad";
     $("#conn").innerHTML = `
-      <span class="cs ${dot(status.nba)}">Game feed: ${status.nba === "ok" ? ({ relay: "via helper", demo: "demo" }[route.nba] || "direct") : status.nba}</span>
+      <span class="cs ${dot(status.nba)}">Game feed${feed && !demo ? " (" + feed + ")" : ""}: ${status.nba === "ok" ? ({ relay: "via helper", demo: "demo" }[route.nba] || "direct") : status.nba}</span>
       <span class="cs ${dot(status.market)}">Market odds: ${status.market === "ok" ? ({ relay: "via helper", demo: "demo" }[route.market] || "direct") : status.market}</span>
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
@@ -239,7 +325,7 @@
         <span class="chip ${s.r.verdict}">${VL[s.r.verdict]}</span>
         <b>${esc(s.team.tri)} to win</b>
         <span class="muted">${esc(v.away.tri)} ${v.away.score} – ${v.home.score} ${esc(v.home.tri)} · ${clockText(v)}</span>
-        <span>Odds <b class="num">${f2(s.odds)}</b>${s.override ? " (yours)" : ""} · Model <b class="num">${pct(s.p)}</b> · Edge <b class="num">${(s.r.ev >= 0 ? "+" : "") + pct(s.r.ev, 1)}</b></span>
+        <span>Odds <b class="num">${f2(s.odds)}</b> (${esc(s.src)}) · Model <b class="num">${pct(s.p)}</b> · Edge <b class="num">${(s.r.ev >= 0 ? "+" : "") + pct(s.r.ev, 1)}</b></span>
         <span>Stake <b class="num">RM ${(s.r.stakeFrac * S.bankroll).toFixed(0)}</b></span>
       </div>`).join("") : `<p class="muted">No side at 2.00+ beats the model right now. This updates every few seconds.</p>`;
 
@@ -254,11 +340,11 @@
         <div class="chart">${spark(v)}<div class="muted small">Solid: model ${esc(v.home.tri)} win chance · Dashed: market · Baseline: ${esc(v.baseSource || "")}</div></div>
       </div>
       <div class="roster">
-        <div><h4>${esc(v.away.tri)} on court</h4>${players(v.onCourt.away)}</div>
-        <div><h4>${esc(v.home.tri)} on court</h4>${players(v.onCourt.home)}</div>
-        <div><h4>Out</h4>${players(v.out.away, "out")}${players(v.out.home, "out")}</div>
+        <div><h4>${esc(v.away.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.away)}</div>
+        <div><h4>${esc(v.home.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.home)}</div>
+        <div><h4>Injuries / out</h4>${players(v.out.away.map((p) => Object.assign({}, p, { name: v.away.tri + " " + p.name })), "out")}${players(v.out.home.map((p) => Object.assign({}, p, { name: v.home.tri + " " + p.name })), "out")}</div>
       </div>
-    </article>`).join("") : `<p class="muted">${status.nba === "ok" ? "No games on today's NBA scoreboard." : "Waiting for the game feed…"}</p>`;
+    </article>`).join("") : `<p class="muted">${status.nba === "ok" ? "No NBA games found for today or tomorrow." : "Waiting for the game feed…"}</p>`;
 
     $("#log").innerHTML = log.slice(-30).reverse().map((l) => `<li><span class="num">${l.t}</span> ${esc(l.msg)}</li>`).join("") || '<li class="muted">New VALUE signals will be listed here with the time.</li>';
 
@@ -300,7 +386,11 @@
     if (busy) return; busy = true;
     try {
       if (demo) { Demo.step(games); status.nba = "ok"; status.market = "ok"; route.nba = route.market = "demo"; } else {
-        try { await pollNBA(); } catch (e) { status.nba = "blocked"; }
+        try { await pollESPN(); }
+        catch (e) {
+          try { if (feed === "ESPN") games.clear(); await pollNBA(); feed = "NBA"; status.nba = "ok"; }
+          catch (e2) { status.nba = "blocked"; }
+        }
         let anyMarket = false, marketErr = false;
         await Promise.all([...games.values()].map(async (v) => {
           try { await pollMarket(v); if (v.market) anyMarket = true; } catch (e) { marketErr = true; }
