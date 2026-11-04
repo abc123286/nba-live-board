@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NBA Live Value Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+/* Layout: connection bar, live suggestions, signal log, then one card per game (score, both sides, win-chance line, rosters). */
+:root{
+  --bg:#f2f3f6; --surface:#fff; --ink:#141925; --muted:#5e6678; --line:#dce0e9;
+  --accent:#d9661f; --live:#d6312f;
+  --good:#1d8a52; --good-bg:#e2f3e9; --warn:#a86b00; --warn-bg:#fbefd6; --bad:#b33a3a; --bad-bg:#f8e2e2;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0e121a; --surface:#161b26; --ink:#e8ebf2; --muted:#9aa2b5; --line:#283041;
+  --accent:#f08a43; --live:#ff6b66;
+  --good:#4cc98a; --good-bg:#14301f; --warn:#e3b04d; --warn-bg:#33280f; --bad:#ec7b7b; --bad-bg:#371a1c; color-scheme:dark;}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 var(--body)}
+.wrap{max-width:1180px;margin:0 auto;padding:20px 16px 48px;display:grid;gap:16px}
+h1,h2,h4{font-family:var(--display);margin:0;letter-spacing:.01em}
+h1{font-size:32px;line-height:1.05} h2{font-size:21px} h4{font-size:15px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .small{font-size:12px}
+.top{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between;align-items:flex-end}
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end}
+label.f{display:grid;gap:3px;font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+input,select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:6px 8px}
+input:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+#conn{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:13px;align-items:center}
+.cs::before{content:"";display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:6px;background:var(--muted)}
+.cs.ok::before{background:var(--good)} .cs.wait::before{background:var(--warn)} .cs.bad::before{background:var(--bad)}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;display:grid;gap:10px}
+.help{border-left:4px solid var(--warn)}
+.help code{font-family:var(--mono);background:var(--bg);padding:1px 5px;border-radius:4px}
+.grid2{display:grid;grid-template-columns:2fr 1fr;gap:16px}
+#picks{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
+.pick{border:1px solid var(--line);border-left:4px solid var(--good);border-radius:8px;padding:10px 12px;display:grid;gap:2px;font-size:13px}
+.pick.close{border-left-color:var(--warn)}
+.pick b:first-of-type{font-family:var(--display);font-size:19px}
+.pick .chip{justify-self:start}
+#log{margin:0;padding:0;list-style:none;display:grid;align-content:start;gap:4px;font-size:13px;max-height:220px;overflow:auto}
+.chip{display:inline-block;font-size:11px;font-weight:600;padding:2px 8px;border-radius:999px;letter-spacing:.03em;white-space:nowrap}
+.chip.value{background:var(--good-bg);color:var(--good)} .chip.close{background:var(--warn-bg);color:var(--warn)}
+.chip.pass{background:var(--bad-bg);color:var(--bad)} .chip.na{background:var(--bg);color:var(--muted)}
+#games{display:grid;gap:12px}
+.game{background:var(--surface);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.game.live{border-color:color-mix(in srgb,var(--live) 45%,var(--line))}
+.game header{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 16px;border-bottom:1px solid var(--line)}
+.score{display:flex;gap:10px;align-items:baseline;font-family:var(--display);font-size:24px}
+.score b{font-size:26px} .score .at{color:var(--muted);font-size:18px}
+.clock{font-family:var(--mono);font-size:14px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.clock.on{color:var(--live)}
+.pulse{width:8px;height:8px;border-radius:50%;background:var(--live);animation:p 1.4s infinite}
+@keyframes p{50%{opacity:.25}}
+.body{display:grid;grid-template-columns:1.6fr 1fr;gap:0}
+.sides{display:grid}
+.side{display:grid;grid-template-columns:1.6fr repeat(5,auto);gap:6px 14px;align-items:center;padding:10px 16px;font-size:13px}
+.side + .side{border-top:1px solid var(--line)}
+.tname strong{font-family:var(--display);font-size:20px} .tname span{color:var(--muted)}
+.kv{color:var(--muted);display:flex;gap:6px;align-items:center;white-space:nowrap} .kv b{color:var(--ink)}
+input.ov{width:72px;text-align:right;padding:4px 6px}
+.chart{border-left:1px solid var(--line);padding:10px 16px;display:grid;gap:4px;align-content:center}
+.spark{width:100%;height:58px}
+.spark.empty{display:grid;place-items:center;font-size:12px;color:var(--muted);height:58px}
+.spark .mid{stroke:var(--line);stroke-dasharray:3 3}
+.spark .area{fill:color-mix(in srgb,var(--accent) 14%,transparent)}
+.spark .mdl{fill:none;stroke:var(--accent);stroke-width:2;vector-effect:non-scaling-stroke}
+.spark .mkt{fill:none;stroke:var(--muted);stroke-width:1.2;stroke-dasharray:4 3;vector-effect:non-scaling-stroke}
+.spark .dot{fill:var(--accent)}
+.roster{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;padding:10px 16px;border-top:1px solid var(--line);font-size:13px}
+.roster > div{display:flex;flex-wrap:wrap;gap:4px 8px;align-content:flex-start}
+.roster h4{width:100%}
+.pl i{color:var(--muted);font-style:normal;font-size:11px}
+.pl b{font-weight:500;color:var(--muted);font-size:11px} .pl b.hot{color:var(--bad);font-weight:700}
+.pl.out{color:var(--muted)}
+footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
+@media (max-width:860px){.grid2,.body{grid-template-columns:1fr}.chart{border-left:0;border-top:1px solid var(--line)}.roster{grid-template-columns:1fr}.side{grid-template-columns:1fr 1fr 1fr}}
+@media (prefers-reduced-motion:reduce){.pulse{animation:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div>
+      <h1>NBA Live Value Board</h1>
+      <div id="conn" class="muted">Connecting…</div>
+    </div>
+    <div class="controls">
+      <label class="f" for="bankroll">Bankroll (RM)<input id="bankroll" type="number" min="0" step="10" style="width:100px"></label>
+      <label class="f" for="minEdge">Min edge
+        <select id="minEdge"><option value="0.03">+3%</option><option value="0.04">+4%</option><option value="0.06">+6%</option></select>
+      </label>
+      <label class="f" for="sound">Sound alert<input id="sound" type="checkbox"></label>
+      <a id="demoLink" href="#demo">Try demo data</a>
+    </div>
+  </div>
+
+  <div id="help" class="panel help" hidden>
+    <h2>Your browser can't reach the live feeds directly</h2>
+    <div>Start the free helper on your computer, then leave this page open. It refreshes by itself.</div>
+    <ol>
+      <li>Download <code>relay.py</code> from this repo.</li>
+      <li>Open a terminal in that folder and run <code>python relay.py</code> (Python 3, nothing to install).</li>
+      <li>Keep that window open while you watch games.</li>
+    </ol>
+  </div>
+
+  <div class="grid2">
+    <section class="panel" aria-labelledby="ph">
+      <h2 id="ph">Live suggestions · 2.00+ only</h2>
+      <div id="picks"></div>
+      <div class="muted small">Stake = quarter-Kelly, capped at 2% of bankroll. Signals in the last 4 minutes are skipped because prices jump too fast to act on. Always check your bookie's price first.</div>
+    </section>
+    <section class="panel" aria-labelledby="lh">
+      <h2 id="lh">Signal log</h2>
+      <ul id="log"></ul>
+    </section>
+  </div>
+
+  <section id="games" aria-label="Games"></section>
+
+  <footer>
+    <div><b>How it works.</b> Every 4 seconds the board reads the NBA's live game feed (score, clock, who's on court, fouls, who's out) and Polymarket's live prices. The model starts from the pre-game market price, then updates the win chance for the score, the time left and starters fouling out. When a side priced at 2.00 or more has a model chance high enough that chance × odds − 1 beats your minimum edge, it shows as VALUE.</div>
+    <div><b>Honest limits.</b> Market odds are Polymarket's, not your bookie's; type your bookie's price in "Your odds" to use it instead. The model is simple and the market usually reacts within seconds, so most live signals are small and short-lived. Nothing here is a guarantee.</div>
+  </footer>
+</div>
+<script src="model.js"></script>
+<script src="demo.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
