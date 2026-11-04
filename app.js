@@ -86,11 +86,8 @@
         v[side] = { tri: ESPN_TRI[t.abbreviation] || t.abbreviation, name: t.shortDisplayName || t.name, city: t.location || "",
           score: parseInt(comp.score || "0", 10) || 0, rec: (comp.records && comp.records[0] && comp.records[0].summary) || "" };
       }
-      const o = c.odds && c.odds[0];
-      if (o && o.homeTeamOdds && o.awayTeamOdds) {
-        const dec = (ml) => (ml == null || ml === "" ? null : (ml = Number(ml), ml > 0 ? 1 + ml / 100 : ml < 0 ? 1 + 100 / -ml : null));
-        v.book = { home: dec(o.homeTeamOdds.moneyLine), away: dec(o.awayTeamOdds.moneyLine), name: (o.provider && o.provider.name) || "Bookmaker" };
-      }
+      const book = readBookOdds(c.odds || e.odds);
+      if (book) v.book = book;
       // full box score + injuries: every refresh when live, every 2 minutes before tip
       const due = v.status === 2 || (v.status === 1 && Date.now() - (summaryAt.get(id) || 0) > 120e3);
       if (due) {
@@ -102,8 +99,35 @@
     for (const id of [...games.keys()]) if (!seen.has(id)) games.delete(id);
     feed = "ESPN"; status.nba = "ok";
   }
+  // ESPN sends moneylines in two shapes; read whichever is present. American odds -> decimal.
+  function americanToDecimal(x) {
+    if (x == null || x === "") return null;
+    if (typeof x === "string" && /^even$/i.test(x.trim())) return 2;
+    const ml = Number(String(x).replace(/[^0-9+.-]/g, ""));
+    if (!isFinite(ml) || ml === 0) return null;
+    return ml > 0 ? 1 + ml / 100 : 1 + 100 / -ml;
+  }
+  function readBookOdds(list) {
+    for (const o of list || []) {
+      if (!o) continue;
+      const name = (o.provider && o.provider.name) || "Bookmaker";
+      let h = null, a = null;
+      if (o.homeTeamOdds || o.awayTeamOdds) {
+        h = americanToDecimal(o.homeTeamOdds && (o.homeTeamOdds.moneyLine ?? (o.homeTeamOdds.current && o.homeTeamOdds.current.moneyLine && o.homeTeamOdds.current.moneyLine.american)));
+        a = americanToDecimal(o.awayTeamOdds && (o.awayTeamOdds.moneyLine ?? (o.awayTeamOdds.current && o.awayTeamOdds.current.moneyLine && o.awayTeamOdds.current.moneyLine.american)));
+      }
+      if ((!h || !a) && o.moneyline) {
+        const pick = (side) => { const m = o.moneyline[side] || {}; return (m.close && (m.close.odds ?? m.close.american)) ?? (m.current && (m.current.odds ?? m.current.american)) ?? (m.open && (m.open.odds ?? m.open.american)); };
+        h = americanToDecimal(pick("home")); a = americanToDecimal(pick("away"));
+      }
+      if (h && a) return { home: h, away: a, name };
+    }
+    return null;
+  }
+
   function applySummary(v, s) {
     v.lineupLabel = "starters";
+    if (!v.book && v.status === 1) { const b = readBookOdds(s.pickcenter || s.odds); if (b) v.book = b; }
     const teams = (s.boxscore && s.boxscore.players) || [];
     v.fouledOut = { home: [], away: [] }; v.foulTrouble = { home: [], away: [] };
     for (const tb of teams) {
@@ -327,7 +351,7 @@
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
     const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v6" : "page v6";
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v7" : "page v7";
 
     // suggestions
     const picks = [];
