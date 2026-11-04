@@ -10,7 +10,7 @@
     scoreboard: { direct: "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json", relay: RELAY + "/nba/static/json/liveData/scoreboard/todaysScoreboard_00.json" },
     box: (id) => ({ direct: `https://cdn.nba.com/static/json/liveData/boxscore/boxscore_${id}.json`, relay: `${RELAY}/nba/static/json/liveData/boxscore/boxscore_${id}.json` }),
     market: (slug) => ({ direct: `https://gamma-api.polymarket.com/events?slug=${slug}`, relay: `${RELAY}/pm/events?slug=${slug}` }),
-    espnSb: () => { const q = "apis/site/v2/sports/basketball/nba/scoreboard?dates=" + espnDates(); return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; },
+    espnSb: (d) => { const q = "apis/site/v2/sports/basketball/nba/scoreboard" + (d ? "?dates=" + d : ""); return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; },
     espnSum: (id) => { const q = "apis/site/v2/sports/basketball/nba/summary?event=" + id; return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; }
   };
   // ESPN uses short codes for a few teams; Polymarket and the NBA use these
@@ -18,8 +18,7 @@
   // Today's and tomorrow's US (Eastern) dates, so the board shows the next slate before the day rolls over
   function etDateOf(d) { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
   function espnDates() {
-    const a = etDateOf(new Date()).replace(/-/g, ""), b = etDateOf(new Date(Date.now() + 864e5)).replace(/-/g, "");
-    return a + "-" + b;
+    return [etDateOf(new Date()), etDateOf(new Date(Date.now() + 864e5))].map((d) => d.replace(/-/g, ""));
   }
   let feed = null; // "ESPN" | "NBA"
 
@@ -65,8 +64,13 @@
   // ---------- ESPN (primary game feed: scores, clock, starters, fouls, injuries, bookmaker odds) ----------
   const summaryAt = new Map();
   async function pollESPN() {
-    const sb = await getJSON(URLS.espnSb(), "nba");
-    const events = sb.events || [];
+    // today's and tomorrow's US-date slates, fetched one day at a time; fall back to ESPN's default day
+    const days = espnDates();
+    let results = await Promise.allSettled(days.map((d) => getJSON(URLS.espnSb(d), "nba")));
+    if (results.every((r) => r.status === "rejected")) results = [{ status: "fulfilled", value: await getJSON(URLS.espnSb(null), "nba") }];
+    const byId = new Map();
+    for (const r of results) if (r.status === "fulfilled") for (const e of (r.value.events || [])) byId.set(e.id, e);
+    const events = [...byId.values()];
     const seen = new Set();
     // keep only games from the earliest slate that hasn't fully finished, plus anything live
     await Promise.all(events.map(async (e) => {
@@ -318,7 +322,7 @@
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
     const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v3" : "page v3";
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v4" : "page v4";
 
     // suggestions
     const picks = [];
