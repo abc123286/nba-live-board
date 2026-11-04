@@ -12,10 +12,9 @@ A live dashboard for NBA games that suggests only bets priced at **decimal odds 
 
 1. Turn on GitHub Pages: repo **Settings → Pages → Deploy from a branch → `main` / root**. Open the link it gives you.
 2. Leave the page open during games. It refreshes on its own.
-3. If the page says your browser can't reach the feeds, use the free helper (Windows):
-   download this repo (green **Code** button → **Download ZIP**), unzip it, and double-click **start-board.bat**.
-   It starts the helper and opens the dashboard. Keep the black window open while you watch games.
-   Needs Python 3 (free from python.org; tick "Add python.exe to PATH" when installing).
+3. If the page says your browser can't reach the feeds, start the free helper (Windows):
+   open the folder with `relay.py`, right-click an empty space → **Open in Terminal**, type `py relay.py`, press Enter.
+   Keep that window open while you watch games. (Windows Smart App Control blocks `start-board.bat`, so use this instead.)
 4. Want to see it working when no games are on? Add `#demo` to the end of the link (simulated games).
 
 ## Notes
