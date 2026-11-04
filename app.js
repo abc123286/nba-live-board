@@ -39,6 +39,7 @@
   const log = [];
   const alerted = new Set();
   const streak = new Map();
+  const diag = {}; // last error per source and route, shown in the help box
 
   // ---------- fetching with direct -> relay fallback ----------
   async function getJSON(pair, kind) {
@@ -50,9 +51,11 @@
         if (!r.ok) throw new Error(r.status === 404 ? "404" : "HTTP " + r.status);
         const j = await r.json();
         route[kind] = way;
+        delete diag[kind + " " + (pair[way].includes("espn") ? "ESPN" : pair[way].includes("polymarket") || pair[way].includes("/pm/") ? "Polymarket" : "NBA") + " " + (way === "relay" ? "via helper" : "direct")];
         return j;
       } catch (e) {
         lastErr = e;
+        diag[kind + " " + (pair[way].includes("espn") ? "ESPN" : pair[way].includes("polymarket") || pair[way].includes("/pm/") ? "Polymarket" : "NBA") + " " + (way === "relay" ? "via helper" : "direct")] = e.message || String(e);
         if (e.message === "404") throw e; // the resource doesn't exist; trying the other route won't help
       }
     }
@@ -314,6 +317,8 @@
       <span class="cs ${dot(status.market)}">Market odds: ${status.market === "ok" ? ({ relay: "via helper", demo: "demo" }[route.market] || "direct") : status.market}</span>
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
+    const dk = Object.keys(diag);
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v3" : "page v3";
 
     // suggestions
     const picks = [];
