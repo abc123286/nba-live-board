@@ -223,16 +223,18 @@
     const secLeft = M.secondsLeft(v.period, v.clock, v.status);
     v.secLeft = secLeft;
     let base = S.baselines[v.id];
-    if (v.status === 1 && v.market) {
-      base = { spread: M.spreadFromProb(v.market.homeProb), source: "market pre-game" };
+    // Before tip: the fair chance is the average of the bookmaker's line and Polymarket (both with their margin removed).
+    // A side only shows value when one source prices it better than that consensus, so the board never grades a price against itself.
+    const bookP = v.book && v.book.home && v.book.away ? (1 / v.book.home) / (1 / v.book.home + 1 / v.book.away) : null;
+    const mktP = v.market ? v.market.homeProb : null;
+    if (v.status === 1 && (bookP != null || mktP != null)) {
+      const both = bookP != null && mktP != null;
+      const cons = both ? (bookP + mktP) / 2 : (bookP != null ? bookP : mktP);
+      base = { spread: M.spreadFromProb(cons), source: both ? "average of bookmaker and market" : bookP != null ? v.book.name + " line" : "market only" , both };
       S.baselines[v.id] = base;
     } else if (!base && v.status === 2 && v.market) {
       const s = M.impliedPreSpread(v.market.homeProb, lead, secLeft);
       if (s != null) { base = { spread: s, source: "estimated from live market" }; S.baselines[v.id] = base; }
-    }
-    if (!base && v.status === 1 && v.book && v.book.home && v.book.away) {
-      const ph = 1 / v.book.home, pa = 1 / v.book.away;
-      base = { spread: M.spreadFromProb(ph / (ph + pa)), source: v.book.name + " pre-game line" };
     }
     if (!base) base = { spread: 0, source: "no market yet, coin flip" };
     let spread = base.spread;
@@ -254,8 +256,11 @@
       const over = S.overrides[v.id + ":" + side];
       const bookOdds = v.book ? v.book[side] : null;
       // before tip: your odds > bookmaker > market. During the game the bookmaker line is the pre-game one, so use the live market.
-      const odds = over || (v.status === 1 ? (bookOdds || marketOdds) : marketOdds);
-      const src = over ? "yours" : odds === bookOdds && bookOdds ? (v.book.name || "bookmaker") : odds ? "market" : "";
+      // before tip: best of bookmaker and market, but only when both exist (one source alone can't disagree with itself)
+      const pre = v.status === 1;
+      const twoSources = bookOdds && marketOdds;
+      const odds = over || (pre ? (twoSources ? Math.max(bookOdds, marketOdds) : null) : marketOdds);
+      const src = over ? "yours" : !odds ? "" : odds === bookOdds ? (v.book.name || "bookmaker") : "market";
       const late = v.status === 2 && secLeft < 240; // last 4 minutes: prices jump too fast to act on
       const r = v.status === 3 ? null : M.evaluate(p, odds, S.minEdge, S.cap);
       return { side, team: v[side], p, marketOdds, bookOdds, odds, src, override: !!over, r, late };
@@ -322,7 +327,7 @@
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
     const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v4" : "page v4";
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v5" : "page v5";
 
     // suggestions
     const picks = [];

@@ -130,12 +130,12 @@ footer{font-size:13px;color:var(--muted);display:grid;gap:6px;max-width:90ch}
   <section id="games" aria-label="Games"></section>
 
   <footer>
-    <div><b>How it works.</b> Every 4 seconds the board reads ESPN's live NBA feed (score, clock, starters, fouls, injuries, bookmaker odds) and Polymarket's live prices. The model starts from the pre-game market price, then updates the win chance for the score, the time left and starters fouling out. When a side priced at 2.00 or more has a model chance high enough that chance × odds − 1 beats your minimum edge, it shows as VALUE.</div>
+    <div><b>How it works.</b> Every 4 seconds the board reads ESPN's live NBA feed (score, clock, starters, fouls, injuries, bookmaker odds) and Polymarket's live prices. Before tip-off, the fair chance is the average of the bookmaker's line and Polymarket, and a pick appears only when one of them pays more than that. Once the game starts, the model updates the chance for the score, time left and starters fouling out, and compares it with Polymarket's live price. When a side priced at 2.00 or more has a model chance high enough that chance × odds − 1 beats your minimum edge, it shows as VALUE.</div>
     <div><b>Honest limits.</b> Market odds are Polymarket's, not your bookie's; type your bookie's price in "Your odds" to use it instead. The model is simple and the market usually reacts within seconds, so most live signals are small and short-lived. Nothing here is a guarantee.</div>
   </footer>
 </div>
-<script src="model.js?v=4"></script>
-<script src="demo.js?v=4"></script>
-<script src="app.js?v=4"></script>
+<script src="model.js?v=5"></script>
+<script src="demo.js?v=5"></script>
+<script src="app.js?v=5"></script>
 </body>
 </html>
