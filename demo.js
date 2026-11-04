@@ -5,9 +5,10 @@ window.Demo = (function () {
   const roster = (names) => names.map((n, i) => ({ name: n, pos: ["G", "G", "F", "F", "C"][i % 5], starter: i < 5, on: i < 5, active: true, pts: 0, pf: 0, min: 0 }));
   let t0 = null;
   const seeds = [
-    { id: "demo1", away: ["PHI", "76ers", "7-1", 0.46], home: ["DET", "Pistons", "6-1"], startLag: 6 },
-    { id: "demo2", away: ["ATL", "Hawks", "4-4", 0.56], home: ["WAS", "Wizards", "4-3"], startLag: 6 },
-    { id: "demo3", away: ["MIN", "Timberwolves", "5-3", 0.27], home: ["HOU", "Rockets", "7-1"], startLag: 90 }
+    // away[3] = Polymarket price for the away team; book = bookmaker decimal odds [away, home]
+    { id: "demo1", away: ["PHI", "76ers", "7-1", 0.46], home: ["DET", "Pistons", "6-1"], book: [2.10, 1.77], startLag: 6 },
+    { id: "demo2", away: ["ATL", "Hawks", "4-4", 0.56], home: ["WAS", "Wizards", "4-3"], book: [1.71, 2.20], startLag: 6 },
+    { id: "demo3", away: ["MIN", "Timberwolves", "5-3", 0.26], home: ["HOU", "Rockets", "7-1"], book: [3.20, 1.37], startLag: 120 }
   ];
   function init(games) {
     t0 = Date.now();
@@ -16,9 +17,10 @@ window.Demo = (function () {
         id: s.id, status: 1, period: 0, clock: 720, tipUTC: new Date(Date.now() + s.startLag * 1000).toISOString(),
         away: { tri: s.away[0], name: s.away[1], rec: s.away[2], score: 0 }, home: { tri: s.home[0], name: s.home[1], rec: s.home[2], score: 0 },
         onCourt: { away: roster(["A. Guard", "B. Wing", "C. Forward", "D. Big", "E. Center"]), home: roster(["F. Guard", "G. Wing", "H. Forward", "I. Big", "J. Center"]) },
-        out: { away: [{ name: "K. Starter", reason: "Injury/Illness - Ankle" }], home: [] },
+        out: { away: [{ name: "K. Starter", reason: "Out · Ankle" }], home: [{ name: "L. Bench", reason: "Questionable · Knee" }] },
+        lineupLabel: "starters", book: { away: s.book[0], home: s.book[1], name: "Demo Bookmaker" },
         fouledOut: { away: [], home: [] },
-        pAwayPre: s.away[3], market: { awayPrice: s.away[3], homePrice: 1.03 - s.away[3], homeProb: (1.03 - s.away[3]) / 1.03, at: Date.now() },
+        pAwayPre: s.away[3], market: { awayPrice: s.away[3], homePrice: 1.01 - s.away[3], homeProb: (1.01 - s.away[3]) / 1.01, at: Date.now() },
         _true: M.spreadFromProb(1 - s.away[3]) + (Math.random() - 0.5) * 6
       });
     }

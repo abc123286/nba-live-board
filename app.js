@@ -327,7 +327,7 @@
       <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
     $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
     const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v5" : "page v5";
+    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v6" : "page v6";
 
     // suggestions
     const picks = [];
