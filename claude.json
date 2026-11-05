@@ -1,35 +1,133 @@
 {
-  "updated": "2026-11-05T03:18:00Z",
+  "updated": "2026-11-05T04:12:00Z",
   "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "Update 11:18 am MYT: four games are final - 76ers won 112-106 at Detroit, Hawks beat the Wizards 120-105, Celtics held off the Bucks 109-102 and the Knicks rolled the Bulls 135-105. Thunder led Cleveland 111-93 late and Houston-Minnesota was close (68-66 Rockets) at last check; live scores for several other games could not be found, so those keep earlier estimates. No picks: the Clippers at about 2.72 (+172) still need ~38% to be value and I have them near 35%. Next news: Heat-Clippers lineups right before the 11:30 am MYT tip (Giannis listed probable).",
+  "summary": "Update 12:15 pm MYT: more finals - Thunder beat Cleveland 124-116 (Shai 42), Pacers upset Memphis 107-103, and Minnesota won 117-107 at Houston per a VAVEL recap; a Nets 114-104 win over Charlotte was reported but not fully confirmed. Spurs led Dallas 68-51 at halftime (Wembanyama 29 by the break). Lakers-Kings and Heat-Clippers are live but I could not find a reliable live score or live price, and Jazz-Pelicans, Raptors-Nuggets and Blazers-Suns results were not found, so those keep earlier estimates. No picks this check. Next news: tonight's (US Thursday) slate injury reports, with lineups about 30 min before the first tip on Friday morning MYT.",
   "games": [
-    {"away": "ATL", "home": "WAS", "homeProb": 0.0, "confidence": "high", "status": "final",
-     "note": "Final: Hawks 120, Wizards 105. Nickeil Alexander-Walker scored 26.", "pick": null},
-    {"away": "PHI", "home": "DET", "homeProb": 0.0, "confidence": "high", "status": "final",
-     "note": "Final: 76ers 112, Pistons 106 - Philadelphia held on late for the road win.", "pick": null},
-    {"away": "CHA", "home": "BKN", "homeProb": 0.39, "confidence": "low", "status": "live",
-     "note": "Tipped 8:30 am MYT and is probably over, but I could not find a score this check, so the pre-game estimate is kept (Hornets were -158).", "pick": null},
-    {"away": "MIL", "home": "BOS", "homeProb": 1.0, "confidence": "high", "status": "final",
-     "note": "Final: Celtics 109, Bucks 102. Boston blew most of a 21-point halftime lead but won without Tatum.", "pick": null},
-    {"away": "CHI", "home": "NYK", "homeProb": 1.0, "confidence": "high", "status": "final",
-     "note": "Final: Knicks 135, Bulls 105.", "pick": null},
-    {"away": "UTA", "home": "NOP", "homeProb": 0.6, "confidence": "low", "status": "live",
-     "note": "Tipped 9:00 am MYT; no score found this check, so the pre-game estimate is kept. Trey Murphy III and Missi out for New Orleans.", "pick": null},
-    {"away": "IND", "home": "MEM", "homeProb": 0.67, "confidence": "low", "status": "live",
-     "note": "Tipped 9:00 am MYT; no score found this check. Haliburton and McConnell out for Indiana; Grizzlies were about -230.", "pick": null},
-    {"away": "CLE", "home": "OKC", "homeProb": 0.97, "confidence": "high", "status": "live",
-     "note": "Thunder led 111-93 in the latest headline I found (likely 4th quarter), even without Holmgren and Jalen Williams.", "pick": null},
-    {"away": "MIN", "home": "HOU", "homeProb": 0.62, "confidence": "low", "status": "live",
-     "note": "Close game: Rockets led 68-66 in the latest update I found (exact clock not confirmed). Minnesota is without Edwards and DiVincenzo.", "pick": null},
-    {"away": "TOR", "home": "DEN", "homeProb": 0.64, "confidence": "low", "status": "live",
-     "note": "Tipped 10:00 am MYT; no live score found. Toronto without Kawhi Leonard; Nuggets were -4.5.", "pick": null},
-    {"away": "POR", "home": "PHX", "homeProb": 0.4, "confidence": "low", "status": "live",
-     "note": "Tipped 10:00 am MYT; no live score found. Portland were about -150 even with Ja Morant out.", "pick": null},
-    {"away": "DAL", "home": "SAS", "homeProb": 0.84, "confidence": "medium", "status": "live",
-     "note": "Tipped 10:30 am MYT; no live score found yet. Spurs were -11.5 (about -600) with Dallas missing Lively, Christie and others.", "pick": null},
-    {"away": "LAL", "home": "SAC", "homeProb": 0.16, "confidence": "medium", "status": "live",
-     "note": "Tipped 11:00 am MYT; no live score yet. Lakers were -11.5; Sacramento without Keegan Murray and Ben Simmons.", "pick": null},
-    {"away": "MIA", "home": "LAC", "homeProb": 0.35, "confidence": "medium", "status": "pre",
-     "note": "Tips 11:30 am MYT. FanDuel Heat -205, Clippers +172 (2.72); Giannis probable (wrist), Clippers without Ingram and Beal, Isaiah Jackson questionable. Clippers need ~38% to be value - I have ~35%, so no pick.", "pick": null}
+    {
+      "away": "ATL",
+      "home": "WAS",
+      "homeProb": 0.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Hawks 120, Wizards 105. Nickeil Alexander-Walker scored 26.",
+      "pick": null
+    },
+    {
+      "away": "PHI",
+      "home": "DET",
+      "homeProb": 0.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: 76ers 112, Pistons 106 - Philadelphia held on late for the road win.",
+      "pick": null
+    },
+    {
+      "away": "CHA",
+      "home": "BKN",
+      "homeProb": 1.0,
+      "confidence": "medium",
+      "status": "final",
+      "note": "Reported final: Nets 114, Hornets 104 (first home win) - from a Nets recap headline I could not open, so treat as likely rather than certain.",
+      "pick": null
+    },
+    {
+      "away": "MIL",
+      "home": "BOS",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Celtics 109, Bucks 102. Boston blew most of a 21-point halftime lead but won without Tatum.",
+      "pick": null
+    },
+    {
+      "away": "CHI",
+      "home": "NYK",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Knicks 135, Bulls 105.",
+      "pick": null
+    },
+    {
+      "away": "UTA",
+      "home": "NOP",
+      "homeProb": 0.6,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped 9:00 am MYT; no result found yet, so the pre-game estimate is kept. Trey Murphy III and Missi out for New Orleans.",
+      "pick": null
+    },
+    {
+      "away": "IND",
+      "home": "MEM",
+      "homeProb": 0.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Pacers 107, Grizzlies 103 - an upset win for Indiana even without Haliburton and McConnell.",
+      "pick": null
+    },
+    {
+      "away": "CLE",
+      "home": "OKC",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Thunder 124, Cavaliers 116. Shai Gilgeous-Alexander scored 42.",
+      "pick": null
+    },
+    {
+      "away": "MIN",
+      "home": "HOU",
+      "homeProb": 0.0,
+      "confidence": "medium",
+      "status": "final",
+      "note": "Final (per VAVEL recap): Timberwolves 117, Rockets 107. Ayo Dosunmu led Minnesota early; Wolves won without Edwards.",
+      "pick": null
+    },
+    {
+      "away": "TOR",
+      "home": "DEN",
+      "homeProb": 0.64,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped 10:00 am MYT; no result found yet. Toronto without Kawhi Leonard; Nuggets were -4.5.",
+      "pick": null
+    },
+    {
+      "away": "POR",
+      "home": "PHX",
+      "homeProb": 0.4,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped 10:00 am MYT; no result found yet. Portland were about -150 even with Ja Morant out.",
+      "pick": null
+    },
+    {
+      "away": "DAL",
+      "home": "SAS",
+      "homeProb": 0.93,
+      "confidence": "medium",
+      "status": "live",
+      "note": "Spurs led 68-51 at halftime with Wembanyama on 29 points; no second-half score found yet.",
+      "pick": null
+    },
+    {
+      "away": "LAL",
+      "home": "SAC",
+      "homeProb": 0.17,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped 11:00 am MYT; level 28-28 at one early update, but no current score found. Lakers were -11.5 pre-game.",
+      "pick": null
+    },
+    {
+      "away": "MIA",
+      "home": "LAC",
+      "homeProb": 0.35,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped 11:30 am MYT; only an early 22-28 update found (team order unclear) and no live price, so pre-game estimate kept and no pick.",
+      "pick": null
+    }
   ]
 }
