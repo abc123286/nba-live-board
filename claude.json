@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-05T00:22:00Z",
+  "updated": "2026-11-05T00:34:52Z",
   "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "Hawks-Wizards and 76ers-Pistons tipped off around 8:00 am Malaysia time; this check could not load live scores (the board's own ESPN feed shows them). New: Washington's Alex Sarr and Bilal Coulibaly were upgraded to available, Jalen Johnson is confirmed OUT for Atlanta, and Dallas's Santi Aldama is now OUT. Washington's price shortened to about 2.20 with that news, which removes the small edge, so there is no pick right now. Next news: starting lineups ~30 min before the 8:30 am (Celtics, Knicks, Nets) and 9:00 am tips.",
+  "summary": "Update 8:36 am: Trey Murphy III is OUT for New Orleans, which moves Utah to about 40% - Utah is a small bet only at 2.60 or better. Washington-Atlanta and Philadelphia-Detroit are live; Washington remains a thin lean at 2.20+. Everything else on the slate is priced about fair.",
   "games": [
     {
       "away": "ATL",
@@ -51,11 +51,15 @@
     {
       "away": "UTA",
       "home": "NOP",
-      "homeProb": 0.65,
-      "confidence": "low",
+      "homeProb": 0.6,
+      "confidence": "medium",
       "status": "pre",
-      "note": "Pelicans about -205. Trey Murphy III now questionable (knees); Utah without Jaren Jackson Jr. and Nurkic, Mo Bamba questionable.",
-      "pick": null
+      "note": "Trey Murphy III ruled OUT (knees) after being listed probable, so New Orleans loses its top projected scorer; Yves Missi also out. Pre-news lines had Utah +180 to +200; expect that to shorten.",
+      "pick": {
+        "team": "UTA",
+        "minOdds": 2.6,
+        "reason": "Murphy out moves Utah to about 40%; worth it only at 2.60+."
+      }
     },
     {
       "away": "IND",
