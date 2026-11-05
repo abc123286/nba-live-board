@@ -1,21 +1,133 @@
 {
-  "updated": "2026-11-04T23:20:00Z",
+  "updated": "2026-11-05T00:22:00Z",
   "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "14 games, none started yet; first tip-offs at 8:00 am Malaysia time (Hawks-Wizards, 76ers-Pistons). New since last check: Jalen Johnson (ATL) has been listed OUT, Josh Hart (NYK), Nic Claxton (CHI), Clint Capela (HOU) and Terrence Shannon Jr. (MIN) are out, and Trey Murphy III (NOP) and Bilal Coulibaly (WAS) are now questionable. Alex Sarr (WAS) is still questionable. No value bet at 2.00+ right now: Washington around 2.30 is close but only becomes a bet if Sarr is confirmed playing - check the starting lineups about 30 minutes before tip.",
+  "summary": "Hawks-Wizards and 76ers-Pistons tipped off around 8:00 am Malaysia time; this check could not load live scores (the board's own ESPN feed shows them). New: Washington's Alex Sarr and Bilal Coulibaly were upgraded to available, Jalen Johnson is confirmed OUT for Atlanta, and Dallas's Santi Aldama is now OUT. Washington's price shortened to about 2.20 with that news, which removes the small edge, so there is no pick right now. Next news: starting lineups ~30 min before the 8:30 am (Celtics, Knicks, Nets) and 9:00 am tips.",
   "games": [
-    {"away": "ATL", "home": "WAS", "homeProb": 0.45, "confidence": "low", "status": "pre", "note": "Jalen Johnson (ankle) listed OUT for Atlanta. Washington's Alex Sarr (knee), Bilal Coulibaly (illness) and Anthony Gill (back) are questionable. Books show Hawks about -150 (Washington about 2.30).", "pick": null},
-    {"away": "PHI", "home": "DET", "homeProb": 0.55, "confidence": "medium", "status": "pre", "note": "Pistons -136 to -142. Detroit still without Jalen Duren and Isaiah Joe; Embiid expected to start for Philadelphia. Price on the 76ers is about fair.", "pick": null},
-    {"away": "CHA", "home": "BKN", "homeProb": 0.39, "confidence": "medium", "status": "pre", "note": "Hornets -166 to -170. Coby White probable; Brooklyn without Egor Demin.", "pick": null},
-    {"away": "MIL", "home": "BOS", "homeProb": 0.81, "confidence": "medium", "status": "pre", "note": "Jayson Tatum OUT (rest); Payton Pritchard and Milwaukee's Kam Jones questionable. Celtics about -500.", "pick": null},
-    {"away": "CHI", "home": "NYK", "homeProb": 0.85, "confidence": "medium", "status": "pre", "note": "Josh Hart OUT (ankle) for New York; Nic Claxton OUT (hamstring) for Chicago. Knicks about -600.", "pick": null},
-    {"away": "UTA", "home": "NOP", "homeProb": 0.65, "confidence": "low", "status": "pre", "note": "Pelicans about -205. Trey Murphy III now questionable (knees); Utah without Jaren Jackson Jr. and Nurkic, Mo Bamba questionable.", "pick": null},
-    {"away": "IND", "home": "MEM", "homeProb": 0.68, "confidence": "medium", "status": "pre", "note": "Grizzlies about -230. Indiana without Haliburton; Zubac, Oubre and Toppin questionable.", "pick": null},
-    {"away": "CLE", "home": "OKC", "homeProb": 0.60, "confidence": "medium", "status": "pre", "note": "Thunder -161 to -165. OKC without Holmgren and Jalen Williams; Cleveland missing three forwards. No edge on Cleveland at its price.", "pick": null},
-    {"away": "MIN", "home": "HOU", "homeProb": 0.72, "confidence": "low", "status": "pre", "note": "Rockets about -285. Minnesota without Anthony Edwards, DiVincenzo and now Terrence Shannon Jr.; Houston without Capela and Adams.", "pick": null},
-    {"away": "TOR", "home": "DEN", "homeProb": 0.64, "confidence": "low", "status": "pre", "note": "Nuggets about -190. Toronto without Kawhi Leonard; Jakob Poeltl questionable.", "pick": null},
-    {"away": "POR", "home": "PHX", "homeProb": 0.40, "confidence": "low", "status": "pre", "note": "Portland about -150 even with Ja Morant out. Suns' Rasheer Fleming out (ankle), Jordan Goodwin questionable.", "pick": null},
-    {"away": "DAL", "home": "SAS", "homeProb": 0.83, "confidence": "medium", "status": "pre", "note": "Spurs about -600. Dallas without Lively; Santi Aldama doubtful.", "pick": null},
-    {"away": "LAL", "home": "SAC", "homeProb": 0.15, "confidence": "medium", "status": "pre", "note": "Lakers about -600. Sacramento without Keegan Murray and now Daeqwon Plowden (illness).", "pick": null},
-    {"away": "MIA", "home": "LAC", "homeProb": 0.33, "confidence": "medium", "status": "pre", "note": "Heat about -215 with Giannis Antetokounmpo probable. Clippers without Ingram and Beal; Isaiah Jackson questionable.", "pick": null}
+    {
+      "away": "ATL",
+      "home": "WAS",
+      "homeProb": 0.46,
+      "confidence": "low",
+      "status": "live",
+      "note": "Tipped ~8:00 am MYT (live score not retrieved this check). Sarr and Coulibaly cleared to play, Jalen Johnson OUT for Atlanta. Pre-game DraftKings: Hawks -142, Wizards +120 (2.20) \u2014 about fair after the news.",
+      "pick": null
+    },
+    {
+      "away": "PHI",
+      "home": "DET",
+      "homeProb": 0.55,
+      "confidence": "medium",
+      "status": "live",
+      "note": "Tipped ~8:00 am MYT (live score not retrieved this check). Pre-game DraftKings: Pistons -130, 76ers +110 (2.10); Detroit without Duren and Joe. No edge on Philadelphia at 2.10.",
+      "pick": null
+    },
+    {
+      "away": "CHA",
+      "home": "BKN",
+      "homeProb": 0.39,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Hornets -166 to -170. Coby White probable; Brooklyn without Egor Demin.",
+      "pick": null
+    },
+    {
+      "away": "MIL",
+      "home": "BOS",
+      "homeProb": 0.81,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Jayson Tatum OUT (rest); Payton Pritchard and Milwaukee's Kam Jones questionable. Celtics about -500.",
+      "pick": null
+    },
+    {
+      "away": "CHI",
+      "home": "NYK",
+      "homeProb": 0.85,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Josh Hart OUT (ankle) for New York; Nic Claxton OUT (hamstring) for Chicago. Knicks about -600.",
+      "pick": null
+    },
+    {
+      "away": "UTA",
+      "home": "NOP",
+      "homeProb": 0.65,
+      "confidence": "low",
+      "status": "pre",
+      "note": "Pelicans about -205. Trey Murphy III now questionable (knees); Utah without Jaren Jackson Jr. and Nurkic, Mo Bamba questionable.",
+      "pick": null
+    },
+    {
+      "away": "IND",
+      "home": "MEM",
+      "homeProb": 0.68,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Grizzlies about -230. Indiana without Haliburton; Zubac, Oubre and Toppin questionable.",
+      "pick": null
+    },
+    {
+      "away": "CLE",
+      "home": "OKC",
+      "homeProb": 0.6,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Thunder -161 to -165. OKC without Holmgren and Jalen Williams; Cleveland missing three forwards. No edge on Cleveland at its price.",
+      "pick": null
+    },
+    {
+      "away": "MIN",
+      "home": "HOU",
+      "homeProb": 0.72,
+      "confidence": "low",
+      "status": "pre",
+      "note": "Rockets about -285. Minnesota without Anthony Edwards, DiVincenzo and now Terrence Shannon Jr.; Houston without Capela and Adams.",
+      "pick": null
+    },
+    {
+      "away": "TOR",
+      "home": "DEN",
+      "homeProb": 0.64,
+      "confidence": "low",
+      "status": "pre",
+      "note": "Nuggets about -190. Toronto without Kawhi Leonard; Jakob Poeltl questionable.",
+      "pick": null
+    },
+    {
+      "away": "POR",
+      "home": "PHX",
+      "homeProb": 0.4,
+      "confidence": "low",
+      "status": "pre",
+      "note": "Portland about -150 even with Ja Morant out. Suns' Rasheer Fleming out (ankle), Jordan Goodwin questionable.",
+      "pick": null
+    },
+    {
+      "away": "DAL",
+      "home": "SAS",
+      "homeProb": 0.84,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Spurs about -600. Dallas without Lively, Christie and now Santi Aldama (ruled out).",
+      "pick": null
+    },
+    {
+      "away": "LAL",
+      "home": "SAC",
+      "homeProb": 0.15,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Lakers about -600. Sacramento without Keegan Murray and now Daeqwon Plowden (illness).",
+      "pick": null
+    },
+    {
+      "away": "MIA",
+      "home": "LAC",
+      "homeProb": 0.33,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Heat about -215 with Giannis Antetokounmpo probable. Clippers without Ingram and Beal; Isaiah Jackson questionable.",
+      "pick": null
+    }
   ]
 }
