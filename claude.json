@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-05T00:34:52Z",
+  "updated": "2026-11-05T01:20:00Z",
   "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "Update 8:36 am: Trey Murphy III is OUT for New Orleans, which moves Utah to about 40% - Utah is a small bet only at 2.60 or better. Washington-Atlanta and Philadelphia-Detroit are live; Washington remains a thin lean at 2.20+. Everything else on the slate is priced about fair.",
+  "summary": "Update 9:20 am MYT: Philadelphia leads Detroit 48-31 late in the 2nd quarter (ESPN gives the 76ers about 92%), and Boston started fast without Tatum. Utah-New Orleans has now tipped off, and I found no live price, so the earlier Utah idea is withdrawn - no picks right now. Later games (Denver, Phoenix, San Antonio, Sacramento, Clippers, 10:00-11:30 am MYT) have no new injury news yet; watch for lineups about 30 minutes before each tip.",
   "games": [
     {
       "away": "ATL",
@@ -9,16 +9,16 @@
       "homeProb": 0.46,
       "confidence": "low",
       "status": "live",
-      "note": "Tipped ~8:00 am MYT (live score not retrieved this check). Sarr and Coulibaly cleared to play, Jalen Johnson OUT for Atlanta. Pre-game DraftKings: Hawks -142, Wizards +120 (2.20) \u2014 about fair after the news.",
+      "note": "Live since ~8:00 am MYT; I could not find a live score this check, so the pre-game estimate is kept. Jalen Johnson OUT for Atlanta; pre-game Wizards +120 (2.20).",
       "pick": null
     },
     {
       "away": "PHI",
       "home": "DET",
-      "homeProb": 0.55,
-      "confidence": "medium",
+      "homeProb": 0.09,
+      "confidence": "high",
       "status": "live",
-      "note": "Tipped ~8:00 am MYT (live score not retrieved this check). Pre-game DraftKings: Pistons -130, 76ers +110 (2.10); Detroit without Duren and Joe. No edge on Philadelphia at 2.10.",
+      "note": "76ers lead 48-31 with 5:17 left in the 2nd quarter (ESPN). Live DraftKings: Pistons +310 (4.10) - still no value given a 17-point deficit; Detroit is without Duren and Joe.",
       "pick": null
     },
     {
@@ -26,26 +26,26 @@
       "home": "BKN",
       "homeProb": 0.39,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Hornets -166 to -170. Coby White probable; Brooklyn without Egor Demin.",
+      "status": "live",
+      "note": "Live since 8:30 am MYT, no live score found. Pre-game Hornets -158, Nets +133; Brooklyn without Demin.",
       "pick": null
     },
     {
       "away": "MIL",
       "home": "BOS",
-      "homeProb": 0.81,
+      "homeProb": 0.84,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Jayson Tatum OUT (rest); Payton Pritchard and Milwaukee's Kam Jones questionable. Celtics about -500.",
+      "status": "live",
+      "note": "Celtics led 19-8 midway through the 1st quarter without Tatum (rest) and Devin Carter; Pritchard is playing. Paul George back in the lineup.",
       "pick": null
     },
     {
       "away": "CHI",
       "home": "NYK",
-      "homeProb": 0.85,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Josh Hart OUT (ankle) for New York; Nic Claxton OUT (hamstring) for Chicago. Knicks about -600.",
+      "homeProb": 0.9,
+      "confidence": "low",
+      "status": "live",
+      "note": "Live since 8:30 am MYT; a live blog headline showed the Knicks well ahead (43-21), not confirmed. Hart OUT for NY, Claxton OUT for Chicago.",
       "pick": null
     },
     {
@@ -53,21 +53,17 @@
       "home": "NOP",
       "homeProb": 0.6,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Trey Murphy III ruled OUT (knees) after being listed probable, so New Orleans loses its top projected scorer; Yves Missi also out. Pre-news lines had Utah +180 to +200; expect that to shorten.",
-      "pick": {
-        "team": "UTA",
-        "minOdds": 2.6,
-        "reason": "Murphy out moves Utah to about 40%; worth it only at 2.60+."
-      }
+      "status": "live",
+      "note": "Tipped ~9:00 am MYT with Trey Murphy III OUT and Missi out for New Orleans; Utah without Jaren Jackson Jr. and Nurkic. No live price found, so no pick.",
+      "pick": null
     },
     {
       "away": "IND",
       "home": "MEM",
-      "homeProb": 0.68,
+      "homeProb": 0.67,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Grizzlies about -230. Indiana without Haliburton; Zubac, Oubre and Toppin questionable.",
+      "status": "live",
+      "note": "Tipped ~9:00 am MYT. Zubac is starting for Indiana (was questionable); Haliburton and McConnell out. Pre-game Grizzlies about -230.",
       "pick": null
     },
     {
@@ -75,8 +71,8 @@
       "home": "OKC",
       "homeProb": 0.6,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Thunder -161 to -165. OKC without Holmgren and Jalen Williams; Cleveland missing three forwards. No edge on Cleveland at its price.",
+      "status": "live",
+      "note": "Tipped ~9:00 am MYT. OKC without Holmgren, Jalen Williams and Cason Wallace; Cleveland missing Tyson, Watson and others. Pre-game Thunder about -165.",
       "pick": null
     },
     {
@@ -85,7 +81,7 @@
       "homeProb": 0.72,
       "confidence": "low",
       "status": "pre",
-      "note": "Rockets about -285. Minnesota without Anthony Edwards, DiVincenzo and now Terrence Shannon Jr.; Houston without Capela and Adams.",
+      "note": "Tips 9:30 am MYT. Rockets about -285. Minnesota without Edwards, DiVincenzo and Terrence Shannon Jr.; Houston without Capela and Adams.",
       "pick": null
     },
     {
