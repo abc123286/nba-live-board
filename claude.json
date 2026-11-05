@@ -1,132 +1,24 @@
 {
-  "updated": "2026-11-05T05:18:00Z",
-  "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "Update 1:18 pm MYT: Denver beat Toronto 128-109 (Jokic 32-point triple-double), Portland won 132-119 at Phoenix (Booker 33 in the loss), and San Antonio held on 105-103 vs Dallas after leading by 17 at halftime. New Orleans reportedly beat Utah in overtime (from a KSL headline I could not open). Lakers-Kings (one update 89-76) and Heat-Clippers (one update 85-74) are late in the game, but I could not confirm which side leads or find live prices, so no picks. Next slate is small: Magic at Suns (10:00 am MYT Fri) and Heat at Warriors (11:00 am MYT Fri); injury reports and lineups come out before those.",
+  "updated": "2026-11-05T13:20:00Z",
+  "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games",
+  "summary": "Last night's late games are done: Lakers beat the Kings 116-103 (Luka Doncic 40) and the Heat won 117-116 in overtime at the Clippers on a late Klay Thompson three. Tonight is just two games, both with teams on back-to-backs: Magic at Suns is close to a coin flip (Orlando without Banchero and Suggs), and the Warriors are 4.5 to 7.5-point favourites over a Heat team that played overtime last night, with Golden State missing Butler, Porzingis, Moody and Santos. No pick right now: no side at 2.00+ looks underpriced. Official injury reports update through the day and lineups come about 30 minutes before tip (Suns game 10:00 am MYT Fri, Warriors game 11:00 am MYT Fri).",
   "games": [
     {
-      "away": "ATL",
-      "home": "WAS",
-      "homeProb": 0.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Hawks 120, Wizards 105. Nickeil Alexander-Walker scored 26.",
-      "pick": null
-    },
-    {
-      "away": "PHI",
-      "home": "DET",
-      "homeProb": 0.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: 76ers 112, Pistons 106 - Philadelphia held on late for the road win.",
-      "pick": null
-    },
-    {
-      "away": "CHA",
-      "home": "BKN",
-      "homeProb": 1.0,
-      "confidence": "medium",
-      "status": "final",
-      "note": "Reported final: Nets 114, Hornets 104 (first home win) - from a Nets recap headline I could not open, so treat as likely rather than certain.",
-      "pick": null
-    },
-    {
-      "away": "MIL",
-      "home": "BOS",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Celtics 109, Bucks 102. Boston blew most of a 21-point halftime lead but won without Tatum.",
-      "pick": null
-    },
-    {
-      "away": "CHI",
-      "home": "NYK",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Knicks 135, Bulls 105.",
-      "pick": null
-    },
-    {
-      "away": "UTA",
-      "home": "NOP",
-      "homeProb": 1.0,
-      "confidence": "medium",
-      "status": "final",
-      "note": "Reported final: Pelicans won in overtime, Utah's sixth straight loss (KSL headline; I could not open the article for the score).",
-      "pick": null
-    },
-    {
-      "away": "IND",
-      "home": "MEM",
-      "homeProb": 0.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Pacers 107, Grizzlies 103 - an upset win for Indiana even without Haliburton and McConnell.",
-      "pick": null
-    },
-    {
-      "away": "CLE",
-      "home": "OKC",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Thunder 124, Cavaliers 116. Shai Gilgeous-Alexander scored 42.",
-      "pick": null
-    },
-    {
-      "away": "MIN",
-      "home": "HOU",
-      "homeProb": 0.0,
-      "confidence": "medium",
-      "status": "final",
-      "note": "Final (per VAVEL recap): Timberwolves 117, Rockets 107. Ayo Dosunmu led Minnesota early; Wolves won without Edwards.",
-      "pick": null
-    },
-    {
-      "away": "TOR",
-      "home": "DEN",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Nuggets 128, Raptors 109. Nikola Jokic had 32 points in a triple-double as Denver pulled away in the second half.",
-      "pick": null
-    },
-    {
-      "away": "POR",
+      "away": "ORL",
       "home": "PHX",
-      "homeProb": 0.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Trail Blazers 132, Suns 119. Devin Booker scored 33 for Phoenix (now 1-5); Portland won without Ja Morant.",
-      "pick": null
-    },
-    {
-      "away": "DAL",
-      "home": "SAS",
-      "homeProb": 1.0,
+      "homeProb": 0.54,
       "confidence": "medium",
-      "status": "final",
-      "note": "Final (per VAVEL): Spurs 105, Mavericks 103. Dallas came back from 68-51 down at halftime but fell just short; Wembanyama had 29 by the break.",
-      "pick": null
-    },
-    {
-      "away": "LAL",
-      "home": "SAC",
-      "homeProb": 0.15,
-      "confidence": "low",
-      "status": "live",
-      "note": "Late in the game; one VAVEL update read 89-76 (most likely Lakers ahead, but not confirmed). Lakers were about -11.5 pre-game; no live price found.",
+      "status": "pre",
+      "note": "Near pick'em (Suns about -110, Polymarket about 53% Suns). Orlando list Banchero (ankle), Suggs (knee), Isaac, Penda and Nelson out; Phoenix have Mark Williams out and Goodwin/Fleming day-to-day. Both teams on the second night of a back-to-back.",
       "pick": null
     },
     {
       "away": "MIA",
-      "home": "LAC",
-      "homeProb": 0.3,
-      "confidence": "low",
-      "status": "live",
-      "note": "In progress; one VAVEL update read 85-74 but I could not confirm which team leads. Pre-game Miami were about -325 (Clippers +240); no live price found, so no pick.",
+      "home": "GSW",
+      "homeProb": 0.64,
+      "confidence": "medium",
+      "status": "pre",
+      "note": "Warriors favoured by 4.5-7.5 points (Polymarket had Heat about 39%). Golden State rule out Butler, Porzingis, Moody and Santos; Miami played overtime in LA last night and Giannis is playing through a wrist sprain.",
       "pick": null
     }
   ]
