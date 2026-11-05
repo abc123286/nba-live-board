@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-05T04:12:00Z",
+  "updated": "2026-11-05T05:18:00Z",
   "slate": "Thu 5 Nov 2026 (Malaysia time)",
-  "summary": "Update 12:15 pm MYT: more finals - Thunder beat Cleveland 124-116 (Shai 42), Pacers upset Memphis 107-103, and Minnesota won 117-107 at Houston per a VAVEL recap; a Nets 114-104 win over Charlotte was reported but not fully confirmed. Spurs led Dallas 68-51 at halftime (Wembanyama 29 by the break). Lakers-Kings and Heat-Clippers are live but I could not find a reliable live score or live price, and Jazz-Pelicans, Raptors-Nuggets and Blazers-Suns results were not found, so those keep earlier estimates. No picks this check. Next news: tonight's (US Thursday) slate injury reports, with lineups about 30 min before the first tip on Friday morning MYT.",
+  "summary": "Update 1:18 pm MYT: Denver beat Toronto 128-109 (Jokic 32-point triple-double), Portland won 132-119 at Phoenix (Booker 33 in the loss), and San Antonio held on 105-103 vs Dallas after leading by 17 at halftime. New Orleans reportedly beat Utah in overtime (from a KSL headline I could not open). Lakers-Kings (one update 89-76) and Heat-Clippers (one update 85-74) are late in the game, but I could not confirm which side leads or find live prices, so no picks. Next slate is small: Magic at Suns (10:00 am MYT Fri) and Heat at Warriors (11:00 am MYT Fri); injury reports and lineups come out before those.",
   "games": [
     {
       "away": "ATL",
@@ -51,10 +51,10 @@
     {
       "away": "UTA",
       "home": "NOP",
-      "homeProb": 0.6,
-      "confidence": "low",
-      "status": "live",
-      "note": "Tipped 9:00 am MYT; no result found yet, so the pre-game estimate is kept. Trey Murphy III and Missi out for New Orleans.",
+      "homeProb": 1.0,
+      "confidence": "medium",
+      "status": "final",
+      "note": "Reported final: Pelicans won in overtime, Utah's sixth straight loss (KSL headline; I could not open the article for the score).",
       "pick": null
     },
     {
@@ -87,46 +87,46 @@
     {
       "away": "TOR",
       "home": "DEN",
-      "homeProb": 0.64,
-      "confidence": "low",
-      "status": "live",
-      "note": "Tipped 10:00 am MYT; no result found yet. Toronto without Kawhi Leonard; Nuggets were -4.5.",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Nuggets 128, Raptors 109. Nikola Jokic had 32 points in a triple-double as Denver pulled away in the second half.",
       "pick": null
     },
     {
       "away": "POR",
       "home": "PHX",
-      "homeProb": 0.4,
-      "confidence": "low",
-      "status": "live",
-      "note": "Tipped 10:00 am MYT; no result found yet. Portland were about -150 even with Ja Morant out.",
+      "homeProb": 0.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Trail Blazers 132, Suns 119. Devin Booker scored 33 for Phoenix (now 1-5); Portland won without Ja Morant.",
       "pick": null
     },
     {
       "away": "DAL",
       "home": "SAS",
-      "homeProb": 0.93,
+      "homeProb": 1.0,
       "confidence": "medium",
-      "status": "live",
-      "note": "Spurs led 68-51 at halftime with Wembanyama on 29 points; no second-half score found yet.",
+      "status": "final",
+      "note": "Final (per VAVEL): Spurs 105, Mavericks 103. Dallas came back from 68-51 down at halftime but fell just short; Wembanyama had 29 by the break.",
       "pick": null
     },
     {
       "away": "LAL",
       "home": "SAC",
-      "homeProb": 0.17,
+      "homeProb": 0.15,
       "confidence": "low",
       "status": "live",
-      "note": "Tipped 11:00 am MYT; level 28-28 at one early update, but no current score found. Lakers were -11.5 pre-game.",
+      "note": "Late in the game; one VAVEL update read 89-76 (most likely Lakers ahead, but not confirmed). Lakers were about -11.5 pre-game; no live price found.",
       "pick": null
     },
     {
       "away": "MIA",
       "home": "LAC",
-      "homeProb": 0.35,
+      "homeProb": 0.3,
       "confidence": "low",
       "status": "live",
-      "note": "Tipped 11:30 am MYT; only an early 22-28 update found (team order unclear) and no live price, so pre-game estimate kept and no pick.",
+      "note": "In progress; one VAVEL update read 85-74 but I could not confirm which team leads. Pre-game Miami were about -325 (Clippers +240); no live price found, so no pick.",
       "pick": null
     }
   ]
