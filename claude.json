@@ -1,24 +1,24 @@
 {
-  "updated": "2026-11-05T13:20:00Z",
+  "updated": "2026-11-05T22:20:00Z",
   "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games",
-  "summary": "Last night's late games are done: Lakers beat the Kings 116-103 (Luka Doncic 40) and the Heat won 117-116 in overtime at the Clippers on a late Klay Thompson three. Tonight is just two games, both with teams on back-to-backs: Magic at Suns is close to a coin flip (Orlando without Banchero and Suggs), and the Warriors are 4.5 to 7.5-point favourites over a Heat team that played overtime last night, with Golden State missing Butler, Porzingis, Moody and Santos. No pick right now: no side at 2.00+ looks underpriced. Official injury reports update through the day and lineups come about 30 minutes before tip (Suns game 10:00 am MYT Fri, Warriors game 11:00 am MYT Fri).",
+  "summary": "Two games tonight, both with teams on back-to-backs. New since last check: Giannis Antetokounmpo is listed as available for Miami despite his sprained wrist, and the market has moved further toward Golden State (about -285 / +230, roughly 71% Warriors). Magic at Suns is still a near coin flip (Suns -110, Magic -108) with Orlando missing Banchero and Suggs. No pick right now: no side at 2.00+ looks underpriced. Lineups come about 30 minutes before tip (Suns game 10:00 am MYT, Warriors game 11:00 am MYT).",
   "games": [
     {
       "away": "ORL",
       "home": "PHX",
-      "homeProb": 0.54,
+      "homeProb": 0.53,
       "confidence": "medium",
       "status": "pre",
-      "note": "Near pick'em (Suns about -110, Polymarket about 53% Suns). Orlando list Banchero (ankle), Suggs (knee), Isaac, Penda and Nelson out; Phoenix have Mark Williams out and Goodwin/Fleming day-to-day. Both teams on the second night of a back-to-back.",
+      "note": "Near pick'em (Suns -1.5, moneyline Suns -110 / Magic -108). Orlando rule out Banchero (ankle), Suggs (knee), Isaac, Penda and Nelson; Phoenix have Mark Williams out and Goodwin/Fleming day-to-day. Both teams on the second night of a back-to-back.",
       "pick": null
     },
     {
       "away": "MIA",
       "home": "GSW",
-      "homeProb": 0.64,
+      "homeProb": 0.69,
       "confidence": "medium",
       "status": "pre",
-      "note": "Warriors favoured by 4.5-7.5 points (Polymarket had Heat about 39%). Golden State rule out Butler, Porzingis, Moody and Santos; Miami played overtime in LA last night and Giannis is playing through a wrist sprain.",
+      "note": "Warriors -7.5 (moneyline about -285, Heat +230; Polymarket about 71% Warriors). Giannis is available through his wrist sprain after 40+ minutes in last night's overtime win; Golden State still without Butler, Porzingis, Moody and Santos.",
       "pick": null
     }
   ]
