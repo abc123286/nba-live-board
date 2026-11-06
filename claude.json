@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-06T05:15:00Z",
-  "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games, plus US Fri 6 Nov games (Sat 7 Nov morning MYT)",
-  "summary": "Suns beat the Magic 117-104 (Booker 30). In Heat-Warriors, Golden State turned a first-half deficit around and led 93-78 in the second half on the latest update I found, but I couldn't confirm the exact clock or a live price, so no live pick. No new injury news for Friday's games since the last check: Scottie Barnes (TOR, groin/adductor), Anthony Davis (WAS, ankle), Jalen Johnson (ATL) and Jarrett Allen (CLE) are still questionable. No pick right now; final statuses and lineups come about 30 min before each tip from 8:00 am MYT Saturday.",
+  "updated": "2026-11-06T13:13:09Z",
+  "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games (final), plus US Fri 6 Nov games (Sat 7 Nov morning MYT)",
+  "summary": "Both Thursday games are final: Warriors beat the Heat 120-100 (Curry 29, sixth straight win) and the Suns beat the Magic 117-104. Friday's injury report is unchanged since the last check: Scottie Barnes (TOR), Anthony Davis (WAS), Jalen Johnson (ATL) and Jarrett Allen (CLE) are still questionable, and Minnesota is still without Anthony Edwards. I couldn't load fresh odds this run, so estimates are kept from the last check. No pick right now; next news is the updated injury report during the US day and lineups about 30 min before the first tip at 8:00 am MYT Saturday.",
   "games": [
     {
       "away": "ORL",
@@ -15,10 +15,10 @@
     {
       "away": "MIA",
       "home": "GSW",
-      "homeProb": 0.9,
-      "confidence": "low",
-      "status": "live",
-      "note": "Live: Warriors led 93-78 in the second half on the latest update I found (Miami led 49-45 in the 2nd quarter). Exact clock not confirmed; no live price found.",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Warriors 120, Heat 100. Stephen Curry scored 29 as Golden State won a sixth straight game.",
       "pick": null
     },
     {
@@ -81,7 +81,7 @@
       "homeProb": 0.37,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 9:00 am MYT Sat. Timberwolves -188 / Pelicans +164. Terrence Shannon Jr. questionable (MIN); Trey Murphy III probable (NOP).",
+      "note": "Tips 9:00 am MYT Sat. Timberwolves -188 / Pelicans +164 (last price found). Anthony Edwards (knee) is out for Minnesota; Terrence Shannon Jr. questionable; Trey Murphy III probable (NOP).",
       "pick": null
     },
     {
@@ -90,7 +90,7 @@
       "homeProb": 0.56,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 11:00 am MYT Sat. Lakers about -130 / Blazers +110. Sandro Mamukelashvili (illness) questionable for LA.",
+      "note": "Tips 11:00 am MYT Sat. Lakers about -130 / Blazers +110 (last price found). Ja Morant (hamstring) out for Portland; Sandro Mamukelashvili (illness) questionable for LA.",
       "pick": null
     },
     {
