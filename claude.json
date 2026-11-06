@@ -1,15 +1,15 @@
 {
-  "updated": "2026-11-06T00:15:00Z",
+  "updated": "2026-11-06T01:12:00Z",
   "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games",
-  "summary": "Small update since the 7:15 am check: Al Horford is expected back for Golden State (not on the final injury report), a slight boost for the Warriors; Giannis is still listed available for Miami. Magic at Suns remains a near coin flip (Suns -110 to -112, Magic -104 to -108) with Orlando missing Banchero and Suggs. No pick right now: no side at 2.00+ looks underpriced. Starting lineups come about 30 minutes before tip (Suns game 10:00 am MYT, Warriors game 11:00 am MYT).",
+  "summary": "Little new since the 8:15 am check. ESPN now lists Phoenix's Jordan Goodwin and Rasheer Fleming as out (they were day-to-day), and the line has moved slightly toward the Suns (DraftKings Suns -119 / Magic +100). Heat-Warriors is unchanged: Giannis available, Horford expected back, Warriors about -285 / Heat +230. No pick right now: neither underdog price looks bigger than its real chance. Starting lineups about 30 minutes before tip (Suns game 10:00 am MYT, Warriors game 11:00 am MYT).",
   "games": [
     {
       "away": "ORL",
       "home": "PHX",
-      "homeProb": 0.53,
+      "homeProb": 0.52,
       "confidence": "medium",
       "status": "pre",
-      "note": "Near pick'em (Suns -1.5, moneyline about Suns -110 / Magic -108). Orlando rule out Banchero (ankle), Suggs (knee), Isaac, Penda and Nelson; Phoenix have Mark Williams out and Goodwin/Fleming day-to-day. Both teams on the second night of a back-to-back.",
+      "note": "Near pick'em: DraftKings Suns -119, Magic +100 (2.00), spread Suns -1.5. Orlando are without Banchero, Suggs, Isaac, Penda and Nelson; Phoenix are without Mark Williams, and ESPN now lists Goodwin and Fleming out too.",
       "pick": null
     },
     {
@@ -18,7 +18,7 @@
       "homeProb": 0.70,
       "confidence": "medium",
       "status": "pre",
-      "note": "Warriors -7.5 (moneyline about -285, Heat +230). Giannis (wrist sprain) is the only Heat player listed and is available; Golden State are without Butler, Porzingis, Moody and Santos, but Al Horford is expected back after missing Monday.",
+      "note": "Warriors -7.5 (moneyline about -285, Heat +230). Giannis (wrist sprain) is listed available for Miami; Golden State are without Butler, Porzingis, Moody and Santos, but Al Horford is off the injury report and expected back.",
       "pick": null
     }
   ]
