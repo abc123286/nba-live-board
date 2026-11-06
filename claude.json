@@ -1,24 +1,24 @@
 {
-  "updated": "2026-11-06T04:12:00Z",
+  "updated": "2026-11-06T05:15:00Z",
   "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games, plus US Fri 6 Nov games (Sat 7 Nov morning MYT)",
-  "summary": "Both Thursday games are live (Magic-Suns, Heat-Warriors), but I still couldn't get a reliable live score or live price, so those estimates stay pre-game numbers; one blog had Miami up 7 late in the 1st quarter, with GSW's Lendeborg in foul trouble. New on Friday's report: Scottie Barnes (TOR, adductor) and Anthony Davis (WAS, ankle) are questionable, alongside Jalen Johnson, Jarrett Allen, Peyton Watson and Payton Pritchard. Latest moneylines moved further toward the favourites (Celtics -344, Raptors -300, Mavs -300). No pick right now; lineups come about 30 min before each tip from 8:00 am MYT Saturday.",
+  "summary": "Suns beat the Magic 117-104 (Booker 30). In Heat-Warriors, Golden State turned a first-half deficit around and led 93-78 in the second half on the latest update I found, but I couldn't confirm the exact clock or a live price, so no live pick. No new injury news for Friday's games since the last check: Scottie Barnes (TOR, groin/adductor), Anthony Davis (WAS, ankle), Jalen Johnson (ATL) and Jarrett Allen (CLE) are still questionable. No pick right now; final statuses and lineups come about 30 min before each tip from 8:00 am MYT Saturday.",
   "games": [
     {
       "away": "ORL",
       "home": "PHX",
-      "homeProb": 0.52,
-      "confidence": "low",
-      "status": "live",
-      "note": "Live; I couldn't confirm the score. Pre-game: Suns about -121 / Magic +102. Orlando without Banchero, Suggs, Isaac and Penda; Phoenix without Mark Williams, Goodwin and Fleming.",
+      "homeProb": 1.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Suns 117, Magic 104. Devin Booker scored 30 as Phoenix ended a 4-game losing streak.",
       "pick": null
     },
     {
       "away": "MIA",
       "home": "GSW",
-      "homeProb": 0.66,
+      "homeProb": 0.9,
       "confidence": "low",
       "status": "live",
-      "note": "Live; a live blog had Miami up 7 late in the 1st with Lendeborg in foul trouble, but I couldn't confirm a current score or live price. Pre-game Warriors about -5.",
+      "note": "Live: Warriors led 93-78 in the second half on the latest update I found (Miami led 49-45 in the 2nd quarter). Exact clock not confirmed; no live price found.",
       "pick": null
     },
     {
