@@ -1,106 +1,34 @@
 {
-  "updated": "2026-11-06T13:13:09Z",
-  "slate": "Fri 6 Nov 2026 (Malaysia time) - US Thu 5 Nov games (final), plus US Fri 6 Nov games (Sat 7 Nov morning MYT)",
-  "summary": "Both Thursday games are final: Warriors beat the Heat 120-100 (Curry 29, sixth straight win) and the Suns beat the Magic 117-104. Friday's injury report is unchanged since the last check: Scottie Barnes (TOR), Anthony Davis (WAS), Jalen Johnson (ATL) and Jarrett Allen (CLE) are still questionable, and Minnesota is still without Anthony Edwards. I couldn't load fresh odds this run, so estimates are kept from the last check. No pick right now; next news is the updated injury report during the US day and lineups about 30 min before the first tip at 8:00 am MYT Saturday.",
+  "updated": "2026-11-06T22:12:57Z",
+  "slate": "Sat 7 Nov 2026 (Malaysia time) - US Fri 6 Nov games",
+  "summary": "Nine games tonight, first tips at 8:00 am MYT. Key players are still questionable: Scottie Barnes (TOR; Kawhi Leonard is out), Anthony Davis (WAS), Jalen Johnson (ATL) and Jarrett Allen (CLE). Charlotte's Kon Knueppel is now listed doubtful. Odds have barely moved and none of the 2.00+ underdogs show a real edge, so there's no pick right now. The next big news is starting lineups about 30 min before tip; if Barnes is ruled out, Milwaukee (about 2.98) is the one to watch.",
   "games": [
-    {
-      "away": "ORL",
-      "home": "PHX",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Suns 117, Magic 104. Devin Booker scored 30 as Phoenix ended a 4-game losing streak.",
-      "pick": null
-    },
-    {
-      "away": "MIA",
-      "home": "GSW",
-      "homeProb": 1.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Warriors 120, Heat 100. Stephen Curry scored 29 as Golden State won a sixth straight game.",
-      "pick": null
-    },
-    {
-      "away": "WAS",
-      "home": "ATL",
-      "homeProb": 0.67,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:00 am MYT Sat (NBA Cup). Hawks favoured (Polymarket about 70c). Anthony Davis (ankle) questionable for Washington; Jalen Johnson (ankle) questionable and Asa Newell out for Atlanta.",
-      "pick": null
-    },
-    {
-      "away": "BOS",
-      "home": "CHA",
-      "homeProb": 0.22,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:00 am MYT Sat (NBA Cup). Celtics -344 / Hornets +276. Hornets without Knueppel; Diabate and Schroder questionable. Pritchard (eye) questionable for Boston.",
-      "pick": null
-    },
-    {
-      "away": "PHI",
-      "home": "CLE",
-      "homeProb": 0.43,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:30 am MYT Sat (NBA Cup). 76ers -137 / Cavs +121. Cavs' Jarrett Allen, Peyton Watson and Tyrese Proctor all questionable; 76ers' Adem Bona doubtful.",
-      "pick": null
-    },
-    {
-      "away": "UTA",
-      "home": "DAL",
-      "homeProb": 0.72,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT Sat. Line moved to Mavericks -300 / Jazz +250. Jaren Jackson Jr. reported out; Aldama and Christie probable for Dallas.",
-      "pick": null
-    },
-    {
-      "away": "OKC",
-      "home": "MEM",
-      "homeProb": 0.38,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT Sat. Thunder -172 / Grizzlies +151. Memphis' Isaiah Stewart out.",
-      "pick": null
-    },
-    {
-      "away": "TOR",
-      "home": "MIL",
-      "homeProb": 0.29,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT Sat (NBA Cup). Raptors -300 / Bucks +251. Scottie Barnes (adductor) questionable; if he sits, Milwaukee at +250 could become interesting.",
-      "pick": null
-    },
-    {
-      "away": "MIN",
-      "home": "NOP",
-      "homeProb": 0.37,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT Sat. Timberwolves -188 / Pelicans +164 (last price found). Anthony Edwards (knee) is out for Minnesota; Terrence Shannon Jr. questionable; Trey Murphy III probable (NOP).",
-      "pick": null
-    },
-    {
-      "away": "POR",
-      "home": "LAL",
-      "homeProb": 0.56,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 11:00 am MYT Sat. Lakers about -130 / Blazers +110 (last price found). Ja Morant (hamstring) out for Portland; Sandro Mamukelashvili (illness) questionable for LA.",
-      "pick": null
-    },
-    {
-      "away": "SAS",
-      "home": "SAC",
-      "homeProb": 0.13,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 11:00 am MYT Sat. Spurs huge favourites (about -900 / Kings +610), Polymarket Spurs 86c.",
-      "pick": null
-    }
+    {"away": "WAS", "home": "ATL", "homeProb": 0.70, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:00 am MYT (NBA Cup). Hawks -295 / Wizards +240, Polymarket Hawks about 69c. Anthony Davis (ankle) and Jalen Johnson (ankle) both questionable.",
+     "pick": null},
+    {"away": "BOS", "home": "CHA", "homeProb": 0.24, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:00 am MYT (NBA Cup). Celtics -330 / Hornets +265. Kon Knueppel (leg) now doubtful for Charlotte; Pritchard (eye) day-to-day for Boston.",
+     "pick": null},
+    {"away": "PHI", "home": "CLE", "homeProb": 0.42, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:30 am MYT (NBA Cup). 76ers -144 / Cavs +122. Cavs' Jarrett Allen (knee), Peyton Watson and Tyrese Proctor questionable; Jaylon Tyson out.",
+     "pick": null},
+    {"away": "UTA", "home": "DAL", "homeProb": 0.71, "confidence": "medium", "status": "pre",
+     "note": "Tips 9:00 am MYT. Mavericks -270 / Jazz +220. Jazz without Jaren Jackson Jr. and Nurkic; Dallas without Lively and Aldama, Christie day-to-day.",
+     "pick": null},
+    {"away": "OKC", "home": "MEM", "homeProb": 0.385, "confidence": "medium", "status": "pre",
+     "note": "Tips 9:00 am MYT. Thunder -180 / Grizzlies +152. OKC still missing Holmgren, Jalen Williams and Wallace; Isaiah Stewart day-to-day for Memphis.",
+     "pick": null},
+    {"away": "TOR", "home": "MIL", "homeProb": 0.30, "confidence": "low", "status": "pre",
+     "note": "Tips 9:00 am MYT (NBA Cup). Raptors -240 / Bucks +198. Kawhi Leonard out; Barnes (adductor) and Quickley questionable. If Barnes sits, Milwaukee becomes interesting.",
+     "pick": null},
+    {"away": "MIN", "home": "NOP", "homeProb": 0.38, "confidence": "medium", "status": "pre",
+     "note": "Tips 9:00 am MYT. Timberwolves -180 / Pelicans +152. Anthony Edwards out for Minnesota; Yves Missi out and Trey Murphy III probable for New Orleans.",
+     "pick": null},
+    {"away": "POR", "home": "LAL", "homeProb": 0.57, "confidence": "medium", "status": "pre",
+     "note": "Tips 11:00 am MYT. Lakers -146 / Blazers +124. Portland without Ja Morant, Sharpe and Krejci.",
+     "pick": null},
+    {"away": "SAS", "home": "SAC", "homeProb": 0.12, "confidence": "medium", "status": "pre",
+     "note": "Tips 11:00 am MYT. Spurs huge favourites (-1351 / Kings +810). Kings without Keegan Murray and Raynaud.",
+     "pick": null}
   ]
 }
