@@ -1,15 +1,15 @@
 {
-  "updated": "2026-11-06T23:20:00Z",
+  "updated": "2026-11-07T00:22:00Z",
   "slate": "Sat 7 Nov 2026 (Malaysia time) - US Fri 6 Nov games",
-  "summary": "No final word yet on the big question marks: Scottie Barnes (TOR), Anthony Davis (WAS), Jalen Johnson (ATL) and Jarrett Allen (CLE) were all still questionable in the latest reports I could find. New since last check: Charlotte's Kon Knueppel is now listed out, and Memphis's Isaiah Stewart is out too. Both were mostly priced in, so there's still no pick. First tips are at 8:00 am MYT, and starting lineups land about 30 min before. If Barnes is ruled out, Milwaukee (about 2.98) is the one to recheck.",
+  "summary": "Final injury news is in: Scottie Barnes and Immanuel Quickley are both OUT for Toronto (Kawhi Leonard already out), Jarrett Allen is OUT for Cleveland, and in Atlanta both Anthony Davis (WAS) and Jalen Johnson (ATL) are OUT. Milwaukee is the spot to watch: with three Raptors starters missing I rate the Bucks about 38%, which is only worth a bet at 2.74 or higher - the latest price I found was about 2.60, so no pick right now. Hawks-Wizards and Celtics-Hornets have tipped; I couldn't load live scores this run, so check the board's live feed. Bucks-Raptors tips about 9:10 am MYT, with lineups around 8:40 am.",
   "games": [
     {
       "away": "WAS",
       "home": "ATL",
       "homeProb": 0.7,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:00 am MYT (NBA Cup). Hawks -295 / Wizards +240, Polymarket Hawks about 69c. Anthony Davis (ankle) and Jalen Johnson (ankle) both questionable.",
+      "status": "live",
+      "note": "Tipped 8:00 am MYT. Both Anthony Davis (WAS) and Jalen Johnson (ATL) were ruled out, so the absences roughly cancel. Pre-game Hawks about -295. Live score not loaded this run.",
       "pick": null
     },
     {
@@ -17,17 +17,17 @@
       "home": "CHA",
       "homeProb": 0.23,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:00 am MYT (NBA Cup). Celtics -330 / Hornets +265. Kon Knueppel (hamstring) now listed out for Charlotte; Pritchard (eye) questionable for Boston.",
+      "status": "live",
+      "note": "Tipped 8:00 am MYT. Celtics -344 / Hornets +276 on DraftKings pre-game. Charlotte without Knueppel and Grant Williams; Pritchard questionable. Live score not loaded this run.",
       "pick": null
     },
     {
       "away": "PHI",
       "home": "CLE",
-      "homeProb": 0.42,
+      "homeProb": 0.4,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 8:30 am MYT (NBA Cup). 76ers -144 / Cavs +122. Cavs' Jarrett Allen (knee), Peyton Watson and Tyrese Proctor questionable; Jaylon Tyson out.",
+      "note": "Tips 8:30 am MYT. Jarrett Allen ruled OUT (knee) - Mobley moves to center. DraftKings showed 76ers -128 / Cavs +108 (2.08), but at 40% Cleveland needs 2.60+ to be worth it.",
       "pick": null
     },
     {
@@ -36,7 +36,7 @@
       "homeProb": 0.71,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 9:00 am MYT. Mavericks -270 / Jazz +220. Jazz without Jaren Jackson Jr. and Nurkic; Dallas without Lively and Aldama, Christie probable.",
+      "note": "Tips 9:00 am MYT. Mavericks -270 / Jazz +220. Jazz without Jaren Jackson Jr. and Nurkic; Dallas without Lively, de Larrea and Biberovic (Christie and Aldama probable).",
       "pick": null
     },
     {
@@ -51,10 +51,10 @@
     {
       "away": "TOR",
       "home": "MIL",
-      "homeProb": 0.3,
+      "homeProb": 0.38,
       "confidence": "low",
       "status": "pre",
-      "note": "Tips 9:00 am MYT (NBA Cup). Raptors -240 / Bucks +198. Kawhi Leonard out; Barnes (adductor) and Quickley questionable. If Barnes sits, Milwaukee becomes interesting.",
+      "note": "Tips about 9:10 am MYT. Barnes and Quickley both ruled OUT for Toronto, plus Kawhi Leonard. Bucks were +198 earlier; latest DraftKings seen +160 (2.60). Only worth a bet at 2.74+.",
       "pick": null
     },
     {
@@ -63,7 +63,7 @@
       "homeProb": 0.38,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 9:00 am MYT. Timberwolves -180 / Pelicans +152. Anthony Edwards out for Minnesota; Yves Missi out and Trey Murphy III probable for New Orleans.",
+      "note": "Tips 9:00 am MYT. Timberwolves -180 / Pelicans +152. Anthony Edwards out, DiVincenzo out, Terrence Shannon Jr. questionable; Pelicans without Yves Missi, Trey Murphy III probable.",
       "pick": null
     },
     {
