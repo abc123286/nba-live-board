@@ -1,33 +1,33 @@
 {
-  "updated": "2026-11-07T00:22:00Z",
+  "updated": "2026-11-07T01:13:00Z",
   "slate": "Sat 7 Nov 2026 (Malaysia time) - US Fri 6 Nov games",
-  "summary": "Final injury news is in: Scottie Barnes and Immanuel Quickley are both OUT for Toronto (Kawhi Leonard already out), Jarrett Allen is OUT for Cleveland, and in Atlanta both Anthony Davis (WAS) and Jalen Johnson (ATL) are OUT. Milwaukee is the spot to watch: with three Raptors starters missing I rate the Bucks about 38%, which is only worth a bet at 2.74 or higher - the latest price I found was about 2.60, so no pick right now. Hawks-Wizards and Celtics-Hornets have tipped; I couldn't load live scores this run, so check the board's live feed. Bucks-Raptors tips about 9:10 am MYT, with lineups around 8:40 am.",
+  "summary": "No new injury news since the last check. Celtics lead the Hornets 70-39 at halftime, Hawks lead the Wizards 66-59 at half, and Cleveland started fast (11-2 early) against Philadelphia. Mavs-Jazz, Grizzlies-Thunder, Pelicans-Wolves and Bucks-Raptors have just tipped - I couldn't load live scores for those, so use the board's live feed. No pick right now: no side at 2.00+ shows a clear edge without a live price. Next news: Lakers-Blazers and Kings-Spurs lineups around 10:30 am MYT (tip 11:00 am).",
   "games": [
     {
       "away": "WAS",
       "home": "ATL",
-      "homeProb": 0.7,
+      "homeProb": 0.8,
       "confidence": "medium",
       "status": "live",
-      "note": "Tipped 8:00 am MYT. Both Anthony Davis (WAS) and Jalen Johnson (ATL) were ruled out, so the absences roughly cancel. Pre-game Hawks about -295. Live score not loaded this run.",
+      "note": "Hawks lead 66-59 at halftime (NBA.com live blog). Alexander-Walker 16 first-half points. Davis (WAS) and Jalen Johnson (ATL) both out.",
       "pick": null
     },
     {
       "away": "BOS",
       "home": "CHA",
-      "homeProb": 0.23,
-      "confidence": "medium",
+      "homeProb": 0.01,
+      "confidence": "high",
       "status": "live",
-      "note": "Tipped 8:00 am MYT. Celtics -344 / Hornets +276 on DraftKings pre-game. Charlotte without Knueppel and Grant Williams; Pritchard questionable. Live score not loaded this run.",
+      "note": "Celtics lead 70-39 at halftime. Tatum 24 points in the first half, Derrick White 18. Game is effectively decided.",
       "pick": null
     },
     {
       "away": "PHI",
       "home": "CLE",
-      "homeProb": 0.4,
+      "homeProb": 0.46,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 8:30 am MYT. Jarrett Allen ruled OUT (knee) - Mobley moves to center. DraftKings showed 76ers -128 / Cavs +108 (2.08), but at 40% Cleveland needs 2.60+ to be worth it.",
+      "status": "live",
+      "note": "Cavs led 11-2 early in the 1st quarter (NBA.com live blog). Jarrett Allen out, Mobley at center. Very early - one quick run moves little.",
       "pick": null
     },
     {
@@ -35,8 +35,8 @@
       "home": "DAL",
       "homeProb": 0.71,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT. Mavericks -270 / Jazz +220. Jazz without Jaren Jackson Jr. and Nurkic; Dallas without Lively, de Larrea and Biberovic (Christie and Aldama probable).",
+      "status": "live",
+      "note": "Tipped 9:00 am MYT. Mavericks -270 / Jazz +220. Jazz without Jaren Jackson Jr. and Nurkic; Dallas without Lively, de Larrea and Biberovic (Christie and Aldama probable). Live score not loaded this run.",
       "pick": null
     },
     {
@@ -44,8 +44,8 @@
       "home": "MEM",
       "homeProb": 0.37,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT. Thunder -180 / Grizzlies +152. OKC still missing Holmgren, Jalen Williams and Wallace; Memphis now without Isaiah Stewart and Scotty Pippen Jr.",
+      "status": "live",
+      "note": "Tipped 9:00 am MYT. Thunder -180 / Grizzlies +152. OKC still missing Holmgren, Jalen Williams and Wallace; Memphis now without Isaiah Stewart and Scotty Pippen Jr. Live score not loaded this run.",
       "pick": null
     },
     {
@@ -53,8 +53,8 @@
       "home": "MIL",
       "homeProb": 0.38,
       "confidence": "low",
-      "status": "pre",
-      "note": "Tips about 9:10 am MYT. Barnes and Quickley both ruled OUT for Toronto, plus Kawhi Leonard. Bucks were +198 earlier; latest DraftKings seen +160 (2.60). Only worth a bet at 2.74+.",
+      "status": "live",
+      "note": "Tipped ~9:10 am MYT. Barnes and Quickley both ruled OUT for Toronto, plus Kawhi Leonard. Bucks were +198 earlier; latest DraftKings seen +160 (2.60). Only worth a bet at 2.74+. Live score not loaded this run.",
       "pick": null
     },
     {
@@ -62,8 +62,8 @@
       "home": "NOP",
       "homeProb": 0.38,
       "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT. Timberwolves -180 / Pelicans +152. Anthony Edwards out, DiVincenzo out, Terrence Shannon Jr. questionable; Pelicans without Yves Missi, Trey Murphy III probable.",
+      "status": "live",
+      "note": "Tipped 9:00 am MYT. Timberwolves -180 / Pelicans +152. Anthony Edwards out, DiVincenzo out, Terrence Shannon Jr. questionable; Pelicans without Yves Missi, Trey Murphy III probable. Live score not loaded this run.",
       "pick": null
     },
     {
@@ -72,7 +72,7 @@
       "homeProb": 0.57,
       "confidence": "medium",
       "status": "pre",
-      "note": "Tips 11:00 am MYT. Lakers -146 / Blazers +124. Portland without Ja Morant, Sharpe and Krejci.",
+      "note": "Tips 11:00 am MYT. Lakers -149 / Blazers +125 (BetMGM). Portland without Ja Morant, Sharpe and Krejci; Mamukelashvili questionable (illness).",
       "pick": null
     },
     {
