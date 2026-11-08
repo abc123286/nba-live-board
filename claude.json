@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-07T23:20:00Z",
+  "updated": "2026-11-08T00:12:22Z",
   "slate": "Sun 8 Nov 2026 (Malaysia time) - US Sat 7 Nov games",
-  "summary": "Nuggets are blowing out the Pacers in Mexico City (a live blog headline showed 64-37 Denver; Denver led 27-19 after the 1st), so that game is all but decided. New since last check: Atlanta's Jalen Johnson is active vs the Nets after missing three games with an ankle sprain. No pick: the 2.00+ underdogs still look fairly priced or worse (Cleveland without Jarrett Allen, Portland short-handed). Next tip is Nets at Hawks at 8:30 am MYT; final lineups come about 30 min before each tip, and Draymond Green (elbow) is still questionable for 9:30 am.",
+  "summary": "Denver led Indiana 90-78 after three quarters in Mexico City (final not yet confirmed), so that game is nearly decided. New since last check: Washington's Anthony Davis is ruled out (ankle) at OKC, while OKC is also without Jalen Williams, Cason Wallace and Holmgren, so the two roughly cancel out. No pick: none of the 2.00+ underdogs show a 4% edge at the posted prices. Next tip is Nets at Hawks at 8:30 am MYT; Draymond Green (elbow) is still questionable before the 9:30 am Warriors game, with final lineups about 30 min before each tip.",
   "games": [
     {
       "away": "DEN",
@@ -9,7 +9,7 @@
       "homeProb": 0.03,
       "confidence": "medium",
       "status": "live",
-      "note": "Live in Mexico City: Denver led 27-19 after the 1st and a live-blog headline later showed 64-37 Denver (exact clock not found). Indiana without Haliburton; a big comeback is very unlikely.",
+      "note": "Denver led 90-78 after the 3rd quarter (NBA.com live blog); final score not yet confirmed. Indiana without Haliburton, Furphy and Sheppard.",
       "pick": null
     },
     {
@@ -36,7 +36,7 @@
       "homeProb": 0.82,
       "confidence": "medium",
       "status": "pre",
-      "note": "9:00 am MYT. Thunder -559 / Wizards +420 (FanDuel). OKC on a back-to-back with Jalen Williams and Topic day-to-day (back) and Holmgren out.",
+      "note": "9:00 am MYT. Thunder -559 / Wizards +420 (FanDuel). Anthony Davis now ruled out for Washington (ankle); OKC without Jalen Williams, Cason Wallace, Topic and Holmgren but still has Gilgeous-Alexander.",
       "pick": null
     },
     {
