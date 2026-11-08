@@ -1,70 +1,21 @@
 {
-  "updated": "2026-11-08T02:20:00Z",
+  "updated": "2026-11-08T03:15:00Z",
   "slate": "Sun 8 Nov 2026 (Malaysia time) - US Sat 7 Nov games",
-  "summary": "My score sources were mostly stale or blocked this check, so the three early games (Nets-Hawks, Knicks-Cavs, Wizards-Thunder) keep pre-game estimates - trust the board's live feed there. Magic at Warriors: the latest update I found had Golden State up 31-19 late in the 1st quarter, so I nudged the Warriors up. Rockets-Suns has just tipped (Kalshi had Houston about 71% pre-game, in line with the bookies). No pick: no 2.00+ side shows a 4% edge and I have no live prices. Next: Spurs at Blazers 11:00 am MYT - Portland still without Morant, Sharpe, Krejci and Robert Williams III; lineups about 30 min before tip.",
+  "summary": "Latest scoreboard I could read (CBS, roughly 30 min old): Hawks led Nets by 7 with 9 seconds left, Knicks led Cavs by 13 with under 4 minutes left, and Thunder led Wizards by 36 - all three are effectively decided. Warriors led Magic 69-63 midway through the 3rd, and Rockets-Suns was tied 47-47 at halftime. Spurs at Blazers is tipping off now (11:00 am MYT); I found no new injury news beyond Portland missing Morant, Sharpe, Krejci and Robert Williams III. No pick: I have no live prices, and pre-game no 2.00+ side showed a 4% edge. ESPN was blocked, so trust the board's live feed for exact scores.",
   "games": [
-    {
-      "away": "DEN",
-      "home": "IND",
-      "homeProb": 0.0,
-      "confidence": "high",
-      "status": "final",
-      "note": "Final: Nuggets 114, Pacers 102 (AP/Yahoo). Jokic led Denver with 19 points.",
-      "pick": null
-    },
-    {
-      "away": "BKN",
-      "home": "ATL",
-      "homeProb": 0.71,
-      "confidence": "low",
-      "status": "live",
-      "note": "Hawks -260 / Nets +215 (FanDuel). Jalen Johnson is active after missing three games (ankle), a boost for Atlanta on a back-to-back; Nets without Egor Demin. Game has tipped; no live score found this check, so estimate is pre-game.",
-      "pick": null
-    },
-    {
-      "away": "NYK",
-      "home": "CLE",
-      "homeProb": 0.32,
-      "confidence": "low",
-      "status": "live",
-      "note": "Knicks -215 / Cavs +180 (FanDuel). Jarrett Allen now ruled out for Cleveland (back-to-back, Tyson and Merrill day-to-day); Knicks without Josh Hart. Game has tipped; no live score found this check, so estimate is pre-game.",
-      "pick": null
-    },
-    {
-      "away": "WAS",
-      "home": "OKC",
-      "homeProb": 0.82,
-      "confidence": "low",
-      "status": "live",
-      "note": "Thunder -559 / Wizards +420 (FanDuel). Anthony Davis now ruled out for Washington (ankle); OKC without Jalen Williams, Cason Wallace, Topic and Holmgren but still has Gilgeous-Alexander. Game has tipped; no live score found this check, so estimate is pre-game.",
-      "pick": null
-    },
-    {
-      "away": "ORL",
-      "home": "GSW",
-      "homeProb": 0.75,
-      "confidence": "low",
-      "status": "live",
-      "note": "Live: Warriors led 31-19 with 3:14 left in the 1st quarter (VAVEL update, about an hour old). Pre-game Warriors -255; Butler, Porzingis, Moody out for GSW; Magic without Banchero, Suggs and Bane (illness).",
-      "pick": null
-    },
-    {
-      "away": "HOU",
-      "home": "PHX",
-      "homeProb": 0.31,
-      "confidence": "low",
-      "status": "live",
-      "note": "Just tipped at 10:00 am MYT; no live score found yet. Pre-game Rockets -255 (FanDuel), Kalshi ~71% Houston. Houston without Capela and Adams; Phoenix without Mark Williams.",
-      "pick": null
-    },
-    {
-      "away": "SAS",
-      "home": "POR",
-      "homeProb": 0.33,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "11:00 am MYT. Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe, Krejci and Robert Williams III (rest); Wembanyama and Lillard not on the injury report. Spurs without Tobias Harris.",
-      "pick": null
-    }
+    {"away": "DEN", "home": "IND", "homeProb": 0.0, "confidence": "high", "status": "final",
+     "note": "Final: Nuggets 114, Pacers 102 (AP/Yahoo, CBS). Jokic led Denver with 19 points.", "pick": null},
+    {"away": "BKN", "home": "ATL", "homeProb": 0.99, "confidence": "high", "status": "live",
+     "note": "Hawks led 123-116 with 9 seconds left in the 4th (CBS); almost certainly a Hawks win. Jalen Johnson returned for Atlanta.", "pick": null},
+    {"away": "NYK", "home": "CLE", "homeProb": 0.03, "confidence": "high", "status": "live",
+     "note": "Knicks led 102-89 with 3:53 left in the 4th (CBS). Cleveland played without Jarrett Allen.", "pick": null},
+    {"away": "WAS", "home": "OKC", "homeProb": 0.999, "confidence": "high", "status": "live",
+     "note": "Thunder led 103-67 with 5:19 left in the 4th (CBS) - a blowout. Washington played without Anthony Davis.", "pick": null},
+    {"away": "ORL", "home": "GSW", "homeProb": 0.74, "confidence": "medium", "status": "live",
+     "note": "Warriors led 69-63 with 5:21 left in the 3rd (CBS); Orlando cut a 12-point 1st-quarter lead to 6. Magic still without Banchero and Suggs.", "pick": null},
+    {"away": "HOU", "home": "PHX", "homeProb": 0.37, "confidence": "low", "status": "live",
+     "note": "Tied 47-47 at halftime (CBS). Pre-game Rockets were -255; Phoenix hanging in raises their chance from about 31% to the high 30s. Houston without Capela and Adams.", "pick": null},
+    {"away": "SAS", "home": "POR", "homeProb": 0.33, "confidence": "medium", "status": "pre",
+     "note": "Tipping off about now (11:00 am MYT). Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe, Krejci and Robert Williams III; Spurs without Tobias Harris. No newer lineup news found.", "pick": null}
   ]
 }
