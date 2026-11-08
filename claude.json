@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-08T22:15:00Z",
+  "updated": "2026-11-08T23:15:00Z",
   "slate": "Mon 9 Nov 2026 (Malaysia time) - US Sun 8 Nov games",
-  "summary": "Big news: Luka Doncic is OUT tonight (low back tightness), and DraftKings now has the Pistons -7.5 (was -4.5) even with Detroit's Jalen Duren also out. Kings' Keegan Murray was upgraded to available; Markkanen (wrist) is still questionable for Utah. 76ers-Bulls is live with Philly ahead 58-50 late in the 2nd quarter at my last look (ESPN). No pick: no 2.00+ price shows a 4% edge, and I found no live price for the Bulls. Next news: lineups 30-60 min before each tip (Lakers-Pistons 7:00 am MYT).",
+  "summary": "76ers beat the Bulls 127-121 (final). Lakers-Pistons has just tipped with Luka Doncic OUT; DraftKings closed it Pistons -264 / Lakers +217 (3.17), which works out to about 70% Detroit. New: Jazz guard Keyonte George was downgraded to questionable (illness) and Markkanen (wrist) is still questionable, so Utah could be very short-handed. No pick: no 2.00+ price shows a 4% edge. Next news: Jazz-Wolves lineups around 7:30 am MYT.",
   "games": [
-    {"away": "PHI", "home": "CHI", "homeProb": 0.15, "confidence": "medium", "status": "live",
-     "note": "Live: 76ers 58, Bulls 50 with 2:56 left in the 2nd quarter at last look (ESPN). Bulls without Norman Powell and Zach Collins; Philly was a big pre-game favourite (-420).", "pick": null},
-    {"away": "LAL", "home": "DET", "homeProb": 0.73, "confidence": "medium", "status": "pre",
-     "note": "Tips 7:00 am Mon MYT. Luka Doncic is OUT (low back tightness); Pistons now -7.5 on DraftKings (was -4.5). Detroit is without Jalen Duren (hamstring), which keeps the Lakers in it.", "pick": null},
-    {"away": "UTA", "home": "MIN", "homeProb": 0.81, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:00 am Mon MYT. Anthony Edwards OUT (knee, about two months) and DiVincenzo out, but Wolves still about -570. Jazz without Jaren Jackson Jr. and Nurkic; Markkanen questionable (wrist).", "pick": null},
+    {"away": "PHI", "home": "CHI", "homeProb": 0.0, "confidence": "high", "status": "final",
+     "note": "Final: 76ers 127, Bulls 121.", "pick": null},
+    {"away": "LAL", "home": "DET", "homeProb": 0.71, "confidence": "medium", "status": "live",
+     "note": "Just tipped at 7:00 am MYT (no live score confirmed yet). Doncic OUT (back); Pistons without Jalen Duren and Isaiah Joe. Pre-game DraftKings: Pistons -264, Lakers +217.", "pick": null},
+    {"away": "UTA", "home": "MIN", "homeProb": 0.82, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:00 am Mon MYT. Wolves without Edwards and DiVincenzo but still big favourites. Jazz: Markkanen (wrist) and now Keyonte George (illness) questionable, plus Jaren Jackson Jr. and Nurkic out.", "pick": null},
     {"away": "BKN", "home": "DAL", "homeProb": 0.75, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:30 am Mon MYT. Mavericks about -9.5; Polymarket around 75% Dallas. Nets on a back-to-back without Mikel Brown Jr. and Egor Demin.", "pick": null},
+     "note": "Tips 8:30 am Mon MYT. Mavericks about -9.5; Polymarket around 75% Dallas. Covers lists Dereck Lively II out (foot) for Dallas; Nets without Mikel Brown Jr. and Egor Demin.", "pick": null},
     {"away": "BOS", "home": "MIL", "homeProb": 0.15, "confidence": "medium", "status": "pre",
-     "note": "Tips 9:00 am Mon MYT. Celtics about -12.5; Polymarket around 15% Bucks. No new injury news found.", "pick": null},
+     "note": "Tips 9:00 am Mon MYT. Celtics about -12.5; Polymarket around 15% Bucks. Bucks' Kobe Jones day-to-day (ankle); no other new news.", "pick": null},
     {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "pre",
-     "note": "Tips 10:00 am Mon MYT. Near coin flip (Polymarket about 52% Pelicans). Brandon Ingram reported doubtful; Beal (knee) still out for the Clippers.", "pick": null},
+     "note": "Tips 10:00 am Mon MYT. Near coin flip (Polymarket about 52% Pelicans). Clippers missing Brandon Ingram (heel), Beal (knee), Isaiah Jackson and others; Pelicans without Yves Missi (knee).", "pick": null},
     {"away": "MIA", "home": "SAC", "homeProb": 0.25, "confidence": "medium", "status": "pre",
-     "note": "Tips 10:00 am Mon MYT. Heat about -316 (Polymarket ~76%). Kings' Keegan Murray upgraded to available (ankle).", "pick": null}
+     "note": "Tips 10:00 am Mon MYT. Heat about -316 (Polymarket ~76%) with no injuries listed. Kings' Keegan Murray available.", "pick": null}
   ]
 }
