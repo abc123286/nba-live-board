@@ -1,51 +1,51 @@
 {
-  "updated": "2026-11-08T00:12:22Z",
+  "updated": "2026-11-08T01:14:00Z",
   "slate": "Sun 8 Nov 2026 (Malaysia time) - US Sat 7 Nov games",
-  "summary": "Denver led Indiana 90-78 after three quarters in Mexico City (final not yet confirmed), so that game is nearly decided. New since last check: Washington's Anthony Davis is ruled out (ankle) at OKC, while OKC is also without Jalen Williams, Cason Wallace and Holmgren, so the two roughly cancel out. No pick: none of the 2.00+ underdogs show a 4% edge at the posted prices. Next tip is Nets at Hawks at 8:30 am MYT; Draymond Green (elbow) is still questionable before the 9:30 am Warriors game, with final lineups about 30 min before each tip.",
+  "summary": "Denver beat Indiana 114-102 in Mexico City (final). Nets-Hawks, Knicks-Cavs and Wizards-Thunder have tipped, but I couldn't get a live score or live price from my sources, so their estimates are still pre-game and there are no live picks - the board's own live feed is more current there. New: Draymond Green is available for Golden State (elbow), a small boost for the Warriors; Portland is resting Robert Williams III. No pick: none of the 2.00+ underdogs shows a 4% edge. Next tips: Magic at Warriors 9:30 am MYT, Rockets at Suns 10:00 am, Spurs at Blazers 11:00 am, with lineups about 30 min before each.",
   "games": [
     {
       "away": "DEN",
       "home": "IND",
-      "homeProb": 0.03,
-      "confidence": "medium",
-      "status": "live",
-      "note": "Denver led 90-78 after the 3rd quarter (NBA.com live blog); final score not yet confirmed. Indiana without Haliburton, Furphy and Sheppard.",
+      "homeProb": 0.0,
+      "confidence": "high",
+      "status": "final",
+      "note": "Final: Nuggets 114, Pacers 102 (AP/Yahoo). Jokic led Denver with 19 points.",
       "pick": null
     },
     {
       "away": "BKN",
       "home": "ATL",
       "homeProb": 0.71,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "8:30 am MYT. Hawks -260 / Nets +215 (FanDuel). Jalen Johnson is active after missing three games (ankle), a boost for Atlanta on a back-to-back; Nets without Egor Demin.",
+      "confidence": "low",
+      "status": "live",
+      "note": "Hawks -260 / Nets +215 (FanDuel). Jalen Johnson is active after missing three games (ankle), a boost for Atlanta on a back-to-back; Nets without Egor Demin. Game has tipped; no live score found this check, so estimate is pre-game.",
       "pick": null
     },
     {
       "away": "NYK",
       "home": "CLE",
       "homeProb": 0.32,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "9:00 am MYT. Knicks -215 / Cavs +180 (FanDuel). Jarrett Allen now ruled out for Cleveland (back-to-back, Tyson and Merrill day-to-day); Knicks without Josh Hart.",
+      "confidence": "low",
+      "status": "live",
+      "note": "Knicks -215 / Cavs +180 (FanDuel). Jarrett Allen now ruled out for Cleveland (back-to-back, Tyson and Merrill day-to-day); Knicks without Josh Hart. Game has tipped; no live score found this check, so estimate is pre-game.",
       "pick": null
     },
     {
       "away": "WAS",
       "home": "OKC",
       "homeProb": 0.82,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "9:00 am MYT. Thunder -559 / Wizards +420 (FanDuel). Anthony Davis now ruled out for Washington (ankle); OKC without Jalen Williams, Cason Wallace, Topic and Holmgren but still has Gilgeous-Alexander.",
+      "confidence": "low",
+      "status": "live",
+      "note": "Thunder -559 / Wizards +420 (FanDuel). Anthony Davis now ruled out for Washington (ankle); OKC without Jalen Williams, Cason Wallace, Topic and Holmgren but still has Gilgeous-Alexander. Game has tipped; no live score found this check, so estimate is pre-game.",
       "pick": null
     },
     {
       "away": "ORL",
       "home": "GSW",
-      "homeProb": 0.68,
+      "homeProb": 0.69,
       "confidence": "medium",
       "status": "pre",
-      "note": "9:30 am MYT. Warriors -255 / Magic +210 (FanDuel). Draymond Green and Payton II questionable; Butler, Porzingis, Moody out. Magic without Banchero and Suggs.",
+      "note": "9:30 am MYT. Warriors -255 / Magic +210 (FanDuel). Draymond Green is available (elbow, CBS/RotoWire); Butler, Porzingis, Moody out. Magic without Banchero and Suggs.",
       "pick": null
     },
     {
@@ -54,16 +54,16 @@
       "homeProb": 0.31,
       "confidence": "medium",
       "status": "pre",
-      "note": "10:00 am MYT. Rockets -255 / Suns +210 (FanDuel). Houston without Capela and Steven Adams; Phoenix without Mark Williams.",
+      "note": "10:00 am MYT. Rockets -255 / Suns +210 (FanDuel). Houston without Capela and Steven Adams; Phoenix without Mark Williams, Goodwin doubtful.",
       "pick": null
     },
     {
       "away": "SAS",
       "home": "POR",
-      "homeProb": 0.34,
+      "homeProb": 0.33,
       "confidence": "medium",
       "status": "pre",
-      "note": "11:00 am MYT. Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe and Krejci; no new word found on Lillard resting.",
+      "note": "11:00 am MYT. Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe, Krejci and Robert Williams III (rest); Lillard and Wembanyama not on the injury report. Spurs without Tobias Harris.",
       "pick": null
     }
   ]
