@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-08T01:14:00Z",
+  "updated": "2026-11-08T02:20:00Z",
   "slate": "Sun 8 Nov 2026 (Malaysia time) - US Sat 7 Nov games",
-  "summary": "Denver beat Indiana 114-102 in Mexico City (final). Nets-Hawks, Knicks-Cavs and Wizards-Thunder have tipped, but I couldn't get a live score or live price from my sources, so their estimates are still pre-game and there are no live picks - the board's own live feed is more current there. New: Draymond Green is available for Golden State (elbow), a small boost for the Warriors; Portland is resting Robert Williams III. No pick: none of the 2.00+ underdogs shows a 4% edge. Next tips: Magic at Warriors 9:30 am MYT, Rockets at Suns 10:00 am, Spurs at Blazers 11:00 am, with lineups about 30 min before each.",
+  "summary": "My score sources were mostly stale or blocked this check, so the three early games (Nets-Hawks, Knicks-Cavs, Wizards-Thunder) keep pre-game estimates - trust the board's live feed there. Magic at Warriors: the latest update I found had Golden State up 31-19 late in the 1st quarter, so I nudged the Warriors up. Rockets-Suns has just tipped (Kalshi had Houston about 71% pre-game, in line with the bookies). No pick: no 2.00+ side shows a 4% edge and I have no live prices. Next: Spurs at Blazers 11:00 am MYT - Portland still without Morant, Sharpe, Krejci and Robert Williams III; lineups about 30 min before tip.",
   "games": [
     {
       "away": "DEN",
@@ -42,19 +42,19 @@
     {
       "away": "ORL",
       "home": "GSW",
-      "homeProb": 0.69,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "9:30 am MYT. Warriors -255 / Magic +210 (FanDuel). Draymond Green is available (elbow, CBS/RotoWire); Butler, Porzingis, Moody out. Magic without Banchero and Suggs.",
+      "homeProb": 0.75,
+      "confidence": "low",
+      "status": "live",
+      "note": "Live: Warriors led 31-19 with 3:14 left in the 1st quarter (VAVEL update, about an hour old). Pre-game Warriors -255; Butler, Porzingis, Moody out for GSW; Magic without Banchero, Suggs and Bane (illness).",
       "pick": null
     },
     {
       "away": "HOU",
       "home": "PHX",
       "homeProb": 0.31,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "10:00 am MYT. Rockets -255 / Suns +210 (FanDuel). Houston without Capela and Steven Adams; Phoenix without Mark Williams, Goodwin doubtful.",
+      "confidence": "low",
+      "status": "live",
+      "note": "Just tipped at 10:00 am MYT; no live score found yet. Pre-game Rockets -255 (FanDuel), Kalshi ~71% Houston. Houston without Capela and Adams; Phoenix without Mark Williams.",
       "pick": null
     },
     {
@@ -63,7 +63,7 @@
       "homeProb": 0.33,
       "confidence": "medium",
       "status": "pre",
-      "note": "11:00 am MYT. Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe, Krejci and Robert Williams III (rest); Lillard and Wembanyama not on the injury report. Spurs without Tobias Harris.",
+      "note": "11:00 am MYT. Spurs -215 / Blazers +180 (FanDuel). Portland on a back-to-back without Morant, Sharpe, Krejci and Robert Williams III (rest); Wembanyama and Lillard not on the injury report. Spurs without Tobias Harris.",
       "pick": null
     }
   ]
