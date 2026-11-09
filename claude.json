@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-09T02:20:00Z",
+  "updated": "2026-11-09T03:14:00Z",
   "slate": "Mon 9 Nov 2026 (Malaysia time) - US Sun 8 Nov games",
-  "summary": "New: Kings' Domantas Sabonis has been ruled OUT (knee) against the Heat. Miami were about -446 before that news (Kings +346), so Sacramento's chance drops further. Lakers beat the Pistons 121-116 without Doncic. Live scoreboards were blocked again this run and I found no live prices, so live estimates are rough and there is no live pick. No pick: no 2.00+ price shows a 4% edge. Next: Pelicans-Clippers and Heat-Kings have just tipped (10:00 am MYT); the next slate is US Monday night.",
+  "summary": "Wolves beat the Jazz 115-100 (Dosunmu and LaMelo Ball combined for 50). Dallas led Brooklyn 66-46 late in the 2nd quarter, and Miami led Sacramento 68-59 at halftime with Sabonis out. I could not find current scores for Celtics-Bucks or Pelicans-Clippers, and no live prices, so those estimates are kept from last time and there is no live pick. No pick right now. The next slate (US Monday night) starts around 8:00 am Tue MYT; injury reports and lineups come out in the hours before.",
   "games": [
     {"away": "PHI", "home": "CHI", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "Final: 76ers 127, Bulls 121.", "pick": null},
     {"away": "LAL", "home": "DET", "homeProb": 0.0, "confidence": "high", "status": "final",
-     "note": "Final: Lakers 121, Pistons 116. Austin Reaves scored 43 with Doncic out; Detroit came back from 26 down but fell short.", "pick": null},
-    {"away": "UTA", "home": "MIN", "homeProb": 0.86, "confidence": "low", "status": "live",
-     "note": "Last update I found: Wolves led 34-27 in the 2nd quarter (7:42 pm ET), so this is stale. Markkanen OUT for Utah; Wolves without Edwards and DiVincenzo.", "pick": null},
-    {"away": "BKN", "home": "DAL", "homeProb": 0.75, "confidence": "low", "status": "live",
-     "note": "Tipped 8:30 am MYT; I could not get a current score. Pre-game Mavs about -9.5. Dallas without Lively II; Nets without Mikel Brown Jr. and Egor Demin.", "pick": null},
+     "note": "Final: Lakers 121, Pistons 116. Austin Reaves scored 43 with Doncic out.", "pick": null},
+    {"away": "UTA", "home": "MIN", "homeProb": 1.0, "confidence": "high", "status": "final",
+     "note": "Final: Timberwolves 115, Jazz 100. Ayo Dosunmu and LaMelo Ball combined for 50 points.", "pick": null},
+    {"away": "BKN", "home": "DAL", "homeProb": 0.97, "confidence": "medium", "status": "live",
+     "note": "Mavs led 66-46 with 18 seconds left in the 2nd quarter (last update I found); Cooper Flagg had 20 on 7-of-8 shooting. Likely in the 4th quarter now.", "pick": null},
     {"away": "BOS", "home": "MIL", "homeProb": 0.18, "confidence": "low", "status": "live",
-     "note": "Bucks led 27-25 after the 1st quarter (8:40 pm ET update). Pre-game Celtics about -12.5, so a close start nudges Milwaukee up only a little.", "pick": null},
+     "note": "No new score found this run; last seen Bucks led 27-25 after the 1st quarter. Pre-game Celtics about -12.5, so estimate kept.", "pick": null},
     {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "live",
-     "note": "Tipped 10:00 am MYT. Pelicans about -1.5. Clippers out: Ingram, Beal, Isaiah Jackson, Yanic Konan Niederhauser; Pelicans without Yves Missi.", "pick": null},
-    {"away": "MIA", "home": "SAC", "homeProb": 0.19, "confidence": "medium", "status": "live",
-     "note": "Tipped 10:00 am MYT. Sabonis OUT (knee), plus Raynaud and Simmons out. Heat about -446 / Kings +346 on DraftKings.", "pick": null}
+     "note": "Tipped 10:00 am MYT; I could not find a current score. Clippers out: Ingram, Beal, Isaiah Jackson, Yanic Konan Niederhauser; Pelicans without Yves Missi.", "pick": null},
+    {"away": "MIA", "home": "SAC", "homeProb": 0.14, "confidence": "medium", "status": "live",
+     "note": "Heat led 68-59 at halftime (theScore). Kings without Sabonis (knee), Raynaud and Murray; Miami were about -11.5 before tip.", "pick": null}
   ]
 }
