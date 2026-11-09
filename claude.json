@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-09T01:25:00Z",
+  "updated": "2026-11-09T02:20:00Z",
   "slate": "Mon 9 Nov 2026 (Malaysia time) - US Sun 8 Nov games",
-  "summary": "New: Kings big man Domantas Sabonis is questionable (left knee soreness) for Heat-Kings, per Heat Nation; Keegan Murray is cleared. Celtics' Mitchell Robinson and Bucks' Gary Trent Jr. were listed questionable (illness) before tip. Four games are under way but I could not reach a working live scoreboard or live prices this run, so those estimates stay pre-game and there is no live pick. No pick: no 2.00+ price shows a 4% edge. Next news: Pelicans-Clippers and Heat-Kings lineups around 9:30 am MYT (Sabonis decision).",
+  "summary": "New: Kings' Domantas Sabonis has been ruled OUT (knee) against the Heat. Miami were about -446 before that news (Kings +346), so Sacramento's chance drops further. Lakers beat the Pistons 121-116 without Doncic. Live scoreboards were blocked again this run and I found no live prices, so live estimates are rough and there is no live pick. No pick: no 2.00+ price shows a 4% edge. Next: Pelicans-Clippers and Heat-Kings have just tipped (10:00 am MYT); the next slate is US Monday night.",
   "games": [
     {"away": "PHI", "home": "CHI", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "Final: 76ers 127, Bulls 121.", "pick": null},
-    {"away": "LAL", "home": "DET", "homeProb": 0.71, "confidence": "low", "status": "live",
-     "note": "Tipped 7:00 am MYT and is probably late or finished; I could not confirm the score this run. Doncic OUT (back); Pistons without Jalen Duren and Isaiah Joe.", "pick": null},
-    {"away": "UTA", "home": "MIN", "homeProb": 0.84, "confidence": "low", "status": "live",
-     "note": "Tipped 8:00 am MYT; live score not confirmed. Markkanen OUT (wrist), Keyonte George plays. Wolves without Edwards and DiVincenzo.", "pick": null},
+    {"away": "LAL", "home": "DET", "homeProb": 0.0, "confidence": "high", "status": "final",
+     "note": "Final: Lakers 121, Pistons 116. Austin Reaves scored 43 with Doncic out; Detroit came back from 26 down but fell short.", "pick": null},
+    {"away": "UTA", "home": "MIN", "homeProb": 0.86, "confidence": "low", "status": "live",
+     "note": "Last update I found: Wolves led 34-27 in the 2nd quarter (7:42 pm ET), so this is stale. Markkanen OUT for Utah; Wolves without Edwards and DiVincenzo.", "pick": null},
     {"away": "BKN", "home": "DAL", "homeProb": 0.75, "confidence": "low", "status": "live",
-     "note": "Tipped 8:30 am MYT; live score not confirmed. Pre-game Mavs about -9.5 (Polymarket ~75%). Dallas without Lively II; Nets without Mikel Brown Jr. and Egor Demin, Grant Nelson day-to-day.", "pick": null},
-    {"away": "BOS", "home": "MIL", "homeProb": 0.15, "confidence": "low", "status": "live",
-     "note": "Tipped 9:00 am MYT; live score not confirmed. Pre-game Celtics about -12.5. Mitchell Robinson (BOS) and Gary Trent Jr. (MIL) were questionable with illness.", "pick": null},
-    {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "pre",
-     "note": "Tips 10:00 am MYT. Pelicans -1.5 (Covers: about 53% NOP). Clippers have five players out including Ingram and Beal; Pelicans without Yves Missi.", "pick": null},
-    {"away": "MIA", "home": "SAC", "homeProb": 0.24, "confidence": "medium", "status": "pre",
-     "note": "Tips 10:00 am MYT. Heat about -316 with no rotation injuries. Kings' Sabonis questionable (knee), Murray cleared, Raynaud and Simmons out.", "pick": null}
+     "note": "Tipped 8:30 am MYT; I could not get a current score. Pre-game Mavs about -9.5. Dallas without Lively II; Nets without Mikel Brown Jr. and Egor Demin.", "pick": null},
+    {"away": "BOS", "home": "MIL", "homeProb": 0.18, "confidence": "low", "status": "live",
+     "note": "Bucks led 27-25 after the 1st quarter (8:40 pm ET update). Pre-game Celtics about -12.5, so a close start nudges Milwaukee up only a little.", "pick": null},
+    {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "live",
+     "note": "Tipped 10:00 am MYT. Pelicans about -1.5. Clippers out: Ingram, Beal, Isaiah Jackson, Yanic Konan Niederhauser; Pelicans without Yves Missi.", "pick": null},
+    {"away": "MIA", "home": "SAC", "homeProb": 0.19, "confidence": "medium", "status": "live",
+     "note": "Tipped 10:00 am MYT. Sabonis OUT (knee), plus Raynaud and Simmons out. Heat about -446 / Kings +346 on DraftKings.", "pick": null}
   ]
 }
