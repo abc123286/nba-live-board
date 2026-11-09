@@ -1,21 +1,21 @@
 {
-  "updated": "2026-11-09T00:16:00Z",
+  "updated": "2026-11-09T01:25:00Z",
   "slate": "Mon 9 Nov 2026 (Malaysia time) - US Sun 8 Nov games",
-  "summary": "New: Lauri Markkanen (wrist) is OUT for the Jazz tonight, while Keyonte George (illness) was cleared to play (both per Salt Lake Tribune via RotoWire/CBS). Lakers-Pistons (Doncic out) and Jazz-Wolves are under way, but I could not reach a live scoreboard this run, so those estimates are pre-game with no live price, so no live pick. No pick: no 2.00+ price shows a 4% edge. Next news: Nets-Mavs lineups around 8:00 am MYT, Celtics-Bucks around 8:30 am MYT.",
+  "summary": "New: Kings big man Domantas Sabonis is questionable (left knee soreness) for Heat-Kings, per Heat Nation; Keegan Murray is cleared. Celtics' Mitchell Robinson and Bucks' Gary Trent Jr. were listed questionable (illness) before tip. Four games are under way but I could not reach a working live scoreboard or live prices this run, so those estimates stay pre-game and there is no live pick. No pick: no 2.00+ price shows a 4% edge. Next news: Pelicans-Clippers and Heat-Kings lineups around 9:30 am MYT (Sabonis decision).",
   "games": [
     {"away": "PHI", "home": "CHI", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "Final: 76ers 127, Bulls 121.", "pick": null},
     {"away": "LAL", "home": "DET", "homeProb": 0.71, "confidence": "low", "status": "live",
-     "note": "In progress since 7:00 am MYT; live score not confirmed this run. Doncic OUT (back); Pistons without Jalen Duren and Isaiah Joe. Pre-game DraftKings: Pistons -264, Lakers +217.", "pick": null},
+     "note": "Tipped 7:00 am MYT and is probably late or finished; I could not confirm the score this run. Doncic OUT (back); Pistons without Jalen Duren and Isaiah Joe.", "pick": null},
     {"away": "UTA", "home": "MIN", "homeProb": 0.84, "confidence": "low", "status": "live",
-     "note": "Tipped 8:00 am MYT; live score not confirmed. Markkanen OUT (wrist) and Jaren Jackson Jr. and Nurkic out, but Keyonte George plays. Wolves still without Edwards and DiVincenzo.", "pick": null},
-    {"away": "BKN", "home": "DAL", "homeProb": 0.75, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:30 am Mon MYT. Mavericks about -9.5; Polymarket around 75% Dallas. Dereck Lively II out (foot) for Dallas; Nets without Mikel Brown Jr. and Egor Demin.", "pick": null},
-    {"away": "BOS", "home": "MIL", "homeProb": 0.15, "confidence": "medium", "status": "pre",
-     "note": "Tips 9:00 am Mon MYT. Celtics about -12.5; Polymarket around 15% Bucks. Bucks' Kobe Jones day-to-day (ankle); Celtics' Devin Carter still out.", "pick": null},
+     "note": "Tipped 8:00 am MYT; live score not confirmed. Markkanen OUT (wrist), Keyonte George plays. Wolves without Edwards and DiVincenzo.", "pick": null},
+    {"away": "BKN", "home": "DAL", "homeProb": 0.75, "confidence": "low", "status": "live",
+     "note": "Tipped 8:30 am MYT; live score not confirmed. Pre-game Mavs about -9.5 (Polymarket ~75%). Dallas without Lively II; Nets without Mikel Brown Jr. and Egor Demin, Grant Nelson day-to-day.", "pick": null},
+    {"away": "BOS", "home": "MIL", "homeProb": 0.15, "confidence": "low", "status": "live",
+     "note": "Tipped 9:00 am MYT; live score not confirmed. Pre-game Celtics about -12.5. Mitchell Robinson (BOS) and Gary Trent Jr. (MIL) were questionable with illness.", "pick": null},
     {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "pre",
-     "note": "Tips 10:00 am Mon MYT. Near coin flip (Polymarket about 52% Pelicans). Clippers missing Ingram, Beal, Isaiah Jackson and others; Pelicans without Yves Missi (knee).", "pick": null},
-    {"away": "MIA", "home": "SAC", "homeProb": 0.25, "confidence": "medium", "status": "pre",
-     "note": "Tips 10:00 am Mon MYT. Heat about -316 (Polymarket ~76%) with no injuries listed. Kings' Keegan Murray available.", "pick": null}
+     "note": "Tips 10:00 am MYT. Pelicans -1.5 (Covers: about 53% NOP). Clippers have five players out including Ingram and Beal; Pelicans without Yves Missi.", "pick": null},
+    {"away": "MIA", "home": "SAC", "homeProb": 0.24, "confidence": "medium", "status": "pre",
+     "note": "Tips 10:00 am MYT. Heat about -316 with no rotation injuries. Kings' Sabonis questionable (knee), Murray cleared, Raynaud and Simmons out.", "pick": null}
   ]
 }
