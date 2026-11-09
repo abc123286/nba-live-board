@@ -1,7 +1,7 @@
 {
-  "updated": "2026-11-09T03:14:00Z",
+  "updated": "2026-11-09T04:18:00Z",
   "slate": "Mon 9 Nov 2026 (Malaysia time) - US Sun 8 Nov games",
-  "summary": "Wolves beat the Jazz 115-100 (Dosunmu and LaMelo Ball combined for 50). Dallas led Brooklyn 66-46 late in the 2nd quarter, and Miami led Sacramento 68-59 at halftime with Sabonis out. I could not find current scores for Celtics-Bucks or Pelicans-Clippers, and no live prices, so those estimates are kept from last time and there is no live pick. No pick right now. The next slate (US Monday night) starts around 8:00 am Tue MYT; injury reports and lineups come out in the hours before.",
+  "summary": "Celtics beat the Bucks 117-97 (George and Tatum led) and the Mavericks crushed the Nets 130-93 (Cooper Flagg 25 points, 12 assists). Two late games are still going on the latest snapshots I found: Heat led the Kings 94-90 early in the 4th, and the Clippers led the Pelicans 108-97 in the 4th (the snapshot time is unclear, so treat these as rough). I found no current live prices, so there is no pick. The next slate (US Monday night) starts around 8:00 am Tue MYT; injury reports and lineups come out in the hours before.",
   "games": [
     {"away": "PHI", "home": "CHI", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "Final: 76ers 127, Bulls 121.", "pick": null},
@@ -9,13 +9,13 @@
      "note": "Final: Lakers 121, Pistons 116. Austin Reaves scored 43 with Doncic out.", "pick": null},
     {"away": "UTA", "home": "MIN", "homeProb": 1.0, "confidence": "high", "status": "final",
      "note": "Final: Timberwolves 115, Jazz 100. Ayo Dosunmu and LaMelo Ball combined for 50 points.", "pick": null},
-    {"away": "BKN", "home": "DAL", "homeProb": 0.97, "confidence": "medium", "status": "live",
-     "note": "Mavs led 66-46 with 18 seconds left in the 2nd quarter (last update I found); Cooper Flagg had 20 on 7-of-8 shooting. Likely in the 4th quarter now.", "pick": null},
-    {"away": "BOS", "home": "MIL", "homeProb": 0.18, "confidence": "low", "status": "live",
-     "note": "No new score found this run; last seen Bucks led 27-25 after the 1st quarter. Pre-game Celtics about -12.5, so estimate kept.", "pick": null},
-    {"away": "NOP", "home": "LAC", "homeProb": 0.48, "confidence": "low", "status": "live",
-     "note": "Tipped 10:00 am MYT; I could not find a current score. Clippers out: Ingram, Beal, Isaiah Jackson, Yanic Konan Niederhauser; Pelicans without Yves Missi.", "pick": null},
-    {"away": "MIA", "home": "SAC", "homeProb": 0.14, "confidence": "medium", "status": "live",
-     "note": "Heat led 68-59 at halftime (theScore). Kings without Sabonis (knee), Raynaud and Murray; Miami were about -11.5 before tip.", "pick": null}
+    {"away": "BKN", "home": "DAL", "homeProb": 1.0, "confidence": "high", "status": "final",
+     "note": "Final: Mavericks 130, Nets 93. Cooper Flagg had 25 points and a career-best 12 assists in a wire-to-wire win.", "pick": null},
+    {"away": "BOS", "home": "MIL", "homeProb": 0.0, "confidence": "high", "status": "final",
+     "note": "Final: Celtics 117, Bucks 97. A big third quarter, led by Paul George and Jayson Tatum, decided it.", "pick": null},
+    {"away": "NOP", "home": "LAC", "homeProb": 0.82, "confidence": "low", "status": "live",
+     "note": "Was tied 88-88 late in the 3rd; a later snapshot showed Clippers ahead 108-97 in the 4th. Clippers still without Ingram, Beal, Isaiah Jackson and Konan Niederhauser.", "pick": null},
+    {"away": "MIA", "home": "SAC", "homeProb": 0.25, "confidence": "low", "status": "live",
+     "note": "Latest snapshot (theScore): Heat 94, Kings 90 early in the 4th after the Kings opened the quarter on a 9-3 run. Kings without Sabonis (knee).", "pick": null}
   ]
 }
