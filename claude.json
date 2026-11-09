@@ -1,23 +1,23 @@
 {
-  "updated": "2026-11-09T05:15:26Z",
+  "updated": "2026-11-09T13:20:46Z",
   "slate": "Tue 10 Nov 2026 (Malaysia time) - US Mon 9 Nov games",
-  "summary": "Sunday's late games are final: Heat won 114-108 in Sacramento and the Clippers beat the Pelicans 139-123 to end a 7-game skid. Tonight's 8-game slate starts at 8:00 am Tue MYT. The big story is Denver: Jokic, Murray, Braun, Gordon, Cam Johnson and DeRozan are all questionable at Houston after travel delays from Mexico City, and Luka Doncic (back) is questionable for the Lakers on a back-to-back at Atlanta. No pick right now - prices look fair; the Nuggets and Lakers news (about 30-60 min before tip) is what to watch.",
+  "summary": "Since the last check: Charlotte's Brandon Miller (hip) is now ruled OUT vs Cleveland, and the Lakers have flipped to slight favourites in Atlanta (Kalshi ~53% Lakers) as the market expects Luka Doncic to play, though LA has not yet posted its injury report. Denver's whole starting five plus DeRozan are still questionable at Houston, and the Rockets have firmed to about 63-68% on Kalshi. No pick right now - nothing at 2.00+ shows a real edge. The next big news is official injury reports this afternoon US time and lineups about 30-60 min before the 8:00 am MYT tip-offs.",
   "games": [
-    {"away": "LAL", "home": "ATL", "homeProb": 0.54, "confidence": "low", "status": "pre",
-     "note": "Tips 8:00 am MYT. Hawks -135 / Lakers +115 (2.15). Doncic (back) questionable and LA is on a back-to-back after winning in Detroit; Hawks' Landale questionable, Newell out.", "pick": null},
-    {"away": "CLE", "home": "CHA", "homeProb": 0.36, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:00 am MYT. Cavs -190 / Hornets +165. Charlotte is without Knueppel and Schroder with Brandon Miller a game-time call; Cleveland's Jarrett Allen (knee) is questionable (one preview lists him out).", "pick": null},
+    {"away": "LAL", "home": "ATL", "homeProb": 0.47, "confidence": "low", "status": "pre",
+     "note": "Tips 8:00 am MYT. Market has moved to the Lakers (Kalshi ~53% LAL, earlier Hawks -135), suggesting Doncic (back, missed Sunday) is expected to play; Lakers had not released Monday's report yet. LA is on a back-to-back.", "pick": null},
+    {"away": "CLE", "home": "CHA", "homeProb": 0.30, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:00 am MYT. Brandon Miller (hip) is now OUT, joining Knueppel and Schroder; Kalshi has Cleveland ~72%. Cavs' Jarrett Allen still questionable.", "pick": null},
     {"away": "WAS", "home": "DET", "homeProb": 0.70, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:00 am MYT. Pistons -275 / Wizards +225. Wizards' Anthony Davis (ankle) questionable and Ayton out; Pistons without Jalen Duren and Isaiah Joe.", "pick": null},
+     "note": "Tips 8:00 am MYT. Pistons -275 / Wizards +225. Wizards' Anthony Davis (ankle) still questionable and Ayton out; Pistons without Jalen Duren and Isaiah Joe.", "pick": null},
     {"away": "MEM", "home": "TOR", "homeProb": 0.57, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:30 am MYT. Raptors -152 / Grizzlies +128. Toronto's Scottie Barnes (groin) and Immanuel Quickley (hamstring) are questionable; Memphis without Isaiah Stewart.", "pick": null},
+     "note": "Tips 8:30 am MYT. Raptors -152 / Grizzlies +128. Scottie Barnes (adductor/groin) and Immanuel Quickley (hamstring) remain questionable after missing the Bucks game; Memphis without Isaiah Stewart.", "pick": null},
     {"away": "IND", "home": "DAL", "homeProb": 0.62, "confidence": "medium", "status": "pre",
-     "note": "Tips 9:00 am MYT. Mavericks -180 / Pacers +155. Dallas is coming off a 130-93 rout of Brooklyn; Pacers' TJ McConnell questionable.", "pick": null},
-    {"away": "DEN", "home": "HOU", "homeProb": 0.61, "confidence": "low", "status": "pre",
-     "note": "Tips 9:30 am MYT. Rockets -170 / Nuggets +145. All five Nuggets starters plus DeRozan are questionable (Jokic elbow sprain) after a delayed flight home from Mexico City; Houston has lost two straight and is without Capela and Adams. This line will swing a lot on Denver's lineup.", "pick": null},
+     "note": "Tips 9:00 am MYT. Mavericks -180 / Pacers +155. No new news found; Pacers' TJ McConnell questionable.", "pick": null},
+    {"away": "DEN", "home": "HOU", "homeProb": 0.64, "confidence": "low", "status": "pre",
+     "note": "Tips 9:30 am MYT. Jokic (elbow), Murray, Braun, Gordon, Cam Johnson and DeRozan all still questionable after the delayed flight from Mexico City; Kalshi now has Houston ~63-68%. Rockets without Capela and Adams. Wait for Denver's lineup.", "pick": null},
     {"away": "SAS", "home": "PHX", "homeProb": 0.27, "confidence": "medium", "status": "pre",
-     "note": "Tips 10:00 am MYT. Spurs -310 / Suns +250. Spurs without Tobias Harris, Devin Vassell questionable; Suns' Jordan Goodwin questionable.", "pick": null},
+     "note": "Tips 10:00 am MYT. Spurs -310 / Suns +250. No new news found; Spurs without Tobias Harris, Vassell questionable.", "pick": null},
     {"away": "NOP", "home": "GSW", "homeProb": 0.76, "confidence": "medium", "status": "pre",
-     "note": "Tips 11:00 am MYT. Warriors about -332, spread 9.5. Pelicans on a back-to-back after losing 139-123 to the Clippers; Warriors without Porzingis, Moody and Jimmy Butler.", "pick": null}
+     "note": "Tips 11:00 am MYT. Warriors about -332. No new news found; Pelicans on a back-to-back, Warriors without Porzingis, Moody and Butler.", "pick": null}
   ]
 }
