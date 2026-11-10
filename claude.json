@@ -1,83 +1,23 @@
 {
-  "updated": "2026-11-10T00:22:00Z",
+  "updated": "2026-11-10T01:15:09Z",
   "slate": "Tue 10 Nov 2026 (Malaysia time) - US Mon 9 Nov games",
-  "summary": "Big news: Toronto has ruled OUT Scottie Barnes, Immanuel Quickley and Collin Murray-Boyles (on top of Kawhi Leonard) vs Memphis, so we now rate the Grizzlies slight favourites - Memphis is a pick only if you can still get 2.00 or better (the price has probably moved). Anthony Davis is available for Washington at Detroit. The 8:00 am MYT games have tipped; Hawks lead the Lakers early. We could not find live scores for Cavs-Hornets or Wizards-Pistons, so those estimates are unchanged. Next news: lineups for Pacers-Mavs (9:00) and Nuggets-Rockets (9:30 MYT) about 30 min before tip.",
+  "summary": "Lakers lead the Hawks 68-57 around halftime even without Reaves. New: New Orleans is resting Zion Williamson at Golden State (Trey Murphy III also out), so the Warriors look a bit stronger. Live scores for Cavs-Hornets, Wizards-Pistons and Grizzlies-Raptors were patchy or unavailable, and we found no live prices, so there are no live picks; the Memphis pick from last check is removed because the game has tipped. Next news: Nuggets-Rockets lineups ~9:00 MYT (tip 9:30), Spurs-Suns 10:00 and Pelicans-Warriors 11:00 MYT.",
   "games": [
-    {
-      "away": "LAL",
-      "home": "ATL",
-      "homeProb": 0.62,
-      "confidence": "medium",
-      "status": "live",
-      "note": "LIVE: Hawks led 15-9 early in the 1st quarter (about 6:53 left). Reaves is out for the Lakers; pre-game line was Hawks -143 / Lakers +120.",
-      "pick": null
-    },
-    {
-      "away": "CLE",
-      "home": "CHA",
-      "homeProb": 0.27,
-      "confidence": "medium",
-      "status": "live",
-      "note": "Tipped 8:00 am MYT; we could not find a live score. Cavs were about -340 pre-game; Jarrett Allen (knee) out, Charlotte missing Miller, Knueppel, Schroder and Grant Williams.",
-      "pick": null
-    },
-    {
-      "away": "WAS",
-      "home": "DET",
-      "homeProb": 0.78,
-      "confidence": "medium",
-      "status": "live",
-      "note": "Tipped 8:00 am MYT; no live score found. Anthony Davis (ankle) was upgraded to AVAILABLE for Washington. Pre-game Pistons -485 / Wizards +370; Detroit without Duren and Isaiah Joe.",
-      "pick": null
-    },
-    {
-      "away": "MEM",
-      "home": "TOR",
-      "homeProb": 0.46,
-      "confidence": "low",
-      "status": "pre",
-      "note": "Tips about 8:30-8:40 am MYT. Toronto ruled OUT Barnes, Quickley and Murray-Boyles, plus Kawhi Leonard. Earlier line was Raptors -154 / Grizzlies +130, set before this news; Memphis still without Stewart and Pippen Jr.",
-      "pick": {
-        "team": "MEM",
-        "minOdds": 2.0,
-        "reason": "Raptors lost three key players late; only bet if Memphis is still 2.00+, which may be gone."
-      }
-    },
-    {
-      "away": "IND",
-      "home": "DAL",
-      "homeProb": 0.59,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:00 am MYT. Mavericks about -148 / Pacers +126. Pacers still without Haliburton (hamstring), McConnell day-to-day; Mavs without Lively.",
-      "pick": null
-    },
-    {
-      "away": "DEN",
-      "home": "HOU",
-      "homeProb": 0.72,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 9:30 am MYT. Jokic, Murray and the other Denver starters are probable and expected to play, but Kalshi still had the Rockets at 75 cents (Nuggets +284) after that news, and DraftKings had Houston -9.5. Denver is tired after a delayed flight from Mexico City; Rockets without Capela and Adams.",
-      "pick": null
-    },
-    {
-      "away": "SAS",
-      "home": "PHX",
-      "homeProb": 0.25,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 10:00 am MYT. Spurs about -370 / Suns +295. Spurs without Tobias Harris, Vassell day-to-day; Suns without Mark Williams.",
-      "pick": null
-    },
-    {
-      "away": "NOP",
-      "home": "GSW",
-      "homeProb": 0.76,
-      "confidence": "medium",
-      "status": "pre",
-      "note": "Tips 11:00 am MYT. Warriors about -375 / Pelicans +300. Pelicans on a back-to-back without Missi and Trey Murphy III; Warriors without Porzingis, Moody, Butler and Will Richard.",
-      "pick": null
-    }
+    {"away": "LAL", "home": "ATL", "homeProb": 0.22, "confidence": "medium", "status": "live",
+     "note": "LIVE: Lakers lead 68-57 late in the 2nd quarter (ESPN gives LA about 85%). Reaves and Grimes are out for the Lakers.", "pick": null},
+    {"away": "CLE", "home": "CHA", "homeProb": 0.30, "confidence": "low", "status": "live",
+     "note": "LIVE: last score we found was Hornets 29-28 early in the 2nd quarter (may be out of date). Jarrett Allen is playing for Cleveland; Charlotte without Miller, Knueppel, Schroder and Grant Williams.", "pick": null},
+    {"away": "WAS", "home": "DET", "homeProb": 0.78, "confidence": "low", "status": "live",
+     "note": "Tipped 8:00 am MYT; we could not find a live score. Anthony Davis was available for Washington; Detroit without Duren and Isaiah Joe. Pre-game Pistons about -485.", "pick": null},
+    {"away": "MEM", "home": "TOR", "homeProb": 0.46, "confidence": "low", "status": "live",
+     "note": "LIVE: Raptors led 8-5 early in the 1st (latest score we found). Toronto has only Barrett, Poeltl, Anderson, Shead and Walter starting - Barnes, Quickley, Murray-Boyles and Leonard are all out.", "pick": null},
+    {"away": "IND", "home": "DAL", "homeProb": 0.63, "confidence": "medium", "status": "live",
+     "note": "Tipped about 9:00 am MYT; no score found yet. DraftKings closed Mavericks -191 / Pacers +160; Pacers without Haliburton, Mavs without Lively.", "pick": null},
+    {"away": "DEN", "home": "HOU", "homeProb": 0.68, "confidence": "low", "status": "pre",
+     "note": "Tips 9:30 am MYT. Jokic, Murray and the other Denver starters are probable; Houston without Adams and likely Capela. Prices we found disagree (DraftKings article Rockets -173 / Nuggets +146, earlier Kalshi ~75% Rockets), so check the real price.", "pick": null},
+    {"away": "SAS", "home": "PHX", "homeProb": 0.25, "confidence": "medium", "status": "pre",
+     "note": "Tips 10:00 am MYT. DraftKings Spurs -372 / Suns +296. Spurs without Vassell, Tobias Harris and Quaintance; Suns without Mark Williams.", "pick": null},
+    {"away": "NOP", "home": "GSW", "homeProb": 0.78, "confidence": "medium", "status": "pre",
+     "note": "Tips 11:00 am MYT. NEW: Zion Williamson is resting, and Trey Murphy III is also out for the Pelicans on a back-to-back. Warriors were about -375 before the Zion news.", "pick": null}
   ]
 }
