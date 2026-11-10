@@ -1,23 +1,23 @@
 {
-  "updated": "2026-11-10T03:22:00Z",
+  "updated": "2026-11-10T04:12:00Z",
   "slate": "Tue 10 Nov 2026 (Malaysia time) - US Mon 9 Nov games",
-  "summary": "Four games are confirmed final: Lakers beat Atlanta 124-114, Charlotte upset Cleveland 124-112 (without Brandon Miller), Detroit beat Washington 122-111 and Memphis won 118-102 in Toronto. Pacers-Mavericks and Nuggets-Rockets should be ending now, but the score pages we could reach were stale, so check your live feed. Spurs-Suns and Pelicans-Warriors are in progress; we found no live prices, so no picks. This is the last game window of the day; the next slate is the US Tuesday games on Wednesday morning Malaysia time.",
+  "summary": "Six of eight games are final per a scores ticker: Dallas edged Indiana 125-122 and Houston beat Denver 110-100. Spurs-Suns is a Spurs blowout late in the 4th (about 114-88) and Warriors-Pelicans is a Warriors rout (about 72-43 around half). We found no live prices and most score pages were stale, so there are no picks; check your live feed. Next slate: the US Tuesday games, starting Wednesday morning Malaysia time.",
   "games": [
     {"away": "LAL", "home": "ATL", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "FINAL: Lakers 124, Hawks 114. LA's bench led them to a sixth straight win.", "pick": null},
     {"away": "CLE", "home": "CHA", "homeProb": 1.0, "confidence": "high", "status": "final",
-     "note": "FINAL: Hornets 124, Cavaliers 112. Charlotte hit 23 of 46 threes (Grayson Allen 27 pts) and snapped a six-game losing run, even without Brandon Miller (groin).", "pick": null},
+     "note": "FINAL: Hornets 124, Cavaliers 112. Charlotte hit 23 of 46 threes (Grayson Allen 27 pts) and snapped a six-game losing run without Brandon Miller.", "pick": null},
     {"away": "WAS", "home": "DET", "homeProb": 1.0, "confidence": "high", "status": "final",
      "note": "FINAL: Pistons 122, Wizards 111. John Collins scored a season high.", "pick": null},
     {"away": "MEM", "home": "TOR", "homeProb": 0.0, "confidence": "high", "status": "final",
      "note": "FINAL: Grizzlies 118, Raptors 102. A short-handed Toronto never recovered.", "pick": null},
-    {"away": "IND", "home": "DAL", "homeProb": 0.45, "confidence": "low", "status": "live",
-     "note": "Late in the game but we could not confirm the score. Pacers led 66-56 at half (Siakam 26 at the break); one site showed about 108-105 later. Check the live feed.", "pick": null},
-    {"away": "DEN", "home": "HOU", "homeProb": 0.84, "confidence": "low", "status": "live",
-     "note": "Late in the game but no fresh score. Rockets led 39-24 in the 2nd quarter and a later headline showed about 77-68 Houston.", "pick": null},
-    {"away": "SAS", "home": "PHX", "homeProb": 0.25, "confidence": "low", "status": "live",
-     "note": "In progress (tipped 10:00 am MYT); no live score or price found. Pre-game DraftKings had Spurs -372 / Suns +296; Spurs without Tobias Harris and Quaintance, Suns without Mark Williams and Goodwin.", "pick": null},
-    {"away": "NOP", "home": "GSW", "homeProb": 0.80, "confidence": "low", "status": "live",
-     "note": "Tipped 11:00 am MYT; no live score found. Pre-game Warriors -382 / Pelicans +303. Pelicans without Zion, Trey Murphy III and Missi; Warriors without Porzingis, Butler and Moody.", "pick": null}
+    {"away": "IND", "home": "DAL", "homeProb": 1.0, "confidence": "medium", "status": "final",
+     "note": "FINAL (per scores ticker): Mavericks 125, Pacers 122. Indiana led 66-56 at half, but Dallas came back. We could not confirm this from a recap.", "pick": null},
+    {"away": "DEN", "home": "HOU", "homeProb": 1.0, "confidence": "medium", "status": "final",
+     "note": "FINAL (per scores ticker): Rockets 110, Nuggets 100. Houston led most of the way and won without Capela and Adams.", "pick": null},
+    {"away": "SAS", "home": "PHX", "homeProb": 0.01, "confidence": "medium", "status": "live",
+     "note": "Late 4th quarter: Spurs lead by about 26 (114-88 on the ticker). San Antonio came in on an 8-game win streak.", "pick": null},
+    {"away": "NOP", "home": "GSW", "homeProb": 0.97, "confidence": "low", "status": "live",
+     "note": "Warriors lead by about 29 (72-43 on the ticker, around halftime). Score sources are lagging, so check your live feed. Pelicans are without Zion, Trey Murphy III and Missi.", "pick": null}
   ]
 }
