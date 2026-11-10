@@ -1,23 +1,19 @@
 {
-  "updated": "2026-11-10T04:12:00Z",
-  "slate": "Tue 10 Nov 2026 (Malaysia time) - US Mon 9 Nov games",
-  "summary": "Six of eight games are final per a scores ticker: Dallas edged Indiana 125-122 and Houston beat Denver 110-100. Spurs-Suns is a Spurs blowout late in the 4th (about 114-88) and Warriors-Pelicans is a Warriors rout (about 72-43 around half). We found no live prices and most score pages were stale, so there are no picks; check your live feed. Next slate: the US Tuesday games, starting Wednesday morning Malaysia time.",
+  "updated": "2026-11-10T05:20:00Z",
+  "slate": "Wed 11 Nov 2026 (Malaysia time) - US Tue 10 Nov games",
+  "summary": "Monday's games are all over: the Spurs beat the Suns and the Warriors routed the Pelicans (we could not confirm the exact final scores). Six games tip off Wednesday morning Malaysia time, starting with Bucks at Knicks at 8:30 AM. No game has a side at 2.00+ with enough edge, so there are no picks right now. The big news to watch: Sabonis (Kings) and Markkanen (Jazz) are questionable, and the Thunder are missing Jalen Williams, Holmgren and Wallace. Lineups come out about 30 minutes before each tip.",
   "games": [
-    {"away": "LAL", "home": "ATL", "homeProb": 0.0, "confidence": "high", "status": "final",
-     "note": "FINAL: Lakers 124, Hawks 114. LA's bench led them to a sixth straight win.", "pick": null},
-    {"away": "CLE", "home": "CHA", "homeProb": 1.0, "confidence": "high", "status": "final",
-     "note": "FINAL: Hornets 124, Cavaliers 112. Charlotte hit 23 of 46 threes (Grayson Allen 27 pts) and snapped a six-game losing run without Brandon Miller.", "pick": null},
-    {"away": "WAS", "home": "DET", "homeProb": 1.0, "confidence": "high", "status": "final",
-     "note": "FINAL: Pistons 122, Wizards 111. John Collins scored a season high.", "pick": null},
-    {"away": "MEM", "home": "TOR", "homeProb": 0.0, "confidence": "high", "status": "final",
-     "note": "FINAL: Grizzlies 118, Raptors 102. A short-handed Toronto never recovered.", "pick": null},
-    {"away": "IND", "home": "DAL", "homeProb": 1.0, "confidence": "medium", "status": "final",
-     "note": "FINAL (per scores ticker): Mavericks 125, Pacers 122. Indiana led 66-56 at half, but Dallas came back. We could not confirm this from a recap.", "pick": null},
-    {"away": "DEN", "home": "HOU", "homeProb": 1.0, "confidence": "medium", "status": "final",
-     "note": "FINAL (per scores ticker): Rockets 110, Nuggets 100. Houston led most of the way and won without Capela and Adams.", "pick": null},
-    {"away": "SAS", "home": "PHX", "homeProb": 0.01, "confidence": "medium", "status": "live",
-     "note": "Late 4th quarter: Spurs lead by about 26 (114-88 on the ticker). San Antonio came in on an 8-game win streak.", "pick": null},
-    {"away": "NOP", "home": "GSW", "homeProb": 0.97, "confidence": "low", "status": "live",
-     "note": "Warriors lead by about 29 (72-43 on the ticker, around halftime). Score sources are lagging, so check your live feed. Pelicans are without Zion, Trey Murphy III and Missi.", "pick": null}
+    {"away": "MIL", "home": "NYK", "homeProb": 0.88, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:30 AM MYT. Knicks are -1205 (Bucks +750, Polymarket NYK 87c) against a 1-9 Bucks team. Josh Hart (ankle) is questionable for New York.", "pick": null},
+    {"away": "BOS", "home": "PHI", "homeProb": 0.50, "confidence": "medium", "status": "pre",
+     "note": "Tips 9:00 AM MYT. A coin flip between two hot teams (PHI 9-2, BOS 8-2): FanDuel has 76ers -112 / Celtics -104, Polymarket about 49-52. No injuries listed.", "pick": null},
+    {"away": "LAC", "home": "PHX", "homeProb": 0.61, "confidence": "low", "status": "pre",
+     "note": "Tips 10:00 AM MYT. Suns about -160 (Clippers +160, Polymarket PHX 64c). Phoenix played the Spurs last night (back-to-back), while the 2-7 Clippers are rested.", "pick": null},
+    {"away": "MIA", "home": "UTA", "homeProb": 0.20, "confidence": "medium", "status": "pre",
+     "note": "Tips 10:00 AM MYT. Heat are -376 to -450 (Jazz +320 to +365). Utah (1-9) is without Keyonte George, and Lauri Markkanen (wrist) is questionable.", "pick": null},
+    {"away": "ORL", "home": "SAC", "homeProb": 0.33, "confidence": "low", "status": "pre",
+     "note": "Tips 11:00 AM MYT. Magic -5.5 (Kings +186, Polymarket SAC 32c). Orlando is missing Banchero and Suggs, and Bane is day-to-day; Sabonis (knee) is questionable for Sacramento.", "pick": null},
+    {"away": "OKC", "home": "POR", "homeProb": 0.47, "confidence": "low", "status": "pre",
+     "note": "Tips 12:00 PM MYT. Polymarket has it close (OKC 53c, POR 48c) on thin volume; we found no bookmaker line. OKC is without Jalen Williams, Holmgren and Wallace, and Portland is without Morant and Sharpe.", "pick": null}
   ]
 }
