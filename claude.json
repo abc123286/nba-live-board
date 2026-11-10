@@ -1,19 +1,19 @@
 {
-  "updated": "2026-11-10T05:20:00Z",
+  "updated": "2026-11-10T13:25:00Z",
   "slate": "Wed 11 Nov 2026 (Malaysia time) - US Tue 10 Nov games",
-  "summary": "Monday's games are all over: the Spurs beat the Suns and the Warriors routed the Pelicans (we could not confirm the exact final scores). Six games tip off Wednesday morning Malaysia time, starting with Bucks at Knicks at 8:30 AM. No game has a side at 2.00+ with enough edge, so there are no picks right now. The big news to watch: Sabonis (Kings) and Markkanen (Jazz) are questionable, and the Thunder are missing Jalen Williams, Holmgren and Wallace. Lineups come out about 30 minutes before each tip.",
+  "summary": "Six games tip off Wednesday morning Malaysia time, starting with Bucks at Knicks at 8:30 AM; nothing is live yet. Since the last check, the latest injury reports add that the Clippers are without Bradley Beal and Brandon Ingram, and Boston plays the second night of a back-to-back. Sabonis (Kings), Markkanen (Jazz), Herro (Bucks) and Josh Hart (Knicks) are still questionable. No side at 2.00+ has enough edge, so there are no picks right now; lineups come out about 30 minutes before each tip.",
   "games": [
-    {"away": "MIL", "home": "NYK", "homeProb": 0.88, "confidence": "medium", "status": "pre",
-     "note": "Tips 8:30 AM MYT. Knicks are -1205 (Bucks +750, Polymarket NYK 87c) against a 1-9 Bucks team. Josh Hart (ankle) is questionable for New York.", "pick": null},
-    {"away": "BOS", "home": "PHI", "homeProb": 0.50, "confidence": "medium", "status": "pre",
-     "note": "Tips 9:00 AM MYT. A coin flip between two hot teams (PHI 9-2, BOS 8-2): FanDuel has 76ers -112 / Celtics -104, Polymarket about 49-52. No injuries listed.", "pick": null},
-    {"away": "LAC", "home": "PHX", "homeProb": 0.61, "confidence": "low", "status": "pre",
-     "note": "Tips 10:00 AM MYT. Suns about -160 (Clippers +160, Polymarket PHX 64c). Phoenix played the Spurs last night (back-to-back), while the 2-7 Clippers are rested.", "pick": null},
-    {"away": "MIA", "home": "UTA", "homeProb": 0.20, "confidence": "medium", "status": "pre",
-     "note": "Tips 10:00 AM MYT. Heat are -376 to -450 (Jazz +320 to +365). Utah (1-9) is without Keyonte George, and Lauri Markkanen (wrist) is questionable.", "pick": null},
+    {"away": "MIL", "home": "NYK", "homeProb": 0.87, "confidence": "medium", "status": "pre",
+     "note": "Tips 8:30 AM MYT. Knicks -1205 / Bucks +750 on FanDuel (spread NYK -15.5), Polymarket NYK 86%. Tyler Herro (Bucks) and Josh Hart (Knicks) are questionable.", "pick": null},
+    {"away": "BOS", "home": "PHI", "homeProb": 0.51, "confidence": "medium", "status": "pre",
+     "note": "Tips 9:00 AM MYT. A coin flip: FanDuel had 76ers -112 / Celtics -104, Polymarket about 49-51. Boston is on the second night of a back-to-back; PHI is missing only bench bigs (Barlow, Bona, Hukporti).", "pick": null},
+    {"away": "LAC", "home": "PHX", "homeProb": 0.62, "confidence": "low", "status": "pre",
+     "note": "Tips 10:00 AM MYT. Suns about -160 (Polymarket PHX 62%). The Clippers are out Bradley Beal and Brandon Ingram, but Phoenix played last night and hadn't filed its injury report yet.", "pick": null},
+    {"away": "MIA", "home": "UTA", "homeProb": 0.21, "confidence": "medium", "status": "pre",
+     "note": "Tips 10:00 AM MYT. Heat about -376 to -450 (Polymarket MIA 74%). Utah is without Keyonte George, Jaren Jackson Jr. and Nurkic, and Markkanen (wrist) is questionable; Giannis is listed probable for Miami.", "pick": null},
     {"away": "ORL", "home": "SAC", "homeProb": 0.33, "confidence": "low", "status": "pre",
-     "note": "Tips 11:00 AM MYT. Magic -5.5 (Kings +186, Polymarket SAC 32c). Orlando is missing Banchero and Suggs, and Bane is day-to-day; Sabonis (knee) is questionable for Sacramento.", "pick": null},
-    {"away": "OKC", "home": "POR", "homeProb": 0.47, "confidence": "low", "status": "pre",
-     "note": "Tips 12:00 PM MYT. Polymarket has it close (OKC 53c, POR 48c) on thin volume; we found no bookmaker line. OKC is without Jalen Williams, Holmgren and Wallace, and Portland is without Morant and Sharpe.", "pick": null}
+     "note": "Tips 11:00 AM MYT. Magic -5.5 (Kings +186, Polymarket SAC 32%). Orlando is missing Banchero and Suggs, though Bane is expected back. Sabonis and Keegan Murray are questionable for Sacramento.", "pick": null},
+    {"away": "OKC", "home": "POR", "homeProb": 0.45, "confidence": "low", "status": "pre",
+     "note": "Tips around 11 AM-12 PM MYT. Thunder are 2.5-point road favourites (Polymarket POR 45%). OKC is without Jalen Williams, Holmgren and Wallace; Portland is without Morant and Sharpe.", "pick": null}
   ]
 }
