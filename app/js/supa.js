@@ -128,7 +128,7 @@ export async function updateProfile(patch) {
 }
 
 // ---------- comments (game-level when playId is null, play-level otherwise) ----------
-const COMMENT_SELECT = "id, game_id, play_id, parent_id, user_id, body, created_at, edited_at, deleted, like_count, reply_count, profiles(username, display_name, avatar_color)";
+const COMMENT_SELECT = "id, game_id, play_id, parent_id, user_id, body, created_at, edited_at, deleted, like_count, reply_count, profiles!comments_user_id_fkey(username, display_name, avatar_color)";
 
 export async function listComments(gameId, playId = null, { limit = 100 } = {}) {
   const c = await need();
@@ -195,7 +195,7 @@ export async function recentComments(limit = 30) {
 }
 
 // ---------- live game chat ----------
-const CHAT_SELECT = "id, game_id, user_id, body, created_at, profiles(username, display_name, avatar_color)";
+const CHAT_SELECT = "id, game_id, user_id, body, created_at, profiles!chat_messages_user_id_fkey(username, display_name, avatar_color)";
 export async function chatHistory(gameId, limit = 60) {
   const c = await need();
   const rows = check(await c.from("chat_messages").select(CHAT_SELECT).eq("game_id", gameId).eq("hidden", false).order("created_at", { ascending: false }).limit(limit));
