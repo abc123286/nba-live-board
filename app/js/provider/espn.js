@@ -93,7 +93,7 @@ function status(st = {}) {
     period: n(st.period) || 0,
     clock: st.displayClock || "",
     completed: !!t.completed,
-    name: t.name || "",
+    statusName: t.name || "",
   };
 }
 
