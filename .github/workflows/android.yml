@@ -1,0 +1,64 @@
+name: Android APK
+
+on:
+  push:
+    branches: [main]
+    paths: ["app/**", ".github/workflows/android.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - uses: android-actions/setup-android@v3
+
+      - name: Wrap the web app with Capacitor
+        run: |
+          mkdir build-android && cd build-android
+          npm init -y >/dev/null
+          npm install @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          cp -r ../app www
+          rm -rf www/supabase
+          cat > capacitor.config.json <<'JSON'
+          {
+            "appId": "io.github.abc123286.nbalive",
+            "appName": "NBA Live",
+            "webDir": "www",
+            "server": { "androidScheme": "https" },
+            "android": { "backgroundColor": "#0a0c11" }
+          }
+          JSON
+          npx cap add android
+          npx cap sync android
+
+      - name: Build debug APK
+        working-directory: build-android/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+          cp app/build/outputs/apk/debug/app-debug.apk ../../NBA-Live.apk
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: NBA-Live-apk
+          path: NBA-Live.apk
+
+      - name: Publish to the "android-latest" release (direct phone download)
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: android-latest
+          name: NBA Live — latest Android build
+          body: "Debug build of the NBA Live app. Download NBA-Live.apk on your Android phone and open it to install (allow installs from your browser when asked)."
+          prerelease: true
+          files: NBA-Live.apk

@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://esm.sh; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com https://*.supabase.co wss://*.supabase.co https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self'; form-action 'self'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta name="theme-color" content="#0b0d12">
+<title>NBA Live</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/app.css?v=1">
+<script src="js/theme-boot.js"></script>
+</head>
+<body>
+<div id="shell">
+  <aside id="sidebar" aria-label="Main navigation">
+    <a class="brand" href="#/"><span class="brand-ball"></span><span>NBA<b>LIVE</b></span></a>
+    <nav class="navlist" id="navSide"></nav>
+    <div class="side-foot" id="sideFoot"></div>
+  </aside>
+  <div id="main">
+    <header id="topbar">
+      <a class="brand mob" href="#/"><span class="brand-ball"></span><span>NBA<b>LIVE</b></span></a>
+      <div id="fresh" class="fresh" role="status" aria-live="polite"></div>
+      <div class="top-actions">
+        <a class="iconbtn" href="#/notifications" id="bell" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M12 22a2.5 2.5 0 0 0 2.4-1.8H9.6A2.5 2.5 0 0 0 12 22Zm7-6V11a7 7 0 0 0-5.5-6.8V3.5a1.5 1.5 0 0 0-3 0v.7A7 7 0 0 0 5 11v5l-2 2v1h18v-1l-2-2Z"/></svg><i id="bellCount" hidden></i></a>
+        <button class="iconbtn" id="themeBtn" aria-label="Switch light or dark theme"><svg viewBox="0 0 24 24"><path id="themeIcon" d="M12 3a9 9 0 1 0 9 9 7 7 0 0 1-9-9Z"/></svg></button>
+        <a class="iconbtn" href="#/profile" id="meBtn" aria-label="Profile"></a>
+      </div>
+    </header>
+    <div id="banner" hidden></div>
+    <main id="view" tabindex="-1"></main>
+  </div>
+  <nav id="bottomnav" aria-label="Main navigation"></nav>
+</div>
+<div id="sheetRoot"></div>
+<div id="toasts" aria-live="polite"></div>
+<script type="module" src="js/main.js?v=1"></script>
+</body>
+</html>

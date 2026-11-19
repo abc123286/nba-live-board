@@ -27,3 +27,16 @@ ESPN's feed lists each team's starters and every substitution ("X enters the gam
 Run the free helper on a computer: open this folder, right-click → **Open in Terminal**, type `py relay.py`, press Enter, keep the window open.
 
 The odds board is the main page (`index.html`).
+
+## NBA Live app (`/app/`)
+
+A full fan app at **https://abc123286.github.io/nba-live-board/app/**: live scoreboard, game centre
+(overview, play-by-play with filters, box score, team statistics, interactive shot chart, discussion),
+player directory and profiles with live tracking, follows and in-app alerts, and accounts/community via Supabase.
+
+- No build step: plain ES modules in `app/js/`. Data provider adapter: `app/js/provider/espn.js`
+  (swap for a licensed provider later without touching views).
+- Community database: run `app/supabase/schema.sql` in Supabase, then put the Project URL and the
+  **anon/publishable** key in `app/js/config.js` (never the service_role key).
+- Android: every push to `app/` builds an APK with Capacitor in GitHub Actions and publishes it to the
+  `android-latest` release (`NBA-Live.apk`).
