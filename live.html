@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NBA Live</title>
+<meta name="theme-color" content="#0d1117">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* One visual world: an arena at night. Scoreboard first, then top performers, then game cards.
+   Game view: score header, then tabs for Court (lineups + substitutions), Box score, Plays. */
+:root{
+  --bg:#0d1117; --panel:#151b24; --panel2:#1b2330; --line:#263041; --ink:#eef2f7; --muted:#8d99ad;
+  --accent:#ff8a3d; --live:#ff4d4d; --in:#3ddc84; --out:#ff6b6b; --warn:#ffc857;
+  --display:"Barlow Condensed","Arial Narrow",sans-serif; --body:"IBM Plex Sans",system-ui,sans-serif; --mono:"IBM Plex Mono",ui-monospace,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--body)}
+a{color:inherit}
+button{font:inherit;color:inherit}
+button:focus-visible,a:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:14px 16px 64px;display:grid;gap:18px}
+h1,h2,h3{font-family:var(--display);margin:0;letter-spacing:.02em;text-wrap:balance}
+h2{font-size:22px;text-transform:uppercase}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.muted{color:var(--muted)} .small{font-size:12px}
+/* top bar */
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px}
+.brand{display:flex;align-items:baseline;gap:10px}
+.brand h1{font-size:30px}
+.brand h1 b{color:var(--accent)}
+.status{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:6px}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--muted);display:inline-block}
+.dot.ok{background:var(--in)} .dot.bad{background:var(--out)} .dot.live{background:var(--live);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.3}}
+.datenav{display:flex;align-items:center;gap:6px}
+.datenav button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 10px;cursor:pointer}
+.datenav span{font-family:var(--display);font-size:18px;min-width:150px;text-align:center}
+.help{background:#2a1f12;border:1px solid #5c3d16;border-radius:10px;padding:12px 14px;font-size:14px}
+.help code{font-family:var(--mono);background:#0007;padding:1px 5px;border-radius:4px}
+/* top performers */
+.perf{display:grid;gap:10px}
+.perfrow{display:grid;grid-auto-flow:column;grid-auto-columns:minmax(210px,1fr);gap:10px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory}
+.pcard{scroll-snap-align:start;background:linear-gradient(160deg,var(--panel2),var(--panel));border:1px solid var(--line);border-radius:12px;padding:12px;display:grid;gap:8px;cursor:pointer;text-align:left;position:relative;overflow:hidden}
+.pcard::before{content:"";position:absolute;inset:0 auto 0 0;width:4px;background:var(--tc,#888)}
+.pcard .rank{position:absolute;right:10px;top:6px;font-family:var(--display);font-size:34px;color:#ffffff14}
+.pcard .who{display:flex;gap:10px;align-items:center}
+.badge{flex:none;width:38px;height:38px;border-radius:50%;display:grid;place-items:center;font-family:var(--display);font-weight:700;font-size:16px;color:#fff;background:var(--tc,#444);border:2px solid #ffffff30}
+.pcard .name{font-weight:600;line-height:1.2}
+.pcard .line{font-family:var(--mono);font-size:13px}
+.pcard .line b{font-size:18px;color:var(--ink)}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:600;letter-spacing:.04em;padding:2px 8px;border-radius:999px;background:#ffffff12;color:var(--muted);white-space:nowrap}
+.chip.live{background:#ff4d4d22;color:var(--live)}
+.chip.in{background:#3ddc8422;color:var(--in)} .chip.out{background:#ff6b6b22;color:var(--out)}
+.leaders{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:8px}
+.leader{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:8px 10px;font-size:13px;cursor:pointer;text-align:left}
+.leader .k{color:var(--muted);font-size:11px;text-transform:uppercase;letter-spacing:.06em}
+.leader .v{display:flex;justify-content:space-between;gap:8px;align-items:baseline}
+.leader .v b{font-family:var(--mono);font-size:18px;color:var(--accent)}
+/* game cards */
+.games{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px}
+.gcard{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:8px;cursor:pointer;text-align:left;width:100%}
+.gcard:hover{border-color:#3a4760}
+.gcard.live{border-color:#ff4d4d55}
+.trow{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center}
+.tcode{font-family:var(--display);font-weight:700;font-size:22px;padding:0 8px;border-radius:6px;background:var(--tc);color:#fff;min-width:56px;text-align:center}
+.tname{color:var(--muted);font-size:13px}
+.tscore{font-family:var(--mono);font-size:24px;font-weight:600}
+.trow.lose .tscore{color:var(--muted)}
+.gfoot{display:flex;justify-content:space-between;gap:8px;font-size:12px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.gfoot .st{font-weight:600;color:var(--ink)}
+.gfoot .st.live{color:var(--live)}
+/* game view */
+.back{background:none;border:0;color:var(--muted);cursor:pointer;padding:0;font-size:14px}
+.scorehead{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px;display:grid;gap:12px}
+.sh-main{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:10px}
+.sh-team{display:grid;gap:4px;justify-items:center;text-align:center}
+.sh-team .tcode{font-size:28px}
+.sh-score{font-family:var(--mono);font-size:44px;font-weight:600;line-height:1}
+.sh-mid{display:grid;justify-items:center;gap:4px}
+.sh-mid .st{font-family:var(--display);font-size:22px}
+.sh-mid .st.live{color:var(--live)}
+.linescore{width:100%;border-collapse:collapse;font-family:var(--mono);font-size:13px}
+.linescore th,.linescore td{padding:4px 6px;text-align:center;border-bottom:1px solid var(--line)}
+.linescore th{color:var(--muted);font-weight:500}
+.linescore td:first-child,.linescore th:first-child{text-align:left}
+.lastplay{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:10px}
+.lastplay b{color:var(--ink);font-weight:500}
+.tabs{display:flex;gap:6px;border-bottom:1px solid var(--line)}
+.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:10px 12px;cursor:pointer;color:var(--muted);font-family:var(--display);font-size:18px;letter-spacing:.03em}
+.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+/* court */
+.courts{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.court{position:relative;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:
+  radial-gradient(circle at 50% 108%, transparent 0 34%, #ffffff10 34% 34.6%, transparent 35%),
+  linear-gradient(180deg,#2a1c10,#3a2716);aspect-ratio:1.15/1;min-height:250px}
+.court::after{content:"";position:absolute;left:32%;right:32%;bottom:0;height:42%;border:2px solid #ffffff1c;border-bottom:0}
+.court .ctitle{position:absolute;left:10px;top:8px;display:flex;gap:8px;align-items:center;z-index:2}
+.court .ctitle .tcode{font-size:18px;min-width:44px}
+.spot{position:absolute;transform:translate(-50%,-50%);z-index:2;display:grid;justify-items:center;gap:2px;width:96px;cursor:pointer;background:none;border:0;padding:0;transition:left .5s,top .5s}
+.spot .badge{width:44px;height:44px;font-size:18px;box-shadow:0 2px 10px #0008}
+.spot .pn{font-size:12px;font-weight:600;text-align:center;line-height:1.15;text-shadow:0 1px 2px #000}
+.spot .ps{font-family:var(--mono);font-size:11px;color:#ffe9d6;background:#0009;border-radius:6px;padding:1px 5px}
+.spot .ps .pf5{color:var(--out);font-weight:700}
+.spot.fresh .badge{animation:enter 1.6s ease-out;border-color:var(--in)}
+@keyframes enter{0%{transform:scale(.4);box-shadow:0 0 0 0 #3ddc84cc}60%{transform:scale(1.12);box-shadow:0 0 0 14px #3ddc8400}100%{transform:scale(1)}}
+.lineupnote{font-size:12px;color:var(--muted)}
+/* subs */
+.subs{display:grid;gap:8px;grid-template-columns:repeat(auto-fill,minmax(330px,1fr))}
+.sheet .subs{grid-template-columns:1fr}
+.sub{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:center;background:var(--panel);border:1px solid var(--line);border-left:4px solid var(--tc);border-radius:10px;padding:8px 12px}
+.sub .when{font-family:var(--mono);font-size:12px;color:var(--muted);text-align:center;min-width:62px}
+.sub .when b{display:block;color:var(--ink);font-size:13px}
+.sub .swap{display:flex;flex-wrap:wrap;gap:4px 14px;align-items:center;font-size:14px}
+.sub .in{color:var(--in)} .sub .out{color:var(--out)}
+.sub.new{animation:slidein .7s ease-out}
+@keyframes slidein{from{transform:translateX(-14px);opacity:0}to{transform:none;opacity:1}}
+.subfilter{display:flex;gap:6px;flex-wrap:wrap}
+.subfilter button{background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;font-size:13px}
+.subfilter button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+/* box score */
+.boxteam{display:flex;gap:8px;flex-wrap:wrap}
+.boxteam button{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer;display:flex;gap:8px;align-items:center}
+.boxteam button[aria-pressed="true"]{border-color:var(--accent)}
+.tablewrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px}
+table.box{border-collapse:collapse;width:100%;font-size:13px;min-width:820px}
+table.box th,table.box td{padding:7px 8px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+table.box th{background:var(--panel2);color:var(--muted);font-weight:500;position:sticky;top:0;cursor:pointer;user-select:none}
+table.box th[aria-sort]{color:var(--accent)}
+table.box td{font-family:var(--mono)}
+table.box th:first-child,table.box td:first-child{text-align:left;position:sticky;left:0;background:var(--panel);z-index:1;font-family:var(--body)}
+table.box th:first-child{background:var(--panel2);z-index:2}
+table.box tbody tr{cursor:pointer}
+table.box tbody tr:hover td{background:#ffffff08}
+table.box tbody tr:hover td:first-child{background:#1f2836}
+table.box td.pts{color:var(--accent);font-weight:600}
+table.box tr.sep td{background:var(--panel2);color:var(--muted);font-family:var(--body);font-size:11px;text-transform:uppercase;letter-spacing:.06em;cursor:default}
+table.box tr.dnp td{color:var(--muted)}
+table.box tfoot td{font-weight:600;background:var(--panel2)}
+.oc{display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--in);margin-right:6px;vertical-align:middle}
+.oc.off{background:transparent;border:1px solid var(--line)}
+/* plays */
+.plays{display:grid;gap:4px;max-height:560px;overflow:auto}
+.play{display:grid;grid-template-columns:62px 54px 1fr auto;gap:8px;align-items:center;padding:6px 8px;border-radius:8px;font-size:13px;border-left:3px solid var(--tc,transparent);background:var(--panel)}
+.play.score{background:#ffffff0a}
+.play .t{font-family:var(--mono);color:var(--muted);font-size:12px}
+.play .s{font-family:var(--mono);font-size:12px}
+/* player sheet */
+.sheet{position:fixed;inset:0;background:#000a;display:grid;place-items:end center;z-index:50;padding:12px}
+.sheet .card{width:min(640px,100%);max-height:88vh;overflow:auto;background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;display:grid;gap:14px}
+.sheet .phead{display:flex;gap:12px;align-items:center}
+.sheet .phead .badge{width:56px;height:56px;font-size:22px}
+.sheet .close{margin-left:auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:6px 12px;cursor:pointer}
+.statgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px}
+.stat{background:var(--panel2);border-radius:10px;padding:8px;text-align:center}
+.stat b{display:block;font-family:var(--mono);font-size:22px}
+.stat span{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.bar{height:6px;background:#ffffff14;border-radius:4px;overflow:hidden;margin-top:4px}
+.bar i{display:block;height:100%;background:var(--accent)}
+/* toast */
+.toasts{position:fixed;left:50%;bottom:16px;transform:translateX(-50%);display:grid;gap:8px;z-index:60;width:min(460px,92vw)}
+.toast{background:#101721f2;border:1px solid var(--line);border-left:4px solid var(--tc);border-radius:10px;padding:10px 12px;font-size:14px;box-shadow:0 8px 24px #0009;animation:slidein .4s ease-out}
+.empty{color:var(--muted);padding:18px;text-align:center;border:1px dashed var(--line);border-radius:12px}
+footer{font-size:12px;color:var(--muted)}
+@media (max-width:700px){
+  .courts{grid-template-columns:1fr}
+  .sh-score{font-size:36px}
+  .brand h1{font-size:26px}
+  .play{grid-template-columns:52px 1fr auto}
+  .play .q{display:none}
+  .perfrow{grid-auto-columns:84%}
+  .datenav span{min-width:110px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="brand"><h1>NBA <b>Live</b></h1><div class="status" id="status"><span class="dot"></span> Connecting…</div></div>
+    <div class="datenav">
+      <button type="button" id="prevDay" aria-label="Previous day">◀</button>
+      <span id="dateLabel">–</span>
+      <button type="button" id="nextDay" aria-label="Next day">▶</button>
+      <button type="button" id="todayBtn">Today</button>
+    </div>
+  </div>
+
+  <div id="help" class="help" hidden>
+    <b>Your browser can't reach the live feed directly.</b> On a computer, open the <code>nba-live-board-main</code> folder, right-click an empty space, choose <b>Open in Terminal</b>, type <code>py relay.py</code> and press Enter. Keep that window open.
+    <div id="diag" class="small muted num" style="margin-top:6px;word-break:break-word"></div>
+  </div>
+
+  <main id="view"></main>
+
+  <footer>Live data from ESPN, refreshed every few seconds. Players on court are worked out from the starting lineups and every substitution in the play-by-play. <a href="live.html?demo=1">Try demo games</a> · <a href="./">Odds board</a></footer>
+</div>
+<div class="toasts" id="toasts" aria-live="polite"></div>
+<div class="sheet" id="sheet" hidden></div>
+<script src="demo.js?v=10"></script>
+<script src="app.js?v=10"></script>
+</body>
+</html>
