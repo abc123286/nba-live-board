@@ -271,6 +271,19 @@ create policy "reports insert own" on public.reports for insert with check (auth
 drop policy if exists "reports mod read" on public.reports;
 create policy "reports mod read" on public.reports for select using (public.is_mod());
 
+
+-- ============ API GRANTS (RLS above still decides which rows) ============
+grant usage on schema public to anon, authenticated;
+grant select on public.profiles, public.comments, public.comment_likes, public.play_reactions, public.chat_messages to anon, authenticated;
+grant update (display_name, avatar_color, favourite_team) on public.profiles to authenticated;
+grant select, insert, update, delete on public.follows, public.notification_prefs to authenticated;
+grant select, update (read_at) on public.notifications to authenticated;
+grant insert on public.comments, public.chat_messages, public.reports to authenticated;
+grant update (body, deleted) on public.comments to authenticated;
+grant update (hidden) on public.comments, public.chat_messages to authenticated;
+grant insert, delete on public.comment_likes, public.play_reactions to authenticated;
+grant execute on function public.is_mod() to anon, authenticated;
+
 -- ============ REALTIME ============
 do $$
 declare t text;
