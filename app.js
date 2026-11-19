@@ -1,499 +1,429 @@
-/* NBA Live Value Board
-   Live game data: ESPN's public NBA feed (backup: cdn.nba.com), refreshed every few seconds.
-   Live odds: Polymarket prices (free, public). Price 0.46 = 46% chance = decimal odds 2.17.
-   Only sides at decimal odds 2.00+ are ever suggested. */
+/* NBA Live: scores, players on court, substitutions, box scores and top performers.
+   Data: ESPN's public NBA feed (scoreboard + game summary). No odds.
+   On-court players are worked out from each team's starters plus every substitution in the play-by-play. */
 (function () {
-  const M = window.Model;
-  const POLL_MS = 4000;
+  "use strict";
+  const params = new URLSearchParams(location.search);
+  const DEMO = params.has("demo") || location.hash === "#demo";
+  if (location.hash === "#demo") history.replaceState(null, "", "?demo=1");
   const RELAY = "http://127.0.0.1:8787";
-  const URLS = {
-    scoreboard: { direct: "https://cdn.nba.com/static/json/liveData/scoreboard/todaysScoreboard_00.json", relay: RELAY + "/nba/static/json/liveData/scoreboard/todaysScoreboard_00.json" },
-    box: (id) => ({ direct: `https://cdn.nba.com/static/json/liveData/boxscore/boxscore_${id}.json`, relay: `${RELAY}/nba/static/json/liveData/boxscore/boxscore_${id}.json` }),
-    market: (slug) => ({ direct: `https://gamma-api.polymarket.com/events?slug=${slug}`, relay: `${RELAY}/pm/events?slug=${slug}` }),
-    espnSb: (d) => { const q = "apis/site/v2/sports/basketball/nba/scoreboard" + (d ? "?dates=" + d : ""); return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; },
-    espnSum: (id) => { const q = "apis/site/v2/sports/basketball/nba/summary?event=" + id; return { direct: "https://site.api.espn.com/" + q, relay: RELAY + "/espn/" + q }; }
-  };
-  // ESPN uses short codes for a few teams; Polymarket and the NBA use these
-  const ESPN_TRI = { GS: "GSW", NY: "NYK", SA: "SAS", NO: "NOP", UTAH: "UTA", WSH: "WAS" };
-  // Today's and tomorrow's US (Eastern) dates, so the board shows the next slate before the day rolls over
-  function etDateOf(d) { return new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d); }
-  function espnDates() {
-    return [etDateOf(new Date()), etDateOf(new Date(Date.now() + 864e5))].map((d) => d.replace(/-/g, ""));
-  }
-  let feed = null; // "ESPN" | "NBA"
+  const ESPN = "https://site.api.espn.com/";
+  const TRI = { GS: "GSW", NY: "NYK", SA: "SAS", NO: "NOP", UTAH: "UTA", WSH: "WAS" };
+  const $ = (s, r = document) => r.querySelector(s);
+  const esc = (s) => String(s == null ? "" : s).replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const MYT = "Asia/Kuala_Lumpur";
 
-  // ---------- persistent settings ----------
-  const LS = "nba-live-board-v1";
-  let saved = {};
-  try { saved = JSON.parse(localStorage.getItem(LS) || "{}"); } catch (e) { saved = {}; }
-  const S = Object.assign({ bankroll: 500, minEdge: 0.04, cap: 0.02, sound: false, overrides: {}, baselines: {} }, saved);
-  function persist() { try { localStorage.setItem(LS, JSON.stringify(S)); } catch (e) { /* storage unavailable */ } }
+  // ---------- fetching (direct, then the optional local helper) ----------
+  let route = null; const diag = {};
+  async function getJSON(path) {
+    if (DEMO) return window.Demo.get(path);
+    const ways = route === "relay" ? ["relay", "direct"] : ["direct", "relay"];
+    let last;
+    for (const w of ways) {
+      const url = w === "direct" ? ESPN + path : RELAY + "/espn/" + path;
+      try {
+        const r = await fetch(url, { cache: "no-store" });
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        const j = await r.json(); route = w; delete diag[w]; return j;
+      } catch (e) { last = e; diag[w] = e.message || String(e); }
+    }
+    throw last;
+  }
+
+  // ---------- dates (NBA days are US Eastern dates; label them by the Malaysia morning they're played) ----------
+  const etDate = (d) => new Intl.DateTimeFormat("en-CA", { timeZone: "America/New_York", year: "numeric", month: "2-digit", day: "2-digit" }).format(d).replace(/-/g, "");
+  const shiftDay = (ymd, n) => { const d = new Date(Date.UTC(+ymd.slice(0, 4), +ymd.slice(4, 6) - 1, +ymd.slice(6, 8) + n, 12)); return d.toISOString().slice(0, 10).replace(/-/g, ""); };
+  const dayLabel = (ymd) => { const d = new Date(Date.UTC(+ymd.slice(0, 4), +ymd.slice(4, 6) - 1, +ymd.slice(6, 8) + 1, 4)); return d.toLocaleDateString("en-MY", { timeZone: MYT, weekday: "short", day: "numeric", month: "short" }); };
+  const mytTime = (iso) => new Date(iso).toLocaleTimeString("en-MY", { timeZone: MYT, hour: "numeric", minute: "2-digit" });
 
   // ---------- state ----------
-  const demo = location.hash === "#demo";
-  const route = { nba: null, market: null }; // "direct" | "relay"
-  const status = { nba: "connecting", market: "connecting", last: null, error: "" };
-  const games = new Map();   // gameId -> game view model
-  const history = new Map(); // gameId -> [{t, p}]
-  const log = [];
-  const alerted = new Set();
-  const streak = new Map();
-  const diag = {}; // last error per source and route, shown in the help box
+  const S = {
+    day: params.get("date") || etDate(new Date()),
+    games: new Map(), sums: new Map(), sumAt: new Map(),
+    sbAt: 0, ok: null, updated: null,
+    tab: "court", boxSide: "away", sort: null, subFilter: "all", scoringOnly: false,
+    seenSubs: new Map(), fresh: new Map(), sheet: null
+  };
+  try { const t = localStorage.getItem("nbalive-tab"); if (t) S.tab = t; } catch (e) { /* storage unavailable */ }
 
-  // ---------- fetching with direct -> relay fallback ----------
-  async function getJSON(pair, kind) {
-    const order = route[kind] === "relay" ? ["relay", "direct"] : ["direct", "relay"];
-    let lastErr;
-    for (const way of order) {
-      try {
-        const r = await fetch(pair[way], { cache: "no-store" });
-        if (!r.ok) throw new Error(r.status === 404 ? "404" : "HTTP " + r.status);
-        const j = await r.json();
-        route[kind] = way;
-        delete diag[kind + " " + (pair[way].includes("espn") ? "ESPN" : pair[way].includes("polymarket") || pair[way].includes("/pm/") ? "Polymarket" : "NBA") + " " + (way === "relay" ? "via helper" : "direct")];
-        return j;
-      } catch (e) {
-        lastErr = e;
-        diag[kind + " " + (pair[way].includes("espn") ? "ESPN" : pair[way].includes("polymarket") || pair[way].includes("/pm/") ? "Polymarket" : "NBA") + " " + (way === "relay" ? "via helper" : "direct")] = e.message || String(e);
-        if (e.message === "404") throw e; // the resource doesn't exist; trying the other route won't help
+  // ---------- parsing ----------
+  function parseComp(c, id, date) {
+    const st = c.status || {}; const t = st.type || {};
+    const g = { id: String(id), date: date || c.date, state: t.state || "pre", period: st.period || 0, clock: st.displayClock || "", short: t.shortDetail || t.detail || "", completed: !!t.completed, home: null, away: null };
+    for (const comp of c.competitors || []) {
+      const tm = comp.team || {}; const ab = tm.abbreviation || "";
+      const side = comp.homeAway === "home" ? "home" : "away";
+      g[side] = {
+        id: String(tm.id || ""), abbr: TRI[ab] || ab, espnAbbr: ab, name: tm.shortDisplayName || tm.name || ab, full: tm.displayName || tm.name || ab,
+        color: "#" + (tm.color || "4a5568"), alt: "#" + (tm.alternateColor || "a0aec0"),
+        score: parseInt(comp.score && comp.score.value != null ? comp.score.value : comp.score, 10) || 0,
+        record: (comp.records && comp.records[0] && comp.records[0].summary) || (comp.record && comp.record[0] && comp.record[0].displayValue) || "",
+        lines: (comp.linescores || []).map((l) => (l.value != null ? l.value : parseInt(l.displayValue, 10) || 0)),
+        leaders: comp.leaders || []
+      };
+    }
+    return g;
+  }
+  const parseEvent = (e) => parseComp(e.competitions[0], e.id, e.date);
+
+  const LABELS = { MIN: ["MIN", "minutes"], FG: ["FG", "fieldGoalsMade-fieldGoalsAttempted"], "3PT": ["3PT", "threePointFieldGoalsMade-threePointFieldGoalsAttempted"], FT: ["FT", "freeThrowsMade-freeThrowsAttempted"], OREB: ["OREB", "offensiveRebounds"], DREB: ["DREB", "defensiveRebounds"], REB: ["REB", "rebounds"], AST: ["AST", "assists"], STL: ["STL", "steals"], BLK: ["BLK", "blocks"], TO: ["TO", "turnovers"], PF: ["PF", "fouls"], PM: ["+/-", "plusMinus"], PTS: ["PTS", "points"] };
+  const norm = (s) => String(s || "").toLowerCase().replace(/[^a-z0-9 ]/g, "").replace(/\s+/g, " ").trim();
+
+  function parseSummary(g, s) {
+    const out = { players: { home: [], away: [] }, byId: new Map(), plays: [], subs: [], onCourt: { home: [], away: [] }, approx: { home: false, away: false } };
+    const sideOf = (teamId, abbr) => (String(teamId) === g.home.id || abbr === g.home.espnAbbr ? "home" : String(teamId) === g.away.id || abbr === g.away.espnAbbr ? "away" : null);
+    let flags = false;
+    for (const tb of (s.boxscore && s.boxscore.players) || []) {
+      const side = sideOf(tb.team && tb.team.id, tb.team && tb.team.abbreviation); if (!side) continue;
+      const block = (tb.statistics || [])[0]; if (!block) continue;
+      const labels = (block.labels || block.names || []).map((x) => String(x).toUpperCase());
+      const keys = block.keys || [];
+      const col = {};
+      for (const k in LABELS) { let i = labels.indexOf(LABELS[k][0]); if (i < 0) i = keys.indexOf(LABELS[k][1]); col[k] = i; }
+      for (const a of block.athletes || []) {
+        const at = a.athlete || {}; const st = a.stats || [];
+        const v = (k) => (col[k] >= 0 ? st[col[k]] : undefined);
+        const n = (k) => { const x = parseInt(v(k), 10); return isNaN(x) ? 0 : x; };
+        const pair = (k) => { const x = String(v(k) || "0-0").split("-"); return [parseInt(x[0], 10) || 0, parseInt(x[1], 10) || 0]; };
+        const [fgm, fga] = pair("FG"), [tpm, tpa] = pair("3PT"), [ftm, fta] = pair("FT");
+        const p = {
+          id: String(at.id || at.displayName), name: at.displayName || at.shortName || "", short: at.shortName || at.displayName || "",
+          jersey: at.jersey || "", pos: (at.position && at.position.abbreviation) || "", starter: !!a.starter,
+          dnp: !!a.didNotPlay || (g.state === "post" && !st.length), reason: a.reason || "", ejected: !!a.ejected, side, team: g[side],
+          s: { min: n("MIN"), pts: n("PTS"), reb: n("REB"), oreb: n("OREB"), dreb: n("DREB"), ast: n("AST"), stl: n("STL"), blk: n("BLK"), to: n("TO"), pf: n("PF"), pm: n("PM"), fgm, fga, tpm, tpa, ftm, fta }
+        };
+        if (typeof a.onCourt === "boolean") { p.flag = a.onCourt; flags = true; }
+        out.players[side].push(p); out.byId.set(p.id, p);
       }
     }
-    throw lastErr;
-  }
+    const plays = (s.plays || []).map((p, i) => ({
+      id: String(p.id || i), seq: parseInt(p.sequenceNumber, 10) || i, period: (p.period && p.period.number) || 0,
+      clock: (p.clock && p.clock.displayValue) || "", text: p.text || "", type: (p.type && p.type.text) || "",
+      teamId: p.team && p.team.id != null ? String(p.team.id) : null, home: p.homeScore, away: p.awayScore, scoring: !!p.scoringPlay,
+      parts: (p.participants || []).map((x) => x.athlete && x.athlete.id != null && String(x.athlete.id)).filter(Boolean)
+    })).sort((a, b) => a.seq - b.seq);
+    out.plays = plays;
 
-  // ---------- ESPN (primary game feed: scores, clock, starters, fouls, injuries, bookmaker odds) ----------
-  const summaryAt = new Map();
-  async function pollESPN() {
-    // today's and tomorrow's US-date slates, fetched one day at a time; fall back to ESPN's default day
-    const days = espnDates();
-    let results = await Promise.allSettled(days.map((d) => getJSON(URLS.espnSb(d), "nba")));
-    if (results.every((r) => r.status === "rejected")) results = [{ status: "fulfilled", value: await getJSON(URLS.espnSb(null), "nba") }];
-    const byId = new Map();
-    for (const r of results) if (r.status === "fulfilled") for (const e of (r.value.events || [])) byId.set(e.id, e);
-    const events = [...byId.values()];
-    const seen = new Set();
-    // keep only games from the earliest slate that hasn't fully finished, plus anything live
-    await Promise.all(events.map(async (e) => {
-      const c = e.competitions && e.competitions[0]; if (!c) return;
-      const st = c.status || e.status || {}; const state = st.type && st.type.state;
-      const id = "espn" + e.id; seen.add(id);
-      const v = games.get(id) || { id, onCourt: { home: [], away: [] }, out: { home: [], away: [] }, market: null };
-      v.status = state === "in" ? 2 : state === "post" ? 3 : 1;
-      v.period = st.period || 0; v.clock = typeof st.clock === "number" ? st.clock : 0;
-      v.tipUTC = e.date; v.etDate = etDateOf(new Date(e.date));
-      for (const comp of c.competitors || []) {
-        const side = comp.homeAway === "home" ? "home" : "away"; const t = comp.team || {};
-        v[side] = { tri: ESPN_TRI[t.abbreviation] || t.abbreviation, name: t.shortDisplayName || t.name, city: t.location || "",
-          score: parseInt(comp.score || "0", 10) || 0, rec: (comp.records && comp.records[0] && comp.records[0].summary) || "" };
-      }
-      const book = readBookOdds(c.odds || e.odds);
-      if (book) v.book = book;
-      // full box score + injuries: every refresh when live, every 2 minutes before tip
-      const due = v.status === 2 || (v.status === 1 && Date.now() - (summaryAt.get(id) || 0) > 120e3);
-      if (due) {
-        summaryAt.set(id, Date.now());
-        try { applySummary(v, await getJSON(URLS.espnSum(e.id), "nba")); } catch (err) { /* summary not posted yet */ }
-      }
-      games.set(id, v);
-    }));
-    for (const id of [...games.keys()]) if (!seen.has(id)) games.delete(id);
-    feed = "ESPN"; status.nba = "ok";
-  }
-  // ESPN sends moneylines in two shapes; read whichever is present. American odds -> decimal.
-  function americanToDecimal(x) {
-    if (x == null || x === "") return null;
-    if (typeof x === "string" && /^even$/i.test(x.trim())) return 2;
-    const ml = Number(String(x).replace(/[^0-9+.-]/g, ""));
-    if (!isFinite(ml) || ml === 0) return null;
-    return ml > 0 ? 1 + ml / 100 : 1 + 100 / -ml;
-  }
-  function readBookOdds(list) {
-    for (const o of list || []) {
-      if (!o) continue;
-      const name = (o.provider && o.provider.name) || "Bookmaker";
-      let h = null, a = null;
-      if (o.homeTeamOdds || o.awayTeamOdds) {
-        h = americanToDecimal(o.homeTeamOdds && (o.homeTeamOdds.moneyLine ?? (o.homeTeamOdds.current && o.homeTeamOdds.current.moneyLine && o.homeTeamOdds.current.moneyLine.american)));
-        a = americanToDecimal(o.awayTeamOdds && (o.awayTeamOdds.moneyLine ?? (o.awayTeamOdds.current && o.awayTeamOdds.current.moneyLine && o.awayTeamOdds.current.moneyLine.american)));
-      }
-      if ((!h || !a) && o.moneyline) {
-        const pick = (side) => { const m = o.moneyline[side] || {}; return (m.close && (m.close.odds ?? m.close.american)) ?? (m.current && (m.current.odds ?? m.current.american)) ?? (m.open && (m.open.odds ?? m.open.american)); };
-        h = americanToDecimal(pick("home")); a = americanToDecimal(pick("away"));
-      }
-      if (h && a) return { home: h, away: a, name };
+    // name lookup for "X enters the game for Y"
+    const findName = (name, side) => {
+      const t = norm(name); if (!t) return null;
+      const pool = side ? out.players[side] : out.players.home.concat(out.players.away);
+      let hit = pool.find((p) => norm(p.name) === t) || pool.find((p) => norm(p.short) === t);
+      if (!hit) { const last = t.split(" ").pop(); const c = pool.filter((p) => norm(p.name).split(" ").pop() === last); if (c.length === 1) hit = c[0]; }
+      return hit ? hit.id : null;
+    };
+    const SUB = /^(.+?) enters the game for (.+?)\.?$/i;
+    const court = { home: new Set(out.players.home.filter((p) => p.starter).map((p) => p.id)), away: new Set(out.players.away.filter((p) => p.starter).map((p) => p.id)) };
+    for (const p of plays) {
+      if (!/substitution/i.test(p.type) && !/enters the game for/i.test(p.text)) continue;
+      let side = p.teamId ? sideOf(p.teamId) : null;
+      let inId = null, outId = null; const m = SUB.exec(p.text.trim());
+      if (m) { inId = findName(m[1], side); outId = findName(m[2], side); }
+      if ((!inId || !outId) && p.parts.length >= 2) { inId = inId || p.parts[0]; outId = outId || p.parts[1]; }
+      if (!side) side = (out.byId.get(inId) || out.byId.get(outId) || {}).side;
+      if (!side) continue;
+      out.subs.push({ seq: p.seq, period: p.period, clock: p.clock, side, inId, outId, text: p.text });
+      if (outId) court[side].delete(outId);
+      if (inId) court[side].add(inId);
     }
-    return null;
-  }
-
-  function applySummary(v, s) {
-    v.lineupLabel = "starters";
-    if (!v.book && v.status === 1) { const b = readBookOdds(s.pickcenter || s.odds); if (b) v.book = b; }
-    const teams = (s.boxscore && s.boxscore.players) || [];
-    v.fouledOut = { home: [], away: [] }; v.foulTrouble = { home: [], away: [] };
-    for (const tb of teams) {
-      const tri = ESPN_TRI[tb.team && tb.team.abbreviation] || (tb.team && tb.team.abbreviation);
-      const side = tri === v.home.tri ? "home" : tri === v.away.tri ? "away" : null; if (!side) continue;
-      const block = tb.statistics && tb.statistics[0]; if (!block) continue;
-      const keys = (block.keys || block.names || block.labels || []).map((k) => String(k).toLowerCase());
-      const idx = (...n) => keys.findIndex((k) => n.includes(k));
-      const iPF = idx("fouls", "pf"), iPTS = idx("points", "pts"), iMIN = idx("minutes", "min");
-      const players = (block.athletes || []).map((a) => {
-        const st = a.stats || [];
-        return { name: (a.athlete && (a.athlete.shortName || a.athlete.displayName)) || "", pos: (a.athlete && a.athlete.position && a.athlete.position.abbreviation) || "",
-          starter: !!a.starter, on: !!a.starter, active: !a.didNotPlay, reason: a.reason || "",
-          pf: iPF >= 0 ? parseInt(st[iPF], 10) || 0 : 0, pts: iPTS >= 0 ? parseInt(st[iPTS], 10) || 0 : 0, min: iMIN >= 0 ? parseInt(st[iMIN], 10) || 0 : 0 };
-      });
-      if (players.length) {
-        v.onCourt[side] = players.filter((p) => p.starter);
-        v.foulTrouble[side] = players.filter((p) => p.active && p.starter && p.pf >= Math.min(6, (v.period || 1) + 2));
-        v.fouledOut[side] = players.filter((p) => p.starter && p.pf >= 6);
-      }
-    }
-    const inj = s.injuries || [];
     for (const side of ["home", "away"]) {
-      const tInj = inj.find((t) => { const ab = t.team && t.team.abbreviation; return (ESPN_TRI[ab] || ab) === v[side].tri; });
-      if (tInj) v.out[side] = (tInj.injuries || []).filter((i) => /out|doubtful|day-to-day|questionable/i.test(i.status || ""))
-        .map((i) => ({ name: (i.athlete && (i.athlete.shortName || i.athlete.displayName)) || "", reason: [i.status, i.type && (i.type.description || i.type.name), i.details && i.details.type].filter(Boolean).join(" · ") }));
+      let ids = [...court[side]];
+      if (flags) { const f = out.players[side].filter((p) => p.flag).map((p) => p.id); if (f.length === 5) ids = f; }
+      out.onCourt[side] = ids.map((id) => out.byId.get(id)).filter(Boolean);
+      out.approx[side] = out.onCourt[side].length !== 5;
     }
+    out.last = plays.length ? plays[plays.length - 1] : null;
+    return out;
   }
 
-  // ---------- NBA (backup game feed) ----------
-  async function pollNBA() {
-    const sb = await getJSON(URLS.scoreboard, "nba");
-    status.nba = "ok";
-    const list = (sb.scoreboard && sb.scoreboard.games) || [];
+  // ---------- polling ----------
+  const live = () => [...S.games.values()].some((g) => g.state === "in");
+  async function loadScoreboard() {
+    const sb = await getJSON("apis/site/v2/sports/basketball/nba/scoreboard?dates=" + S.day);
     const seen = new Set();
-    await Promise.all(list.map(async (g) => {
-      seen.add(g.gameId);
-      const v = games.get(g.gameId) || { id: g.gameId, onCourt: { home: [], away: [] }, out: { home: [], away: [] }, market: null };
-      v.status = g.gameStatus; v.statusText = g.gameStatusText;
-      v.period = g.period; v.clock = M.clockSeconds(g.gameClock);
-      v.tipUTC = g.gameTimeUTC; v.etDate = (g.gameEt || g.gameTimeUTC || "").slice(0, 10);
-      v.home = teamOf(g.homeTeam); v.away = teamOf(g.awayTeam);
-      if (g.gameStatus === 2) {
-        try { applyBox(v, await getJSON(URLS.box(g.gameId), "nba")); } catch (e) { /* box score not posted yet */ }
-      } else if (g.gameStatus === 1 && !v.boxChecked) {
-        try { applyBox(v, await getJSON(URLS.box(g.gameId), "nba")); } catch (e) { /* lineups usually post ~30 min before tip */ }
-        v.boxChecked = Date.now() > Date.parse(v.tipUTC) - 45 * 60e3;
-      }
-      games.set(g.gameId, v);
-    }));
-    for (const id of [...games.keys()]) if (!seen.has(id)) games.delete(id);
+    for (const e of sb.events || []) { const g = parseEvent(e); seen.add(g.id); S.games.set(g.id, g); }
+    for (const id of [...S.games.keys()]) if (!seen.has(id)) S.games.delete(id);
+    S.sbAt = Date.now(); S.ok = true;
   }
-  function teamOf(t) {
-    return { tri: t.teamTricode, name: t.teamName, city: t.teamCity, score: t.score || 0, rec: (t.wins != null ? t.wins + "-" + t.losses : ""), fouls: t.teamFoulsInPeriod ?? null, timeouts: t.timeoutsRemaining ?? null };
+  async function loadSummary(id) {
+    const s = await getJSON("apis/site/v2/sports/basketball/nba/summary?event=" + id);
+    let g = S.games.get(id);
+    const hc = s.header && s.header.competitions && s.header.competitions[0];
+    if (hc) { const hg = parseComp(hc, id, hc.date); if (!g) g = hg; else { g.home.lines = hg.home.lines.length ? hg.home.lines : g.home.lines; g.away.lines = hg.away.lines.length ? hg.away.lines : g.away.lines; } }
+    if (!g || !g.home) return;
+    S.games.set(id, g);
+    const prev = S.sums.get(id);
+    const sum = parseSummary(g, s);
+    S.sums.set(id, sum); S.sumAt.set(id, Date.now());
+    noticeSubs(g, prev, sum);
   }
-  function applyBox(v, box) {
-    const g = box.game; if (!g) return;
-    for (const side of ["home", "away"]) {
-      const team = g[side + "Team"]; if (!team || !team.players) continue;
-      const players = team.players.map((p) => ({
-        name: p.nameI || p.name, pos: p.position || "", starter: p.starter === "1",
-        on: p.oncourt === "1", active: p.status === "ACTIVE", reason: p.notPlayingDescription || p.notPlayingReason || "",
-        pts: p.statistics ? p.statistics.points : 0, pf: p.statistics ? p.statistics.foulsPersonal : 0,
-        min: p.statistics ? Math.round(M.clockSeconds(p.statistics.minutes) / 60) : 0
-      }));
-      v.onCourt[side] = players.filter((p) => p.on);
-      v.out[side] = players.filter((p) => !p.active);
-      v.foulTrouble = v.foulTrouble || {};
-      v.foulTrouble[side] = players.filter((p) => p.active && p.starter && p.pf >= Math.min(6, (v.period || 1) + 2));
-      v.fouledOut = v.fouledOut || {};
-      v.fouledOut[side] = players.filter((p) => p.starter && p.pf >= 6);
+  function noticeSubs(g, prev, sum) {
+    const lastSeen = S.seenSubs.get(g.id);
+    const maxSeq = sum.subs.length ? sum.subs[sum.subs.length - 1].seq : -1;
+    S.seenSubs.set(g.id, maxSeq);
+    if (lastSeen == null || !prev) return; // first load: no toasts
+    const fresh = sum.subs.filter((x) => x.seq > lastSeen);
+    if (!fresh.length) return;
+    const now = Date.now(); const f = S.fresh.get(g.id) || new Map();
+    for (const x of fresh) if (x.inId) f.set(x.inId, now);
+    S.fresh.set(g.id, f);
+    if (currentGameId() !== g.id) return;
+    for (const x of fresh.slice(-3)) {
+      const pin = sum.byId.get(x.inId), pout = sum.byId.get(x.outId);
+      toast(`<b class="in">▲ ${esc(pin ? pin.short : "?")}</b> in · <span class="out">▼ ${esc(pout ? pout.short : "?")}</span> out <span class="muted">· ${esc(g[x.side].abbr)} · Q${x.period} ${esc(x.clock)}</span>`, g[x.side].color);
     }
   }
 
-  // ---------- Polymarket ----------
-  function slugsFor(v) {
-    const d = v.etDate; const a = v.away.tri.toLowerCase(); const h = v.home.tri.toLowerCase();
-    return [`nba-${a}-${h}-${d}`, `nba-${h}-${a}-${d}`];
-  }
-  async function pollMarket(v) {
-    if (v.status === 3) return;
-    const slugs = v.marketSlug ? [v.marketSlug] : slugsFor(v);
-    for (const slug of slugs) {
-      let ev;
-      try { ev = await getJSON(URLS.market(slug), "market"); } catch (e) { if (e.message === "404") continue; throw e; }
-      const event = Array.isArray(ev) ? ev[0] : ev;
-      if (!event || !event.markets) continue;
-      const m = pickMoneyline(event.markets, v);
-      if (!m) continue;
-      v.marketSlug = slug; v.market = m; v.market.at = Date.now();
-      status.market = "ok";
-      return;
-    }
-    v.market = v.market && Date.now() - v.market.at < 60e3 ? v.market : null;
-  }
-  function pickMoneyline(markets, v) {
-    const hn = v.home.name.toLowerCase(), an = v.away.name.toLowerCase();
-    const cands = markets.filter((m) => !m.closed && m.outcomes && m.outcomePrices);
-    const ordered = cands.sort((x, y) => (y.sportsMarketType === "moneyline") - (x.sportsMarketType === "moneyline"));
-    for (const m of ordered) {
-      let outs, prices;
-      try { outs = JSON.parse(m.outcomes); prices = JSON.parse(m.outcomePrices).map(Number); } catch (e) { continue; }
-      if (outs.length !== 2) continue;
-      const iH = outs.findIndex((o) => o.toLowerCase().includes(hn) || hn.includes(o.toLowerCase()));
-      const iA = outs.findIndex((o) => o.toLowerCase().includes(an) || an.includes(o.toLowerCase()));
-      if (iH < 0 || iA < 0 || iH === iA) continue;
-      const ph = prices[iH], pa = prices[iA];
-      if (!(ph > 0 && pa > 0)) continue;
-      return { homePrice: ph, awayPrice: pa, homeProb: ph / (ph + pa) };
-    }
-    return null;
-  }
-
-  // ---------- Claude's read (claude.json in this repo, refreshed by Claude's scheduled checks) ----------
-  let claude = null, claudeAt = 0, claudeErr = "";
-  async function pollClaude() {
-    if (Date.now() - claudeAt < 60e3) return;
-    claudeAt = Date.now();
-    try {
-      const r = await fetch("claude.json?t=" + Date.now(), { cache: "no-store" });
-      if (!r.ok) throw new Error("HTTP " + r.status);
-      claude = await r.json(); claudeErr = "";
-    } catch (e) { claudeErr = e.message || String(e); }
-  }
-  function claudeFor(v) {
-    if (!claude || !claude.games || !v.home || !v.away) return null;
-    return claude.games.find((g) => g.home === v.home.tri && g.away === v.away.tri) || null;
-  }
-
-  // ---------- model ----------
-  function compute(v) {
-    const lead = v.home.score - v.away.score;
-    const secLeft = M.secondsLeft(v.period, v.clock, v.status);
-    v.secLeft = secLeft;
-    let base = S.baselines[v.id];
-    // Before tip: the fair chance is the average of the bookmaker's line and Polymarket (both with their margin removed).
-    // A side only shows value when one source prices it better than that consensus, so the board never grades a price against itself.
-    const bookP = v.book && v.book.home && v.book.away ? (1 / v.book.home) / (1 / v.book.home + 1 / v.book.away) : null;
-    const mktP = v.market ? v.market.homeProb : null;
-    const cl = claudeFor(v); v.claude = cl;
-    const clP = cl && typeof cl.homeProb === "number" && cl.homeProb > 0.01 && cl.homeProb < 0.99 ? cl.homeProb : null;
-    if (v.status === 1 && (bookP != null || mktP != null || clP != null)) {
-      const parts = [[bookP, "bookmaker"], [mktP, "market"], [clP, "Claude"]].filter((x) => x[0] != null);
-      const cons = parts.reduce((t, x) => t + x[0], 0) / parts.length;
-      base = { spread: M.spreadFromProb(cons), source: "average of " + parts.map((x) => x[1]).join(", "), both: parts.length >= 2 };
-      S.baselines[v.id] = base;
-    } else if (!base && v.status === 2 && v.market) {
-      const s = M.impliedPreSpread(v.market.homeProb, lead, secLeft);
-      if (s != null) { base = { spread: s, source: "estimated from live market" }; S.baselines[v.id] = base; }
-    }
-    if (!base) base = { spread: 0, source: "no market yet, coin flip" };
-    let spread = base.spread;
-    // in-game roster shock: a starter fouled out costs about 2 points over a full game
-    if (v.fouledOut) spread += (v.fouledOut.away.length - v.fouledOut.home.length) * 2;
-    v.baseSource = base.source;
-    v.modelHome = v.status === 3 ? (lead > 0 ? 1 : 0) : M.liveHomeProb(lead, secLeft, spread, v.period);
-    const h = history.get(v.id) || [];
-    const last = h[h.length - 1];
-    if (!last || Math.abs(last.p - v.modelHome) > 0.002 || Date.now() - last.t > 30e3) {
-      h.push({ t: Date.now(), p: v.modelHome, m: v.market ? v.market.homeProb : null });
-      if (h.length > 400) h.shift();
-      history.set(v.id, h);
-    }
-    v.sides = ["away", "home"].map((side) => {
-      const p = side === "home" ? v.modelHome : 1 - v.modelHome;
-      const mprice = v.market ? (side === "home" ? v.market.homePrice : v.market.awayPrice) : null;
-      const marketOdds = mprice ? 1 / mprice : null;
-      const over = S.overrides[v.id + ":" + side];
-      const bookOdds = v.book ? v.book[side] : null;
-      // before tip: your odds > bookmaker > market. During the game the bookmaker line is the pre-game one, so use the live market.
-      // before tip: best of bookmaker and market, but only when both exist (one source alone can't disagree with itself)
-      const pre = v.status === 1;
-      // a price can only be graded against a fair chance that isn't built from that same price alone
-      const priced = [bookOdds, marketOdds].filter(Boolean);
-      const independent = priced.length >= 2 || (priced.length === 1 && clP != null);
-      const odds = over || (pre ? (independent ? Math.max(...priced) : null) : marketOdds);
-      const src = over ? "yours" : !odds ? "" : odds === bookOdds ? (v.book.name || "bookmaker") : "market";
-      const late = v.status === 2 && secLeft < 240; // last 4 minutes: prices jump too fast to act on
-      const r = v.status === 3 ? null : M.evaluate(p, odds, S.minEdge, S.cap);
-      return { side, team: v[side], p, marketOdds, bookOdds, odds, src, override: !!over, r, late };
-    });
-  }
-
-  // ---------- render ----------
-  const $ = (s) => document.querySelector(s);
-  const pct = (x, d = 0) => (x * 100).toFixed(d) + "%";
-  const f2 = (x) => (x == null || !isFinite(x) ? "–" : x.toFixed(2));
-  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
-  const myt = (iso) => new Date(iso).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur", hour: "numeric", minute: "2-digit" });
-  function clockText(v) {
-    if (v.status === 1) return "Tip " + myt(v.tipUTC);
-    if (v.status === 3) return "Final";
-    const q = v.period > 4 ? "OT" + (v.period - 4 > 1 ? v.period - 4 : "") : "Q" + v.period;
-    const m = Math.floor(v.clock / 60), s = Math.floor(v.clock % 60);
-    return `${q} ${m}:${String(s).padStart(2, "0")}`;
-  }
-  const VL = { value: "VALUE", close: "CLOSE", pass: "PASS" };
-
-  function spark(v) {
-    const h = history.get(v.id) || [];
-    if (h.length < 2) return '<div class="spark empty">Win-chance line appears once the game moves</div>';
-    const W = 260, H = 54;
-    const x = (i) => (i / (h.length - 1)) * W, y = (p) => H - p * H;
-    const line = h.map((d, i) => `${x(i).toFixed(1)},${y(d.p).toFixed(1)}`).join(" ");
-    const mk = h.filter((d) => d.m != null).length > 1 ? h.map((d, i) => d.m == null ? null : `${x(i).toFixed(1)},${y(d.m).toFixed(1)}`).filter(Boolean).join(" ") : "";
-    const lastP = h[h.length - 1].p;
-    return `<svg class="spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="${esc(v.home.tri)} win chance over time, now ${pct(lastP)}">
-      <line x1="0" x2="${W}" y1="${H / 2}" y2="${H / 2}" class="mid"/>
-      <polygon points="0,${H} ${line} ${W},${H}" class="area"/>
-      ${mk ? `<polyline points="${mk}" class="mkt"/>` : ""}
-      <polyline points="${line}" class="mdl"/>
-      <circle cx="${W}" cy="${y(lastP).toFixed(1)}" r="3" class="dot"/>
-    </svg>`;
-  }
-
-  function players(list, cls) {
-    if (!list || !list.length) return '<span class="muted">–</span>';
-    return list.map((p) => `<span class="pl ${cls || ""}">${esc(p.name)}${p.pos ? ` <i>${esc(p.pos)}</i>` : ""}${p.pf != null && cls !== "out" ? ` <b class="${p.pf >= 5 ? "hot" : ""}">${p.pf}PF</b>` : ""}${cls === "out" && p.reason ? ` <i>${esc(p.reason)}</i>` : ""}</span>`).join("");
-  }
-
-  function sideRow(v, s) {
-    const chip = v.status === 3 ? "" : s.r ? (s.late && s.r.verdict === "value" ? '<span class="chip close">LATE, SKIP</span>' : `<span class="chip ${s.r.verdict}">${VL[s.r.verdict]}</span>`) : s.odds ? '<span class="chip na">UNDER 2.00</span>' : '<span class="chip na">NO PRICE</span>';
-    return `<div class="side">
-      <div class="tname"><strong>${esc(s.team.tri)}</strong> <span>${esc(s.team.name)} ${esc(s.team.rec)}</span></div>
-      <div class="kv">Model <b class="num">${pct(s.p)}</b></div>
-      <div class="kv">Book <b class="num">${f2(s.bookOdds)}</b></div>
-      <div class="kv">Market <b class="num">${f2(s.marketOdds)}</b></div>
-      <div class="kv"><label for="ov-${v.id}-${s.side}">Your odds</label><input id="ov-${v.id}-${s.side}" class="ov num" data-k="${v.id}:${s.side}" type="number" step="0.01" min="1.01" inputmode="decimal" placeholder="opt." value="${S.overrides[v.id + ":" + s.side] || ""}"></div>
-      <div class="kv">${s.r ? `Edge <b class="num">${(s.r.ev >= 0 ? "+" : "") + pct(s.r.ev, 1)}</b>` : ""}</div>
-      <div class="kv">${chip}</div>
-    </div>`;
-  }
-
-  function render() {
-    const list = [...games.values()].sort((a, b) => (a.status === 2 ? 0 : a.status === 1 ? 1 : 2) - (b.status === 2 ? 0 : b.status === 1 ? 1 : 2) || Date.parse(a.tipUTC) - Date.parse(b.tipUTC));
-    // connection bar
-    const dot = (st) => st === "ok" ? "ok" : st === "connecting" ? "wait" : "bad";
-    $("#conn").innerHTML = `
-      <span class="cs ${dot(status.nba)}">Game feed${feed && !demo ? " (" + feed + ")" : ""}: ${status.nba === "ok" ? ({ relay: "via helper", demo: "demo" }[route.nba] || "direct") : status.nba}</span>
-      <span class="cs ${dot(status.market)}">Market odds: ${status.market === "ok" ? ({ relay: "via helper", demo: "demo" }[route.market] || "direct") : status.market}</span>
-      <span class="muted">${status.last ? "Updated " + new Date(status.last).toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }) : ""}${demo ? " · DEMO DATA" : ""}</span>`;
-    $("#help").hidden = !(status.nba === "blocked" || status.market === "blocked");
-    const dk = Object.keys(diag);
-    $("#diag").textContent = dk.length ? "Details for Claude: " + dk.map((k) => k.replace(/^nba /, "game ").replace(/^market /, "odds ") + " → " + diag[k]).join(" | ") + " | page v8" : "page v8";
-
-    // Claude's latest check
-    const cp = $("#claude");
-    if (demo) cp.innerHTML = '<p class="muted">Claude\'s checks show here with live data.</p>';
-    else if (!claude) cp.innerHTML = `<p class="muted">${claudeErr ? "No check published yet." : "Loading…"}</p>`;
-    else {
-      const upd = claude.updated ? new Date(claude.updated) : null;
-      const ageH = upd ? (Date.now() - upd) / 36e5 : 99;
-      const cpicks = (claude.games || []).filter((g) => g.pick && g.pick.team);
-      cp.innerHTML = `<div class="small ${ageH > 3 ? "stale" : "muted"}">Last check: ${upd ? upd.toLocaleString("en-MY", { timeZone: "Asia/Kuala_Lumpur", weekday: "short", hour: "numeric", minute: "2-digit" }) : "–"}${ageH > 3 ? " · over 3 hours old" : ""}</div>
-        ${claude.summary ? `<p class="csum">${esc(claude.summary)}</p>` : ""}
-        ${cpicks.length ? `<div class="cpicks">${cpicks.map((g) => `<div class="cpick"><b>${esc(g.pick.team)}</b> to win · ${esc(g.away)} @ ${esc(g.home)} · bet only at <b class="num">${f2(g.pick.minOdds)}</b>+<div class="muted small">${esc(g.pick.reason || "")}</div></div>`).join("")}</div>` : '<p class="muted small">No pick from Claude right now.</p>'}`;
-    }
-
-    // suggestions
-    const picks = [];
-    for (const v of list) for (const s of v.sides || []) {
-      if (s.r && (s.r.verdict === "value" || s.r.verdict === "close") && !(s.late)) picks.push({ v, s });
-    }
-    picks.sort((a, b) => b.s.r.ev - a.s.r.ev);
-    $("#picks").innerHTML = picks.length ? picks.map(({ v, s }) => `<div class="pick ${s.r.verdict}">
-        <span class="chip ${s.r.verdict}">${VL[s.r.verdict]}</span>
-        <b>${esc(s.team.tri)} to win</b>
-        <span class="muted">${esc(v.away.tri)} ${v.away.score} – ${v.home.score} ${esc(v.home.tri)} · ${clockText(v)}</span>
-        <span>Odds <b class="num">${f2(s.odds)}</b> (${esc(s.src)}) · Model <b class="num">${pct(s.p)}</b> · Edge <b class="num">${(s.r.ev >= 0 ? "+" : "") + pct(s.r.ev, 1)}</b></span>
-        <span>Stake <b class="num">RM ${(s.r.stakeFrac * S.bankroll).toFixed(0)}</b></span>
-      </div>`).join("") : `<p class="muted">No side at 2.00+ beats the model right now. This updates every few seconds.</p>`;
-
-    // games
-    $("#games").innerHTML = list.length ? list.map((v) => `<article class="game ${v.status === 2 ? "live" : ""}">
-      <header>
-        <div class="score"><span>${esc(v.away.tri)} <b class="num">${v.status === 1 ? "" : v.away.score}</b></span><span class="at">@</span><span>${esc(v.home.tri)} <b class="num">${v.status === 1 ? "" : v.home.score}</b></span></div>
-        <div class="clock ${v.status === 2 ? "on" : ""}">${v.status === 2 ? '<i class="pulse"></i>' : ""}${clockText(v)}</div>
-      </header>
-      <div class="body">
-        <div class="sides">${(v.sides || []).map((s) => sideRow(v, s)).join("")}</div>
-        <div class="chart">${spark(v)}<div class="muted small">Solid: model ${esc(v.home.tri)} win chance · Dashed: market · Baseline: ${esc(v.baseSource || "")}</div></div>
-      </div>
-      ${v.claude ? `<div class="cread"><div><b>Claude's read</b>${typeof v.claude.homeProb === "number" ? ` · ${esc(v.home.tri)} <span class="num">${pct(v.claude.homeProb)}</span> / ${esc(v.away.tri)} <span class="num">${pct(1 - v.claude.homeProb)}</span>` : ""}${v.claude.confidence ? ` · confidence ${esc(v.claude.confidence)}` : ""}${v.claude.pick && v.claude.pick.team ? ` · <span class="chip value">PICK ${esc(v.claude.pick.team)} at ${f2(v.claude.pick.minOdds)}+</span>` : ""}</div><div>${esc(v.claude.note || "")}</div></div>` : ""}
-      <div class="roster">
-        <div><h4>${esc(v.away.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.away)}</div>
-        <div><h4>${esc(v.home.tri)} ${esc(v.lineupLabel || "on court")}</h4>${players(v.onCourt.home)}</div>
-        <div><h4>Injuries / out</h4>${players(v.out.away.map((p) => Object.assign({}, p, { name: v.away.tri + " " + p.name })), "out")}${players(v.out.home.map((p) => Object.assign({}, p, { name: v.home.tri + " " + p.name })), "out")}</div>
-      </div>
-    </article>`).join("") : `<p class="muted">${status.nba === "ok" ? "No NBA games found for today or tomorrow." : "Waiting for the game feed…"}</p>`;
-
-    $("#log").innerHTML = log.slice(-30).reverse().map((l) => `<li><span class="num">${l.t}</span> ${esc(l.msg)}</li>`).join("") || '<li class="muted">New VALUE signals will be listed here with the time.</li>';
-
-    document.querySelectorAll("input.ov").forEach((inp) => inp.addEventListener("change", (e) => {
-      const val = parseFloat(e.target.value);
-      if (isNaN(val)) delete S.overrides[e.target.dataset.k]; else S.overrides[e.target.dataset.k] = val;
-      persist(); tick(true);
-    }));
-  }
-
-  function noteSignals() {
-    for (const v of games.values()) for (const s of v.sides || []) {
-      const key = v.id + s.side;
-      if (s.r && s.r.verdict === "value" && !s.late) {
-        // a signal must hold for two refreshes in a row before it's logged, to cut flicker
-        streak.set(key, (streak.get(key) || 0) + 1);
-        if (!alerted.has(key) && streak.get(key) >= 2) {
-          alerted.add(key);
-          log.push({ t: new Date().toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }), msg: `VALUE: ${s.team.tri} at ${f2(s.odds)} (${v.away.tri} ${v.away.score}-${v.home.score} ${v.home.tri}, ${clockText(v)}), model ${pct(s.p)}, edge +${pct(s.r.ev, 1)}` });
-          beep();
-        }
-      } else if (streak.delete(key) && alerted.has(key)) {
-        alerted.delete(key);
-        log.push({ t: new Date().toLocaleTimeString("en-MY", { timeZone: "Asia/Kuala_Lumpur" }), msg: `Signal gone: ${s.team.tri} (${v.away.tri} @ ${v.home.tri})` });
-      }
-    }
-  }
-
-  let audio = null;
-  function beep() {
-    if (!S.sound || !audio) return;
-    try { const o = audio.createOscillator(), g = audio.createGain(); o.frequency.value = 880; g.gain.value = 0.08; o.connect(g); g.connect(audio.destination); o.start(); o.stop(audio.currentTime + 0.18); } catch (e) { /* audio blocked */ }
-  }
-
-  // ---------- main loop ----------
   let busy = false;
-  async function tick(renderOnly) {
-    if (renderOnly) { for (const v of games.values()) compute(v); render(); return; }
+  async function tick(force) {
     if (busy) return; busy = true;
     try {
-      if (!demo) await pollClaude();
-      if (demo) { Demo.step(games); status.nba = "ok"; status.market = "ok"; route.nba = route.market = "demo"; } else {
-        try { await pollESPN(); }
-        catch (e) {
-          try { if (feed === "ESPN") games.clear(); await pollNBA(); feed = "NBA"; status.nba = "ok"; }
-          catch (e2) { status.nba = "blocked"; }
-        }
-        let anyMarket = false, marketErr = false;
-        await Promise.all([...games.values()].map(async (v) => {
-          try { await pollMarket(v); if (v.market) anyMarket = true; } catch (e) { marketErr = true; }
-        }));
-        if (marketErr && !anyMarket) status.market = "blocked";
-        else if (!anyMarket && games.size) status.market = "no markets found";
+      const now = Date.now();
+      const sbEvery = live() ? 10e3 : 30e3;
+      if (force || now - S.sbAt > sbEvery) {
+        try { await loadScoreboard(); } catch (e) { S.ok = false; }
       }
-      for (const v of games.values()) compute(v);
-      persist();
-      status.last = Date.now();
-      noteSignals();
+      const open = currentGameId();
+      const due = [];
+      for (const g of S.games.values()) {
+        const at = S.sumAt.get(g.id) || 0;
+        if (g.id === open) { if (force || (g.state === "in" ? now - at > 5e3 : now - at > 60e3)) due.unshift(g.id); continue; }
+        if (g.state === "in" && now - at > 25e3) due.push(g.id);
+        else if (g.state === "post" && !at) due.push(g.id);
+        else if (g.state === "pre" && now - at > 300e3 && Date.parse(g.date) - now < 90 * 60e3) due.push(g.id);
+      }
+      if (open && !S.games.has(open) && (force || now - (S.sumAt.get(open) || 0) > 5e3)) due.unshift(open);
+      for (const id of due.slice(0, 5)) { try { await loadSummary(id); } catch (e) { /* keep last good data */ } }
+      S.updated = Date.now();
       render();
     } finally { busy = false; }
   }
 
-  // ---------- controls ----------
-  $("#bankroll").value = S.bankroll;
-  $("#minEdge").value = String(S.minEdge);
-  $("#sound").checked = S.sound;
-  $("#bankroll").addEventListener("change", (e) => { S.bankroll = parseFloat(e.target.value) || 0; persist(); tick(true); });
-  $("#minEdge").addEventListener("change", (e) => { S.minEdge = parseFloat(e.target.value); persist(); tick(true); });
-  $("#sound").addEventListener("change", (e) => {
-    S.sound = e.target.checked; persist();
-    if (S.sound && !audio) { try { audio = new (window.AudioContext || window.webkitAudioContext)(); } catch (err) { audio = null; } }
-    beep();
-  });
-  $("#demoLink").href = demo ? location.pathname : "#demo";
-  $("#demoLink").textContent = demo ? "Switch to live data" : "Try demo data";
-  window.addEventListener("hashchange", () => location.reload());
+  // ---------- helpers ----------
+  const currentGameId = () => { const m = /^#g-(\w+)/.exec(location.hash); return m ? m[1] : null; };
+  const statusText = (g) => g.state === "pre" ? mytTime(g.date) : g.state === "post" ? (g.short || "Final") : (g.short || `Q${g.period} ${g.clock}`);
+  const initials = (p) => p.jersey ? p.jersey : p.name.split(" ").map((x) => x[0]).join("").slice(0, 2);
+  const tc = (t) => `--tc:${esc(t.color)}`;
+  const gameScore = (s) => s.pts + 0.4 * s.fgm - 0.7 * s.fga - 0.4 * (s.fta - s.ftm) + 0.7 * s.oreb + 0.3 * s.dreb + s.stl + 0.7 * s.ast + 0.7 * s.blk - 0.4 * s.pf - s.to;
+  const pct = (m, a) => (a ? Math.round((100 * m) / a) + "%" : "–");
+  const posRank = (p) => (/C/.test(p.pos) && !/^G/.test(p.pos) ? 2 : /F/.test(p.pos) ? 1 : 0);
+  const playerLine = (s) => `${s.pts} PTS · ${s.reb} REB · ${s.ast} AST`;
 
-  tick();
-  setInterval(tick, POLL_MS);
+  function allPlayersToday() {
+    const list = [];
+    for (const [id, sum] of S.sums) {
+      const g = S.games.get(id); if (!g) continue;
+      for (const p of sum.players.home.concat(sum.players.away)) if (!p.dnp && (p.s.min > 0 || p.s.pts > 0)) list.push({ p, g, gs: gameScore(p.s) });
+    }
+    return list;
+  }
+
+  // ---------- rendering ----------
+  function renderStatus() {
+    const n = [...S.games.values()].filter((g) => g.state === "in").length;
+    const cls = S.ok === false ? "bad" : n ? "live" : S.ok ? "ok" : "";
+    const via = DEMO ? "demo games" : route === "relay" ? "via helper" : "ESPN";
+    $("#status").innerHTML = `<span class="dot ${cls}"></span>${S.ok === false ? "Can't reach the live feed" : `${n ? n + " live · " : ""}${via}${S.updated ? " · " + new Date(S.updated).toLocaleTimeString("en-MY", { timeZone: MYT }) : ""}`}`;
+    $("#help").hidden = DEMO || S.ok !== false;
+    $("#diag").textContent = Object.keys(diag).length ? "Details: " + Object.entries(diag).map(([k, v]) => k + " → " + v).join(" | ") : "";
+    $("#dateLabel").textContent = dayLabel(S.day);
+  }
+
+  function renderHome() {
+    const games = [...S.games.values()].sort((a, b) => ({ in: 0, pre: 1, post: 2 }[a.state] - { in: 0, pre: 1, post: 2 }[b.state]) || Date.parse(a.date) - Date.parse(b.date));
+    const all = allPlayersToday();
+    const top = all.slice().sort((a, b) => b.gs - a.gs).slice(0, 6);
+    const lead = (label, f) => {
+      const best = all.slice().sort((a, b) => f(b.p.s) - f(a.p.s))[0];
+      if (!best || !f(best.p.s)) return "";
+      return `<button class="leader" type="button" data-player="${esc(best.g.id)}|${esc(best.p.id)}"><div class="k">${label}</div><div class="v"><span>${esc(best.p.short)} <span class="muted">${esc(best.p.team.abbr)}</span></span><b>${f(best.p.s)}</b></div></button>`;
+    };
+    const perf = top.length ? `
+      <section class="perf" aria-labelledby="ph">
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:8px;flex-wrap:wrap"><h2 id="ph">Top performers</h2><span class="muted small">Ranked by game score (points, efficiency, rebounds, assists, defence) across ${S.sums.size} game${S.sums.size === 1 ? "" : "s"}</span></div>
+        <div class="perfrow">${top.map((x, i) => `
+          <button class="pcard" type="button" style="${tc(x.p.team)}" data-player="${esc(x.g.id)}|${esc(x.p.id)}">
+            <span class="rank">${i + 1}</span>
+            <div class="who"><span class="badge">${esc(initials(x.p))}</span><div><div class="name">${esc(x.p.name)}</div><div class="muted small">${esc(x.p.team.abbr)} · ${esc(x.g.away.abbr)} @ ${esc(x.g.home.abbr)}</div></div></div>
+            <div class="line muted"><b>${x.p.s.pts}</b> PTS · <b>${x.p.s.reb}</b> REB · <b>${x.p.s.ast}</b> AST</div>
+            <div class="muted small num">${x.p.s.fgm}-${x.p.s.fga} FG · ${x.p.s.tpm}-${x.p.s.tpa} 3PT · ${x.p.s.min} MIN ${x.g.state === "in" ? '<span class="chip live">LIVE</span>' : x.g.state === "post" ? '<span class="chip">FINAL</span>' : ""}</div>
+          </button>`).join("")}</div>
+        <div class="leaders">${lead("Points", (s) => s.pts)}${lead("Rebounds", (s) => s.reb)}${lead("Assists", (s) => s.ast)}${lead("Threes made", (s) => s.tpm)}${lead("Steals + blocks", (s) => s.stl + s.blk)}</div>
+      </section>` : `<section class="perf"><h2>Top performers</h2><div class="empty">Top performers show up once games tip off.</div></section>`;
+
+    const card = (g) => {
+      const sum = S.sums.get(g.id);
+      const best = (side) => { if (!sum) return ""; const b = sum.players[side].slice().sort((a, c) => c.s.pts - a.s.pts)[0]; return b && b.s.pts ? `${esc(b.short)} ${b.s.pts}` : ""; };
+      const row = (side) => { const t = g[side], o = g[side === "home" ? "away" : "home"]; const lose = g.state === "post" && t.score < o.score;
+        return `<div class="trow ${lose ? "lose" : ""}"><span class="tcode" style="${tc(t)}">${esc(t.abbr)}</span><span class="tname">${esc(t.name)} <span class="small">${esc(t.record)}</span></span><span class="tscore">${g.state === "pre" ? "" : t.score}</span></div>`; };
+      return `<button class="gcard ${g.state === "in" ? "live" : ""}" type="button" data-game="${esc(g.id)}">
+        ${row("away")}${row("home")}
+        <div class="gfoot"><span class="st ${g.state === "in" ? "live" : ""}">${g.state === "in" ? '<span class="dot live"></span> ' : ""}${esc(statusText(g))}</span><span>${g.state === "pre" ? "Tap for lineups" : [best("away"), best("home")].filter(Boolean).join(" · ") || "Tap for box score"}</span></div>
+      </button>`;
+    };
+    return perf + `<section style="display:grid;gap:10px" aria-labelledby="gh"><h2 id="gh">Games <span class="muted small">${games.length}</span></h2>${games.length ? `<div class="games">${games.map(card).join("")}</div>` : `<div class="empty">${S.ok === false ? "Waiting for the live feed…" : "No NBA games on this day."}</div>`}</section>`;
+  }
+
+  function renderGame(id) {
+    const g = S.games.get(id); const sum = S.sums.get(id);
+    if (!g) return `<button class="back" type="button" data-home>← All games</button><div class="empty">Loading game…</div>`;
+    const periods = Math.max(4, g.home.lines.length, g.away.lines.length);
+    const ph = Array.from({ length: periods }, (_, i) => (i < 4 ? "Q" + (i + 1) : "OT" + (i - 3 > 1 ? i - 3 : "")));
+    const lsRow = (t) => `<tr><td><span class="tcode" style="${tc(t)};font-size:15px;min-width:40px">${esc(t.abbr)}</span></td>${ph.map((_, i) => `<td>${t.lines[i] != null ? t.lines[i] : "–"}</td>`).join("")}<td><b>${g.state === "pre" ? "–" : t.score}</b></td></tr>`;
+    const team = (side) => `<div class="sh-team"><span class="tcode" style="${tc(g[side])}">${esc(g[side].abbr)}</span><span class="muted small">${esc(g[side].full)}</span><span class="muted small">${esc(g[side].record)}</span></div>`;
+    const last = sum && sum.last;
+    const head = `
+      <button class="back" type="button" data-home>← All games</button>
+      <section class="scorehead">
+        <div class="sh-main">${team("away")}
+          <div class="sh-mid"><div class="sh-score"><span>${g.state === "pre" ? "" : g.away.score}</span> <span class="muted">${g.state === "pre" ? "vs" : "–"}</span> <span>${g.state === "pre" ? "" : g.home.score}</span></div><div class="st ${g.state === "in" ? "live" : ""}">${g.state === "in" ? '<span class="dot live"></span> ' : ""}${esc(statusText(g))}</div></div>
+          ${team("home")}</div>
+        <div style="overflow-x:auto"><table class="linescore"><thead><tr><th></th>${ph.map((x) => `<th>${x}</th>`).join("")}<th>T</th></tr></thead><tbody>${lsRow(g.away)}${lsRow(g.home)}</tbody></table></div>
+        ${last && g.state !== "pre" ? `<div class="lastplay">Last play · <span class="num">Q${last.period} ${esc(last.clock)}</span> · <b>${esc(last.text)}</b></div>` : ""}
+      </section>`;
+    const tabs = `<div class="tabs" role="tablist">${[["court", "Court"], ["box", "Box score"], ["plays", "Plays"]].map(([k, l]) => `<button type="button" role="tab" data-tab="${k}" aria-selected="${S.tab === k}">${l}</button>`).join("")}</div>`;
+    if (!sum) return head + tabs + `<div class="empty">Loading players…</div>`;
+    const body = S.tab === "box" ? renderBox(g, sum) : S.tab === "plays" ? renderPlays(g, sum) : renderCourt(g, sum);
+    return head + tabs + body;
+  }
+
+  const SPOTS = [[30, 22], [70, 22], [20, 52], [80, 52], [50, 70]]; // G, G, F, F, C (basket at the bottom)
+  function renderCourt(g, sum) {
+    const fresh = S.fresh.get(g.id) || new Map(); const now = Date.now();
+    const label = g.state === "pre" ? "Starting five" : g.state === "post" ? "Final five on court" : "On court now";
+    const half = (side) => {
+      const t = g[side];
+      const five = sum.onCourt[side].slice().sort((a, b) => posRank(a) - posRank(b));
+      const spots = five.slice(0, 5).map((p, i) => {
+        const [x, y] = SPOTS[i] || [50, 50];
+        const isNew = fresh.has(p.id) && now - fresh.get(p.id) < 20e3;
+        const pf = p.s.pf >= 6 ? '<span class="pf5">FOULED OUT</span>' : p.s.pf >= 5 ? `<span class="pf5">${p.s.pf} PF</span>` : `${p.s.pf} PF`;
+        return `<button type="button" class="spot ${isNew ? "fresh" : ""}" style="left:${x}%;top:${y}%;${tc(t)}" data-player="${esc(g.id)}|${esc(p.id)}" aria-label="${esc(p.name)}">
+          <span class="badge">${esc(initials(p))}</span><span class="pn">${esc(p.short)}</span><span class="ps">${p.s.pts} PTS · ${pf}</span></button>`;
+      }).join("");
+      return `<div style="display:grid;gap:6px"><div class="court" style="${tc(t)}"><div class="ctitle"><span class="tcode" style="${tc(t)}">${esc(t.abbr)}</span><span class="small">${label}</span></div>${spots || '<div class="empty" style="position:absolute;inset:40% 10% auto">Lineup not posted yet</div>'}</div>
+        ${sum.approx[side] && five.length ? `<div class="lineupnote">Showing ${five.length} players: the play-by-play hasn't confirmed a full five yet.</div>` : ""}</div>`;
+    };
+    const subs = sum.subs.slice().reverse().filter((x) => S.subFilter === "all" || x.side === S.subFilter);
+    // group subs made at the same stoppage by the same team
+    const groups = [];
+    for (const x of subs) { const gk = x.period + "|" + x.clock + "|" + x.side; const last = groups[groups.length - 1]; if (last && last.k === gk) last.items.push(x); else groups.push({ k: gk, items: [x], x }); }
+    const fname = (id) => { const p = sum.byId.get(id); return p ? `<button type="button" data-player="${esc(g.id)}|${esc(p.id)}" style="background:none;border:0;padding:0;cursor:pointer;color:inherit">${esc(p.short)}</button>` : "?"; };
+    const subHtml = groups.slice(0, 60).map((gr) => `
+      <div class="sub ${Date.now() - (fresh.get(gr.items[0].inId) || 0) < 20e3 ? "new" : ""}" style="${tc(g[gr.x.side])}">
+        <div class="when"><b>Q${gr.x.period}</b>${esc(gr.x.clock)}<div><span class="tcode" style="${tc(g[gr.x.side])};font-size:12px;min-width:0;padding:0 5px">${esc(g[gr.x.side].abbr)}</span></div></div>
+        <div style="display:grid;gap:4px">${gr.items.map((x) => `<div class="swap"><span class="in">▲ ${fname(x.inId)}</span><span class="out">▼ ${fname(x.outId)}</span></div>`).join("")}</div>
+      </div>`).join("");
+    return `<section style="display:grid;gap:12px">
+      <div class="courts">${half("away")}${half("home")}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap"><h2>Substitutions <span class="muted small">${sum.subs.length}</span></h2>
+        <div class="subfilter">${[["all", "All"], ["away", g.away.abbr], ["home", g.home.abbr]].map(([k, l]) => `<button type="button" data-subf="${k}" aria-pressed="${S.subFilter === k}">${esc(l)}</button>`).join("")}</div></div>
+      <div class="subs">${subHtml || `<div class="empty">${g.state === "pre" ? "Substitutions appear here once the game starts." : "No substitutions yet."}</div>`}</div>
+    </section>`;
+  }
+
+  const COLS = [["min", "MIN"], ["pts", "PTS"], ["reb", "REB"], ["ast", "AST"], ["stl", "STL"], ["blk", "BLK"], ["to", "TO"], ["pf", "PF"], ["fg", "FG"], ["tp", "3PT"], ["ft", "FT"], ["oreb", "OREB"], ["dreb", "DREB"], ["pm", "+/-"]];
+  const cell = (p, k) => k === "fg" ? `${p.s.fgm}-${p.s.fga}` : k === "tp" ? `${p.s.tpm}-${p.s.tpa}` : k === "ft" ? `${p.s.ftm}-${p.s.fta}` : k === "pm" ? (p.s.pm > 0 ? "+" + p.s.pm : p.s.pm) : p.s[k];
+  const sortVal = (p, k) => k === "fg" ? p.s.fgm : k === "tp" ? p.s.tpm : k === "ft" ? p.s.ftm : p.s[k];
+  function renderBox(g, sum) {
+    const side = S.boxSide; const t = g[side];
+    const on = new Set(sum.onCourt[side].map((p) => p.id));
+    const players = sum.players[side];
+    const played = players.filter((p) => !p.dnp); const dnp = players.filter((p) => p.dnp);
+    const row = (p) => `<tr data-player="${esc(g.id)}|${esc(p.id)}"><td>${g.state === "in" ? `<span class="oc ${on.has(p.id) ? "" : "off"}" title="${on.has(p.id) ? "On court" : "Bench"}"></span>` : ""}${esc(p.short)} <span class="muted small">${esc(p.pos)}</span></td>${COLS.map(([k]) => `<td class="${k === "pts" ? "pts" : ""}">${cell(p, k)}</td>`).join("")}</tr>`;
+    let body;
+    if (S.sort) { body = played.slice().sort((a, b) => sortVal(b, S.sort) - sortVal(a, S.sort)).map(row).join(""); }
+    else {
+      const st = played.filter((p) => p.starter), bn = played.filter((p) => !p.starter).sort((a, b) => b.s.min - a.s.min);
+      body = `<tr class="sep"><td colspan="${COLS.length + 1}">Starters</td></tr>${st.map(row).join("")}<tr class="sep"><td colspan="${COLS.length + 1}">Bench</td></tr>${bn.map(row).join("")}`;
+    }
+    body += dnp.map((p) => `<tr class="dnp" data-player="${esc(g.id)}|${esc(p.id)}"><td>${esc(p.short)}</td><td colspan="${COLS.length}" style="text-align:left">${esc(p.reason || "Did not play")}</td></tr>`).join("");
+    const tot = played.reduce((a, p) => { for (const k in p.s) a[k] = (a[k] || 0) + p.s[k]; return a; }, {});
+    const totRow = `<tr><td>Team</td>${COLS.map(([k]) => `<td>${k === "fg" ? `${tot.fgm || 0}-${tot.fga || 0}` : k === "tp" ? `${tot.tpm || 0}-${tot.tpa || 0}` : k === "ft" ? `${tot.ftm || 0}-${tot.fta || 0}` : k === "pm" || k === "min" ? "" : tot[k] || 0}</td>`).join("")}</tr>`;
+    const pctRow = `<tr><td class="muted">Shooting</td>${COLS.map(([k]) => `<td class="muted">${k === "fg" ? pct(tot.fgm, tot.fga) : k === "tp" ? pct(tot.tpm, tot.tpa) : k === "ft" ? pct(tot.ftm, tot.fta) : ""}</td>`).join("")}</tr>`;
+    return `<section style="display:grid;gap:10px">
+      <div class="boxteam">${["away", "home"].map((s2) => `<button type="button" data-box="${s2}" aria-pressed="${side === s2}"><span class="tcode" style="${tc(g[s2])};font-size:15px;min-width:40px">${esc(g[s2].abbr)}</span>${esc(g[s2].name)}</button>`).join("")}
+        ${S.sort ? `<button type="button" data-sort="">Reset order</button>` : ""}</div>
+      ${players.length ? `<div class="tablewrap"><table class="box"><thead><tr><th>Player</th>${COLS.map(([k, l]) => `<th data-sort="${k}" ${S.sort === k ? 'aria-sort="descending"' : ""} title="Sort by ${l}">${l}</th>`).join("")}</tr></thead><tbody>${body}</tbody><tfoot>${totRow}${pctRow}</tfoot></table></div>
+      <div class="muted small">Tap a player for their full stats and plays. Tap a column to sort. ${g.state === "in" ? "Green dot = on court now." : ""}</div>` : `<div class="empty">The box score appears once ${esc(t.name)}'s lineup is posted.</div>`}
+    </section>`;
+  }
+
+  function renderPlays(g, sum) {
+    const list = sum.plays.slice().reverse().filter((p) => !S.scoringOnly || p.scoring).slice(0, 200);
+    const side = (p) => (p.teamId === g.home.id ? g.home : p.teamId === g.away.id ? g.away : null);
+    return `<section style="display:grid;gap:10px">
+      <div class="subfilter"><button type="button" data-scoring aria-pressed="${S.scoringOnly}">Scoring plays only</button></div>
+      <div class="plays">${list.map((p) => { const t = side(p); return `<div class="play ${p.scoring ? "score" : ""}" style="${t ? tc(t) : ""}"><span class="t">Q${p.period} ${esc(p.clock)}</span><span class="q">${t ? `<span class="tcode" style="${tc(t)};font-size:12px;min-width:0;padding:0 5px">${esc(t.abbr)}</span>` : ""}</span><span>${esc(p.text)}</span><span class="s">${p.away != null ? `${p.away}–${p.home}` : ""}</span></div>`; }).join("") || '<div class="empty">No plays yet.</div>'}</div>
+    </section>`;
+  }
+
+  function renderSheet() {
+    const el = $("#sheet");
+    if (!S.sheet) { el.hidden = true; el.innerHTML = ""; return; }
+    const [gid, pid] = S.sheet; const g = S.games.get(gid); const sum = S.sums.get(gid);
+    const p = sum && sum.byId.get(pid);
+    if (!g || !p) { el.hidden = true; return; }
+    const keep = el.querySelector(".card") ? el.querySelector(".card").scrollTop : 0;
+    const on = sum.onCourt[p.side].some((x) => x.id === p.id);
+    const status = p.dnp ? (p.reason || "Did not play") : g.state === "in" ? (on ? "On court" : "On the bench") : g.state === "post" ? "Final" : "";
+    const s = p.s;
+    const stat = (v, l) => `<div class="stat"><b>${v}</b><span>${l}</span></div>`;
+    const shoot = (m, a, l) => `<div class="stat"><b>${m}-${a}</b><span>${l} · ${pct(m, a)}</span><div class="bar"><i style="width:${a ? Math.round((100 * m) / a) : 0}%"></i></div></div>`;
+    const mySubs = sum.subs.filter((x) => x.inId === p.id || x.outId === p.id).slice().reverse();
+    const myPlays = sum.plays.filter((x) => x.parts.includes(p.id) && !/substitution/i.test(x.type)).slice(-15).reverse();
+    el.innerHTML = `<div class="card" role="dialog" aria-modal="true" aria-label="${esc(p.name)}" style="${tc(p.team)}">
+      <div class="phead"><span class="badge">${esc(initials(p))}</span><div><div style="font-family:var(--display);font-size:24px">${esc(p.name)}</div><div class="muted small">${esc(p.team.full)}${p.pos ? " · " + esc(p.pos) : ""}${p.jersey ? " · #" + esc(p.jersey) : ""} ${status ? `· <span class="chip ${on && g.state === "in" ? "in" : ""}">${esc(status)}</span>` : ""}</div></div><button type="button" class="close" data-close>Close</button></div>
+      <div class="statgrid">${stat(s.pts, "Points")}${stat(s.reb, "Rebounds")}${stat(s.ast, "Assists")}${stat(s.stl, "Steals")}${stat(s.blk, "Blocks")}${stat(s.to, "Turnovers")}${stat(s.pf, "Fouls")}${stat(s.min, "Minutes")}${stat(s.pm > 0 ? "+" + s.pm : s.pm, "+/-")}${stat(s.oreb + " / " + s.dreb, "Off / Def reb")}${stat(gameScore(s).toFixed(1), "Game score")}</div>
+      <div class="statgrid">${shoot(s.fgm, s.fga, "FG")}${shoot(s.tpm, s.tpa, "3PT")}${shoot(s.ftm, s.fta, "FT")}</div>
+      ${mySubs.length ? `<div><h3 style="font-size:18px;margin-bottom:6px">Substitutions</h3><div class="subs">${mySubs.slice(0, 12).map((x) => `<div class="small"><span class="num muted">Q${x.period} ${esc(x.clock)}</span> · ${x.inId === p.id ? '<span class="in" style="color:var(--in)">▲ Checked in</span>' : '<span style="color:var(--out)">▼ Checked out</span>'}</div>`).join("")}</div></div>` : ""}
+      <div><h3 style="font-size:18px;margin-bottom:6px">Recent plays</h3>${myPlays.length ? `<div class="plays" style="max-height:none">${myPlays.map((x) => `<div class="play ${x.scoring ? "score" : ""}" style="grid-template-columns:62px 1fr auto"><span class="t">Q${x.period} ${esc(x.clock)}</span><span>${esc(x.text)}</span><span class="s">${x.away != null ? `${x.away}–${x.home}` : ""}</span></div>`).join("")}</div>` : '<div class="muted small">No plays yet.</div>'}</div>
+    </div>`;
+    el.hidden = false;
+    el.querySelector(".card").scrollTop = keep;
+  }
+
+  function render() {
+    renderStatus();
+    const v = $("#view");
+    const keepX = [...v.querySelectorAll(".tablewrap,.perfrow")].map((x) => x.scrollLeft);
+    const keepY = [...v.querySelectorAll(".plays")].map((x) => x.scrollTop);
+    const id = currentGameId();
+    v.innerHTML = id ? renderGame(id) : renderHome();
+    v.querySelectorAll(".tablewrap,.perfrow").forEach((x, i) => { if (keepX[i]) x.scrollLeft = keepX[i]; });
+    v.querySelectorAll(".plays").forEach((x, i) => { if (keepY[i]) x.scrollTop = keepY[i]; });
+    renderSheet();
+  }
+
+  function toast(html, color) {
+    const t = document.createElement("div"); t.className = "toast"; t.style.setProperty("--tc", color || "#888"); t.innerHTML = html;
+    $("#toasts").appendChild(t); setTimeout(() => t.remove(), 6000);
+  }
+
+  // ---------- events ----------
+  document.addEventListener("click", (e) => {
+    const el = e.target.closest("[data-player],[data-game],[data-home],[data-tab],[data-box],[data-sort],[data-subf],[data-scoring],[data-close]");
+    if (!el) { if (e.target.id === "sheet") { S.sheet = null; renderSheet(); } return; }
+    if (el.dataset.player) { S.sheet = el.dataset.player.split("|"); const gid = S.sheet[0]; if (!S.sums.has(gid)) tick(true); renderSheet(); return; }
+    if (el.hasAttribute("data-close")) { S.sheet = null; renderSheet(); return; }
+    if (el.dataset.game) { location.hash = "g-" + el.dataset.game; return; }
+    if (el.hasAttribute("data-home")) { location.hash = ""; return; }
+    if (el.dataset.tab) { S.tab = el.dataset.tab; try { localStorage.setItem("nbalive-tab", S.tab); } catch (err) { /* ignore */ } render(); return; }
+    if (el.dataset.box) { S.boxSide = el.dataset.box; render(); return; }
+    if (el.hasAttribute("data-sort")) { S.sort = el.dataset.sort ? (S.sort === el.dataset.sort ? null : el.dataset.sort) : null; render(); return; }
+    if (el.dataset.subf) { S.subFilter = el.dataset.subf; render(); return; }
+    if (el.hasAttribute("data-scoring")) { S.scoringOnly = !S.scoringOnly; render(); return; }
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape" && S.sheet) { S.sheet = null; renderSheet(); } });
+  window.addEventListener("hashchange", () => { S.sort = null; S.subFilter = "all"; window.scrollTo(0, 0); render(); tick(true); });
+  const setDay = (d) => { S.day = d; S.games.clear(); S.sums.clear(); S.sumAt.clear(); S.seenSubs.clear(); S.sbAt = 0; location.hash = ""; render(); tick(true); };
+  $("#prevDay").addEventListener("click", () => setDay(shiftDay(S.day, -1)));
+  $("#nextDay").addEventListener("click", () => setDay(shiftDay(S.day, 1)));
+  $("#todayBtn").addEventListener("click", () => setDay(etDate(new Date())));
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) tick(true); });
+
+  render();
+  tick(true);
+  setInterval(() => tick(false), 2500);
+  window.__nbaLive = S; // handy for debugging in the browser console
 })();

@@ -1,24 +1,23 @@
-# NBA Live Value Board
+# NBA Live
 
-A live dashboard for NBA games that suggests only bets priced at **decimal odds 2.00 or higher**.
+A live NBA scoreboard: scores, players on court, substitutions, full box scores and the day's top performers. No odds.
 
-- **Live game data** from the NBA's free live feed, every 4 seconds: score, clock, players on court, fouls, who's out.
-- **Live odds** from Polymarket (free, no account needed to read). A price of 0.46 means about a 46% chance, which is decimal odds of about 2.17.
-- **Live win-chance model**: starts from the pre-game market price, then updates for score, time left and starters fouling out.
-- **Suggestions**: a side shows as VALUE when chance × odds − 1 beats your minimum edge. The stake is quarter-Kelly, capped at 2% of bankroll.
-- **Signal log + optional sound** whenever a new VALUE signal appears.
+**Open it:** https://abc123286.github.io/nba-live-board/ (works on phones). Add `?demo=1` to see simulated games when nothing is on.
 
-## Use it
+## What it shows
+- **Scoreboard:** every game of the day (Malaysia date), live games first, refreshed every 10 seconds.
+- **Top performers:** the day's best players ranked by game score (points, shooting efficiency, rebounds, assists, steals, blocks, minus fouls and turnovers), plus leaders for points, rebounds, assists, threes and steals + blocks.
+- **Game view** (tap a game):
+  - **Court:** both teams' five players on court, with points and fouls (5 fouls turns red). New players glow as they check in, and a pop-up announces each substitution.
+  - **Substitutions:** every change, newest first, grouped by stoppage, filterable by team.
+  - **Box score:** full stats for every player (sortable), team totals and shooting percentages; a green dot marks who's on court.
+  - **Plays:** play-by-play, with a scoring-only filter.
+- **Player card:** tap any player for their full stat line, shooting splits, when they checked in and out, and their recent plays.
 
-1. Turn on GitHub Pages: repo **Settings → Pages → Deploy from a branch → `main` / root**. Open the link it gives you.
-2. Leave the page open during games. It refreshes on its own.
-3. If the page says your browser can't reach the feeds, start the free helper (Windows):
-   open the folder with `relay.py`, right-click an empty space → **Open in Terminal**, type `py relay.py`, press Enter.
-   Keep that window open while you watch games. (Windows Smart App Control blocks `start-board.bat`, so use this instead.)
-4. Want to see it working when no games are on? Add `#demo` to the end of the link (simulated games).
+## How "on court" works
+ESPN's feed lists each team's starters and every substitution ("X enters the game for Y"). The page starts from the starters and applies each substitution in order.
 
-## Notes
+## If the feed is blocked
+Run the free helper on a computer: open this folder, right-click → **Open in Terminal**, type `py relay.py`, press Enter, keep the window open.
 
-- Polymarket's odds are not your bookie's odds. Type your bookie's price in **Your odds** to use it instead.
-- Signals in the last 4 minutes of a game are skipped, because prices move too fast to act on.
-- The model is simple. Markets usually catch up within seconds, so most live edges are small and short-lived. This is a tool for checking prices, not a guarantee.
+The previous odds-based board is still available at `odds.html`.
