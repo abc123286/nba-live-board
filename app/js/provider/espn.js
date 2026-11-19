@@ -305,9 +305,13 @@ export function currentRun(sum) {
 
 // ---- Teams, rosters, athletes -------------------------------------------------------------
 
+// ESPN's /teams endpoint refuses cross-origin requests, so the 30 franchises are built in
+// (ids, names and colours copied from that endpoint on 2026-11-19).
+const TEAMS = [["1", "ATL", "Atlanta Hawks", "Hawks", "Atlanta", "c8102e", "fdb927"], ["2", "BOS", "Boston Celtics", "Celtics", "Boston", "008348", "ffffff"], ["17", "BKN", "Brooklyn Nets", "Nets", "Brooklyn", "000000", "ffffff"], ["30", "CHA", "Charlotte Hornets", "Hornets", "Charlotte", "008ca8", "1d1060"], ["4", "CHI", "Chicago Bulls", "Bulls", "Chicago", "ce1141", "000000"], ["5", "CLE", "Cleveland Cavaliers", "Cavaliers", "Cleveland", "860038", "bc945c"], ["6", "DAL", "Dallas Mavericks", "Mavericks", "Dallas", "0064b1", "bbc4ca"], ["7", "DEN", "Denver Nuggets", "Nuggets", "Denver", "0e2240", "fec524"], ["8", "DET", "Detroit Pistons", "Pistons", "Detroit", "1d428a", "c8102e"], ["9", "GS", "Golden State Warriors", "Warriors", "Golden State", "fdb927", "1d428a"], ["10", "HOU", "Houston Rockets", "Rockets", "Houston", "ce0e2d", "000000"], ["11", "IND", "Indiana Pacers", "Pacers", "Indiana", "0c2340", "ffd520"], ["12", "LAC", "LA Clippers", "Clippers", "LA", "12173f", "c8102e"], ["13", "LAL", "Los Angeles Lakers", "Lakers", "Los Angeles", "552583", "fdb927"], ["29", "MEM", "Memphis Grizzlies", "Grizzlies", "Memphis", "5d76a9", "12173f"], ["14", "MIA", "Miami Heat", "Heat", "Miami", "98002e", "000000"], ["15", "MIL", "Milwaukee Bucks", "Bucks", "Milwaukee", "00471b", "eee1c6"], ["16", "MIN", "Minnesota Timberwolves", "Timberwolves", "Minnesota", "266092", "79bc43"], ["3", "NO", "New Orleans Pelicans", "Pelicans", "New Orleans", "0a2240", "b4975a"], ["18", "NY", "New York Knicks", "Knicks", "New York", "1d428a", "f58426"], ["25", "OKC", "Oklahoma City Thunder", "Thunder", "Oklahoma City", "007ac1", "ef3b24"], ["19", "ORL", "Orlando Magic", "Magic", "Orlando", "0150b5", "9ca0a3"], ["20", "PHI", "Philadelphia 76ers", "76ers", "Philadelphia", "1d428a", "e01234"], ["21", "PHX", "Phoenix Suns", "Suns", "Phoenix", "29127a", "e56020"], ["22", "POR", "Portland Trail Blazers", "Trail Blazers", "Portland", "e03a3e", "000000"], ["23", "SAC", "Sacramento Kings", "Kings", "Sacramento", "5a2d81", "6a7a82"], ["24", "SA", "San Antonio Spurs", "Spurs", "San Antonio", "000000", "c4ced4"], ["28", "TOR", "Toronto Raptors", "Raptors", "Toronto", "d91244", "000000"], ["26", "UTAH", "Utah Jazz", "Jazz", "Utah", "4e008e", "79a3dc"], ["27", "WSH", "Washington Wizards", "Wizards", "Washington", "e31837", "002b5c"]];
 export async function teams() {
-  const j = await get(`${SITE}/teams`);
-  return (j.sports?.[0]?.leagues?.[0]?.teams || []).map((x) => team(x.team));
+  return TEAMS.map(([id, abbreviation, displayName, shortDisplayName, location, color, alternateColor]) =>
+    team({ id, abbreviation, displayName, shortDisplayName, location, name: shortDisplayName, color, alternateColor })
+  );
 }
 
 export async function roster(teamId) {
