@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://esm.sh; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com https://*.supabase.co wss://*.supabase.co https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jON5aMuyp7+0w2KHcryg+6Drt22CfOeXCVmGES0Fjxg=' https://esm.sh; connect-src 'self' https://site.api.espn.com https://site.web.api.espn.com https://*.supabase.co wss://*.supabase.co https://esm.sh; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'self'; form-action 'self'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta name="theme-color" content="#0b0d12">
 <title>NBA Live</title>
@@ -12,7 +12,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/app.css?v=1">
+<link rel="stylesheet" href="css/app.css?v=6241f058">
 <script src="js/theme-boot.js"></script>
 </head>
 <body>
@@ -39,6 +39,30 @@
 </div>
 <div id="sheetRoot"></div>
 <div id="toasts" aria-live="polite"></div>
-<script type="module" src="js/main.js?v=3"></script>
+<script type="importmap">{
+ "imports": {
+  "./js/config.js": "./js/config.js?v=41767fb3",
+  "./js/live.js": "./js/live.js?v=45975a7f",
+  "./js/main.js": "./js/main.js?v=9769ccac",
+  "./js/notify.js": "./js/notify.js?v=ced2e458",
+  "./js/supa.js": "./js/supa.js?v=eb05f1e5",
+  "./js/ui.js": "./js/ui.js?v=36e71b36",
+  "./js/util.js": "./js/util.js?v=019cb133",
+  "./js/provider/espn.js": "./js/provider/espn.js?v=e2f97f16",
+  "./js/views/auth.js": "./js/views/auth.js?v=95917cfc",
+  "./js/views/community.js": "./js/views/community.js?v=17eb165e",
+  "./js/views/discuss.js": "./js/views/discuss.js?v=947108cb",
+  "./js/views/game-plays.js": "./js/views/game-plays.js?v=eaf8a773",
+  "./js/views/game.js": "./js/views/game.js?v=1a0bcaa9",
+  "./js/views/games.js": "./js/views/games.js?v=cbbf0bba",
+  "./js/views/home.js": "./js/views/home.js?v=1ad3ad03",
+  "./js/views/notifications.js": "./js/views/notifications.js?v=e73fbefe",
+  "./js/views/player.js": "./js/views/player.js?v=c4b7c2d4",
+  "./js/views/players.js": "./js/views/players.js?v=c156dbe7",
+  "./js/views/profile.js": "./js/views/profile.js?v=38fd02f6",
+  "./js/views/shotchart.js": "./js/views/shotchart.js?v=71375982"
+ }
+}</script>
+<script type="module" src="./js/main.js?v=9769ccac"></script>
 </body>
 </html>
